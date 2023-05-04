@@ -1,19 +1,19 @@
 <template>
     <BannerComponent></BannerComponent>
-    <ServicosComponent></ServicosComponent>
-    <AvaliacoesComponente></AvaliacoesComponente>
+    <ServicesComponent></ServicesComponent>
+    <RateComponent></RateComponent>
     <div class="flex">
-        <MapaDeLocalizacao></MapaDeLocalizacao>
-        <InformacoesComponente></InformacoesComponente>
+        <LocationComponent></LocationComponent>
+        <InfoComponent></InfoComponent>
     </div>
 </template>
 
 <script setup lang="ts">
-import AvaliacoesComponente from '@/components/home/AvaliacoesComponente.vue';
-import ServicosComponent from '@/components/home/ServicosComponent.vue';
+import RateComponent from '@/components/home/RateComponent.vue';
+import ServicesComponent from '@/components/home/ServicesComponent.vue';
 import BannerComponent from '@/components/home/BannerComponent.vue';
-import MapaDeLocalizacao from '@/components/home/MapaDeLocalizacao.vue';
-import InformacoesComponente from '@/components/home/InformacoesComponente.vue';
+import LocationComponent from '@/components/home/LocationComponent.vue';
+import InfoComponent from '@/components/home/InfoComponent.vue';
 </script>
 
 <style scoped lang="scss">
