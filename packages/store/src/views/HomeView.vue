@@ -6,9 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import RateComponent from '@/components/home/RateComponent.vue';
-import ServicesComponent from '@/components/home/ServicesComponent.vue';
 import BannerComponent from '@/components/home/BannerComponent.vue';
+import ServicesComponent from '@/components/home/ServicesComponent.vue';
+import RateComponent from '@/components/home/RateComponent.vue';
 import InfoComponent from '@/components/home/InfoComponent.vue';
 </script>
 

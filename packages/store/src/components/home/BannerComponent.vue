@@ -12,6 +12,10 @@ import Button from '../layout/Button.vue';
 
 <style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@font-face {
+    font-family: Digitalt;
+    src: url(@/assets/fonts/Digitalt-04no.ttf)
+}
 
 #banner {
     background: #ffffff;
@@ -24,9 +28,12 @@ import Button from '../layout/Button.vue';
         font-size: 100px;
         color: #ffffff;
         font-weight: bold;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Digitalt', sans-serif;
+        /*
         -webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: #222;
+        */
+        text-shadow:  2px 5px #000;
         max-width: 35%;
         display: none;
 
