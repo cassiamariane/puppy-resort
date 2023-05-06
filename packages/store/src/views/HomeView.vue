@@ -2,17 +2,13 @@
     <BannerComponent></BannerComponent>
     <ServicesComponent></ServicesComponent>
     <RateComponent></RateComponent>
-    <div class="flex">
-        <LocationComponent></LocationComponent>
-        <InfoComponent></InfoComponent>
-    </div>
+    <InfoComponent></InfoComponent>
 </template>
 
 <script setup lang="ts">
 import RateComponent from '@/components/home/RateComponent.vue';
 import ServicesComponent from '@/components/home/ServicesComponent.vue';
 import BannerComponent from '@/components/home/BannerComponent.vue';
-import LocationComponent from '@/components/home/LocationComponent.vue';
 import InfoComponent from '@/components/home/InfoComponent.vue';
 </script>
 
@@ -21,7 +17,7 @@ import InfoComponent from '@/components/home/InfoComponent.vue';
     display: flex;
     flex-direction: column;
 
-    @media screen and (min-width: 998px) {
+    @media screen and (min-width: 779px) {
         flex-direction: row;
     }
 }

@@ -5,16 +5,16 @@ import TheFooter from './components/layout/TheFooter.vue';
 </script>
 
 <template>
-  <TheHeader class="header"/>
+  <TheHeader class="header" />
   <RouterView />
-  <TheFooter/>
+  <TheFooter />
 </template>
 
 <style scoped lang="scss">
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
 }
 </style>
