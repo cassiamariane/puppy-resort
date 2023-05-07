@@ -2,12 +2,20 @@
     <div id="banner">
         <img src="@/assets/img/dog.avif" alt="">
         <h1 id="title">Aqui seu pet estará em boas patas</h1>
-        <Button text="Agendar hospedagem" theme="primary" class="agendar" />
+        <Button text="Agendar hospedagem" theme="primary" class="agendar" @click="sendWppMessage"/>
     </div>
 </template>
 
 <script setup lang="ts">
 import Button from '../layout/Button.vue';
+
+const sendWppMessage = () => {
+    const phone = '5524993954501';
+    const now = new Date().getHours();
+    const greeting = now >= 5 && now < 12 ? 'Bom dia!' : now >= 12 && now < 18 ? 'Boa tarde!' : 'Boa noite!';
+    const text = `${greeting} Eu gostaria de agendar uma hospedagem para o meu pet.`
+    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`);
+}
 </script>
 
 <style scoped lang="scss">
@@ -33,7 +41,7 @@ import Button from '../layout/Button.vue';
         -webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: #222;
         */
-        text-shadow:  2px 5px #000;
+        text-shadow:  2px 5px #000000;
         max-width: 35%;
         display: none;
 

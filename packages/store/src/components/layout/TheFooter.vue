@@ -1,7 +1,6 @@
 <template>
     <footer>
         <span id="direitos">Todos os direitos reservados &copy; {{ year }}</span>
-        <img src="@/assets/img/Logo.svg" alt="" id="logo">
     </footer>
 </template>
 
@@ -15,7 +14,6 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     min-height: 80px;
     padding: 0 2rem;
 
@@ -25,21 +23,6 @@ footer {
 
     span#direitos {
         color: #ffffff;
-    }
-
-    #logo {
-        max-width: 6rem;
-        margin-left: auto;
-        position: absolute;
-        bottom: 1rem;
-        right: 1rem;
-        display: none;
-
-        @media screen and (min-width: 779px) {
-            display: block;
-            bottom: .5rem;
-            max-width: 8rem;
-        }
     }
 }
 </style>

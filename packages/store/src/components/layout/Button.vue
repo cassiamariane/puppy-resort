@@ -14,8 +14,13 @@ defineProps({
 button {
     padding: .5rem 1rem;
     font-size: 14px;
-    box-shadow: 2px 2px 5px #000000;
+    box-shadow: 1px 1px 5px #000000;
     height: 40px;
+
+    &:hover {
+        transform: scale(1.02);
+        transition: .2s;
+    }
 
     &.primary {
         background-color: #51B53C;

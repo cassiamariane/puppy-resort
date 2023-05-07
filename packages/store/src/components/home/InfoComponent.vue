@@ -42,7 +42,7 @@
     }
 
     h2 {
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
 
     main {
@@ -85,10 +85,20 @@
 
                 li {
                     display: flex;
+                    align-items: center;
                     gap: 1rem;
+                    font-size: 1rem;
+
+                    @media screen and (min-width: 779px) {
+                        font-size: 1.2rem;
+                    }
 
                     img {
-                        max-width: 1rem;
+                        max-width: 1.2rem;
+
+                        @media screen and (min-width: 779px) {
+                            max-width: 1.5rem;
+                        }
                     }
                 }
             }
