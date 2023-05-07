@@ -8,11 +8,11 @@
             </div>
             <div class="card brown">
                 <img src="@/assets/img/icons/backyard.svg">
-                <p>Grande Espaço</p>
+                <p>Grande espaço</p>
             </div>
             <div class="card green">
                 <img src="@/assets/img/icons/pet-taxi.svg">
-                <p>Pet Táxi</p>
+                <p>Taxi dog</p>
             </div>
             <div class="card brown">
                 <img src="@/assets/img/icons/clinica.svg">
@@ -20,11 +20,11 @@
             </div>
             <div class="card green">
                 <img src="@/assets/img/icons/banho-tosa.svg">
-                <p>Banho e Tosa</p>
+                <p>Banho e tosa</p>
             </div>
             <div class="card brown">
                 <img src="@/assets/img/icons/pet-toy.svg">
-                <p>Recreação</p>
+                <p>Recreação e piscina</p>
             </div>
         </div>
     </div>
@@ -60,7 +60,8 @@
             border-radius: 1rem;
             gap: 1.5rem;
             align-items: center;
-            flex: 1 1 6rem;
+            flex-grow: 1;
+            flex-basis: 8rem;
             box-shadow: 1px 1px 5px #000000;
 
             &:hover {
@@ -68,7 +69,7 @@
                 transition: .2s;
             }
 
-            @media screen and (max-width: 368px) {
+            @media screen and (max-width: 464px) and (min-width: 328px) {
                 &:nth-child(3) {
                     order: 4;
                 }
