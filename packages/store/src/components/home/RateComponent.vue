@@ -7,26 +7,27 @@
                     <img v-for="i in 5" src="@/assets/img/icons/paws-marked.png" :key="i">
                 </div>
                 <img class="foto-tutor" src="@/assets/img/icons/user.png">
-                <p class="nome-tutor">Marisa</p>
-                <p class="depoimento">Os animais têm espaço e são separados por tamanhos. Vale uma pena conferir! Os meus já
-                    estão com as diárias reservadas!</p>
+                <p class="nome-tutor">Wesley</p>
+                <p class="depoimento">O atendimento é excelente e os funcionários são muito prestativos.
+                    Fiquei muito satisfeito com a hospedagem do Mike no hotel haha.</p>
             </div>
             <div class="rate-card">
                 <div class="paws">
                     <img v-for="i in 5" src="@/assets/img/icons/paws-marked.png" :key="i">
                 </div>
                 <img class="foto-tutor" src="@/assets/img/icons/user.png">
-                <p class="nome-tutor">Júlio</p>
-                <p class="depoimento">Percebe-se que os responsáveis gostam muito de animais e que conhecem bem suas
-                    necessidades, pois o espaço é excelente e os animais tratados com muita atenção e carinho.</p>
+                <p class="nome-tutor">Gabriele</p>
+                <p class="depoimento">A hospedagem da minha gata foi excelente!
+                    Ela ficou super à vontade e eu pude viajar tranquila sabendo que ela estava sendo muito bem cuidada. Recomendo!</p>
             </div>
             <div class="rate-card">
                 <div class="paws">
                     <img v-for="i in 5" src="@/assets/img/icons/paws-marked.png" :key="i">
                 </div>
                 <img class="foto-tutor" src="@/assets/img/icons/user.png">
-                <p class="nome-tutor">Rafaela</p>
-                <p class="depoimento">Excelente!! O Mike foi super bem tratado lá. Agradeço pelo carinho com meu filho.</p>
+                <p class="nome-tutor">Maria Eduarda</p>
+                <p class="depoimento">A equipe é muito dedicada e cuidadosa com os animais.
+                    Os animais ficam em espaços amplos e bem cuidados. Agradeço pelo carinho com a minha filha.</p>
             </div>
         </div>
     </div>
@@ -91,10 +92,6 @@
             p {
                 color: #222;
                 text-align: center;
-            }
-
-            .nome-tutor {
-                font-size: medium;
             }
         }
     }

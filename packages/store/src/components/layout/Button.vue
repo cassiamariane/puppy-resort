@@ -13,7 +13,7 @@ defineProps({
 <style scoped lang="scss">
 button {
     padding: .5rem 1rem;
-    font-size: 14px;
+    font-size: 1rem;
     box-shadow: 1px 1px 5px #000000;
     height: 40px;
 
