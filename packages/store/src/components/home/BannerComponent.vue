@@ -62,7 +62,7 @@ const sendWppMessage = () => {
 
 
     .agendar {
-        min-width: 250px;
+        width: 70%;
         position: absolute;
         bottom: 30px;
         left: 50%;

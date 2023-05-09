@@ -87,7 +87,6 @@
                     display: flex;
                     align-items: center;
                     gap: 1rem;
-                    font-size: 1rem;
 
                     @media screen and (min-width: 779px) {
                         font-size: 1.2rem;
