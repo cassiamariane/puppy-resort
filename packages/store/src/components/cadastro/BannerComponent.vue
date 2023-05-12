@@ -1,6 +1,6 @@
 <template>
     <div id="banner">
-        <h1 id="title">Bem Vindo<br> Entre para agendar hospedagem para o seu pet<br> A magia começa aqui !</h1>
+        <h1 id="title">Bem Vindo<br> A magia começa aqui !</h1>
     </div>
 </template>
 

@@ -24,7 +24,7 @@ import Button from '../layout/Button.vue';
     justify-content: center;
     height: 77vh;
     padding: 3rem;
-    font-size: 20px;
+    font-size: 1rem;
     width: 50%;
     form {
         display: flex;
@@ -33,18 +33,18 @@ import Button from '../layout/Button.vue';
         input{
             background-color: #F8F9F9;
             border: none;
-            border-radius: 20rem;
+            border-radius: 10px;
             width: 17rem;
-            height: 3rem;
+            height: 2.5rem;
         }
         #email{
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
         }
         #password{
             margin-bottom: 1rem;
         }
         #entrar{
-            margin-top: 4rem;
+            margin-top: 2rem;
             width: 100%;
             height: 3rem;
             font-size: 20px;
