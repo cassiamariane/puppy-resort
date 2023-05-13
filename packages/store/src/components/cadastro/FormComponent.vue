@@ -16,8 +16,10 @@
             <label for="password_2">Confirme sua senha</label>
             <input type="password" name="password_2" id="password_2">
             <div id="check">
-                <input type="checkbox" name="termos" id="termos">
-                <label for="termos">Aceito os termos de compromisso</label>
+                <div>
+                    <input type="checkbox" name="termos" id="termos">
+                    <label for="termos" id="termos-label">Aceito os termos de compromisso</label>
+                </div>
                 <Button text="Avançar" theme="primary" id="avancar"><img src="@/assets/img/backward.svg"></Button>
             </div>
         </form>
@@ -41,31 +43,33 @@ import Button from '../layout/Button.vue';
     form {
         display: flex;
         flex-direction: column;
-        align-items: center;
         input{
             background-color: #F8F9F9;
             border: none;
             border-radius: 10px;
-            width: 17rem;
+            width: 25rem;
             height: 2.5rem;
         }
         #check{
             display: flex;
-            align-items: flex-start;
+            align-items: center;
+            margin-top: 2rem;
+            div{
+                display:flex;
+                align-items: center;
+                gap:0.5rem;
+            }
         }
         #avancar{
-            margin-top: 2rem;
-            width: 50%;
+            width: 35%;
             height: 3rem;
             font-size: 20px;
         }
         #termos{
-            label{
-                max-width: 30%;
+            width: 1rem;
+            #termos-label{
+                width: 5px;
             }
-        }
-        label{
-            text-align: left;
         }
     }
 }
