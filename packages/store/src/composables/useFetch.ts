@@ -19,7 +19,6 @@ export function useFetch() {
           data.value = result.data  
     } catch (e) {
         console.log(e);
-        error.value = 'Não foi possível concluir seu cadastro. Tente novamente mais tarde.'
     }
 
   }

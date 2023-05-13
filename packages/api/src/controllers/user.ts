@@ -21,9 +21,10 @@ export class UserController {
   }
   async create(req: Request, res: Response) {
     const response = await UserService.createUser(req.body);
+    
     return res
-      .status(response.status)
-      .json({ data: response.data, error: response.error });
+    .status(response.status)
+    .json({ data: response.data, error: response.error });
   }
   async login(req: Request, res: Response) {
     const response = await UserService.login(req.body);

@@ -95,6 +95,7 @@ export default class UserService {
       const userExists = await BaseDatabase.user.findFirst({
         where: { OR: [{ email: user.email }, { cpf: user.cpf }] },
       });
+      
 
       if (userExists) {
         return {
@@ -138,7 +139,9 @@ export default class UserService {
           };
         }
         return {
-          data: token,
+          data: {
+            token,
+          },
           status: 200,
           error: "",
         };
@@ -212,7 +215,9 @@ export default class UserService {
         };
       }
       return {
-        data: token,
+        data: {
+          token,
+        },
         status: 200,
         error: "",
       };
