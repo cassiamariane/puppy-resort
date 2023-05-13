@@ -1,10 +1,12 @@
 import express, { Express,Request, Response } from 'express';
 import userRouter from './routes/user';
+import cors from 'cors';
 
 export default class Server {
     constructor(private app: Express, private port: number) { }
 
     config() {
+        this.app.use(cors());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.get('/api/health', (req: Request, res: Response)=> {
