@@ -1,6 +1,5 @@
 <template>
     <div id="form-container">
-        <p id="login" @click="changeToLogin">Fazer login</p>
         <form>
             <label for="name">Nome completo</label>
             <input type="text" name="name" id="name" v-model="name">
@@ -25,6 +24,7 @@
                         src="@/assets/img/backward.svg"></Button>
             </div>
         </form>
+        <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
     </div>
 </template>
 
@@ -85,16 +85,20 @@ const changeToLogin = () => {
     padding: 3rem;
     font-size: 1rem;
     width: 50%;
-
+    #login{
+        @media screen and (min-width: 779px) {
+            display: none;
+        }
+    }
     form {
         display: flex;
         flex-direction: column;
-
+        
         input {
             background-color: #F8F9F9;
             border: none;
             border-radius: 10px;
-            width: 25rem;
+            max-width: 25rem;
             height: 2.5rem;
         }
 

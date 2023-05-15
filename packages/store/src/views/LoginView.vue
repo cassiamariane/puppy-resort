@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="flex">
-            <BannerComponent text="Seja bem vindo<br> A magia do nosso resort começa aqui !">
+            <BannerComponent :etapa-atual="etapaAtual" @changeToSignup="etapaAtual = 1" @changeToLogin="etapaAtual = 0" text="Seja bem vindo<br> A magia do nosso resort começa aqui !">
             </BannerComponent>
             <LoginFormComponent v-if="etapaAtual == 0" @changeToSignup="etapaAtual = 1"></LoginFormComponent>
             <CadastroFormComponent v-if="etapaAtual == 1" @changeToLogin="etapaAtual = 0"></CadastroFormComponent>
@@ -32,6 +32,6 @@ const etapaAtual = ref(opcoesForm.LOGIN)
 }
 
 .container {
-    padding: 2rem 10rem;
+    padding: 2rem 9rem;
 }
 </style>

@@ -63,7 +63,6 @@ const changeToSignup = () => {
     form {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
 
         input {
             background-color: #F8F9F9;

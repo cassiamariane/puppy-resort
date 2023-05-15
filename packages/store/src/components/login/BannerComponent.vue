@@ -2,15 +2,25 @@
     <div id="banner">
         <img id="img-fundo" src="@/assets/img/paw_print2.svg">
         <h1 id="title" v-html="text"></h1>
-        <Button text="Cadastro" theme="primary" id="button-banner"></Button>
+        <Button text="Cadastre-se" v-if="etapaAtual == 0" @click="changeToSignup" theme="primary" id="button-banner"></Button>
+        <Button text="Faça login" v-if="etapaAtual == 1" @click="changeToLogin" theme="primary" id="button-banner"></Button>
     </div>
 </template>
 
 <script setup lang="ts">
 defineProps({
     text: String,
+    etapaAtual: Number,
 })
 import Button from '../layout/Button.vue';
+const emit = defineEmits(['changeToSignup','changeToLogin'])
+
+const changeToSignup = () => {
+    emit('changeToSignup');
+}
+const changeToLogin = () => {
+    emit('changeToLogin');
+}
 </script>
 
 <style scoped lang="scss">
@@ -44,13 +54,13 @@ import Button from '../layout/Button.vue';
                 font-weight: 500;
                 font-family: 'Digitalt', sans-serif;
                 text-shadow:  1px 2px #000000;
-                max-width: 90%;
+                max-width: 89%;
 
         }
         #button-banner{
             background-color: #E86A33;
             border: 1px solid #fff;
-            width: 35%;
+            width: 40%;
             height: 3rem;
             font-size: 20px;
         }
