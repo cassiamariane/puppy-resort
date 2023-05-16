@@ -29,10 +29,11 @@
             </label>
             <div id="check">
                 <label for="termos">
-                    <input required type="checkbox" name="termos" id="termos">
+                    <input required type="checkbox" name="termos" id="termos" v-model="termos">
                     <span>Eu li e concordo com os termos de uso da plataforma</span>
                 </label>
             </div>
+            <span class="error">{{ error }}</span>
             <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
                 src="@/assets/img/backward.svg"></Button>
                 <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
@@ -54,11 +55,16 @@ const phone = ref('');
 const cpf = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
+const termos = ref(false);
 
 const handleSignup = async () => {
     error.value = '';
     if (password.value != passwordConfirmation.value) {
-        alert('senhas diferentes');
+        error.value = 'As senhas não coincidem.'
+        return;
+    }
+    if (!termos.value) {
+        error.value = 'Aceite os termos de uso para prosseguir.'
         return;
     }
     await signup({
@@ -68,8 +74,8 @@ const handleSignup = async () => {
         cpf: cpf.value,
         password: password.value
     });
-    if (error.value) {
-        console.log(error.value);
+    if (!data.value) {
+        error.value = 'Algo deu errado ao salvar suas informações. Por favor tente novamente mais tarde.'
         return;
     }
     localStorage.setItem('token', data.value.token);
@@ -157,6 +163,10 @@ const changeToLogin = () => {
             font-size: 14px;
             color: #222;
             cursor: pointer;
+        }
+
+        span.error {
+            color: #ff4848;
         }
 
         #avancar {

@@ -3,12 +3,13 @@
         <form>
             <label for="email">
                 <span>E-mail</span>
-                <input type="email" name="email" id="email" v-model="identifier">
+                <input required type="email" name="email" id="email" v-model="identifier">
             </label>
             <label for="password">
                 <span>Senha</span>
-                <input type="password" name="password" id="password" v-model="password">
+                <input required type="password" name="password" id="password" v-model="password">
             </label>
+            <span class="error">{{ error }}</span>
             <Button text="Entrar" theme="primary" id="entrar" @click.prevent="handleLogin"></Button>
             <p id="create" @click="changeToSignup">Não possui conta? <span>Cadastre-se</span></p>
         </form>
@@ -36,8 +37,8 @@ const handleLogin = async () => {
         identifier: identifier.value,
         password: password.value,
     });
-    if (error.value) {
-        console.log(error.value);
+    if (!data.value) {
+        error.value = 'Algo deu errado ao fazer seu login. Por favor tente novamente mais tarde.'
         return;
     }
     localStorage.setItem('token', data.value.token);
@@ -98,6 +99,10 @@ const changeToSignup = () => {
             &:focus {
                 border: 2px solid var(--primary-color);
             }
+        }
+
+        span.error {
+            color: #ff4848;
         }
 
         #entrar {
