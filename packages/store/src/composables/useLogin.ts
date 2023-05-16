@@ -12,7 +12,8 @@ export function useLogin() {
 
   const login = async (user: Auth) => {
     loading.value = true
-    await post('http://localhost:8081/api/user/login', {
+    const api = process.env.BASE_API
+    await post(`${api}/user/login`, {
       identifier: user.identifier,
       password: user.password
     })

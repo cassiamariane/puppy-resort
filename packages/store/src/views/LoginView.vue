@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <BannerComponent :etapa-atual="etapaAtual" @changeToSignup="etapaAtual = 1" @changeToLogin="etapaAtual = 0"
-            text="Seja bem vindo<br> A magia do nosso resort começa aqui !">
+            text="Seja bem-vindo(a)(e)!<br> A magia do nosso resort começa aqui.">
         </BannerComponent>
         <LoginFormComponent v-if="etapaAtual == 0" @changeToSignup="etapaAtual = 1" class="login"></LoginFormComponent>
         <CadastroFormComponent v-if="etapaAtual == 1" @changeToLogin="etapaAtual = 0" class="cadastro"></CadastroFormComponent>
