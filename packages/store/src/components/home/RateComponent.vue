@@ -41,7 +41,7 @@
     padding: 2rem;
 
     @media screen and (min-width: 779px) {
-        padding: 2rem 5rem;
+        padding: 2rem 3rem;
     }
 
     h2 {

@@ -1,30 +1,42 @@
 <template>
     <div id="form-container">
         <form>
-            <label for="name">Nome completo</label>
-            <input type="text" name="name" id="name" v-model="name">
-            <label for="email">E-mail</label>
-            <input type="email" name="email" id="email" v-model="email">
-            <label for="phone">Celular</label>
-            <input type="tel" name="phone" id="phone" v-model="phone">
-            <label for="cpf">CPF</label>
-            <input type="text" name="cpf" id="cpf" v-model="cpf">
-            <label for="dn">Data de Nascimento</label>
-            <input type="date" name="dn" id="dn" v-model="birthday">
-            <label for="password">Senha</label>
-            <input type="password" name="password" id="password" v-model="password">
-            <label for="password_2">Confirme sua senha</label>
-            <input type="password" name="password_2" id="password_2" v-model="passwordConfirmation">
-            <div id="check">
-                <div>
-                    <input type="checkbox" name="termos" id="termos">
-                    <label for="termos">Aceito os termos de compromisso</label>
-                </div>
-                <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
-                        src="@/assets/img/backward.svg"></Button>
+            <label for="name">
+                <span>Nome completo</span>
+                <input required type="text" name="name" id="name" v-model="name">
+            </label>
+            <label for="email">
+                <span>E-mail</span>
+                <input required type="email" name="email" id="email" v-model="email">
+            </label>
+            <div class="flex">
+                <label for="phone">
+                    <span>Celular</span>
+                    <input required type="tel" name="phone" id="phone" v-model="phone">
+                </label>
+                <label for="cpf">
+                    <span>CPF</span>
+                    <input required type="text" name="cpf" id="cpf" v-model="cpf">
+                </label>
             </div>
+            <label for="password">
+                <span>Senha</span>
+                <input required type="password" name="password" id="password" v-model="password">
+            </label>
+            <label for="password_2">
+                <span>Confirme sua senha</span>
+                <input required type="password" name="password_2" id="password_2" v-model="passwordConfirmation">
+            </label>
+            <div id="check">
+                <label for="termos">
+                    <input required type="checkbox" name="termos" id="termos">
+                    <span>Eu li e concordo com os termos de uso da plataforma</span>
+                </label>
+            </div>
+            <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
+                src="@/assets/img/backward.svg"></Button>
+                <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
         </form>
-        <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
     </div>
 </template>
 
@@ -39,7 +51,6 @@ const { sendWppMessage } = useWhatsappMessage();
 const name = ref('');
 const email = ref('');
 const phone = ref('');
-const birthday = ref('');
 const cpf = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
@@ -55,7 +66,6 @@ const handleSignup = async () => {
         email: email.value,
         phone: phone.value,
         cpf: cpf.value,
-        birthday: birthday.value,
         password: password.value
     });
     if (error.value) {
@@ -82,47 +92,76 @@ const changeToLogin = () => {
     align-items: center;
     justify-content: center;
     height: 77vh;
-    padding: 3rem;
     font-size: 1rem;
     width: 50%;
-    #login{
-        @media screen and (min-width: 779px) {
-            display: none;
-        }
+    margin: 3rem 0;
+
+    @media screen and (min-width: 779px) {
+        padding: 0 3rem;
     }
+
     form {
         display: flex;
         flex-direction: column;
-        
+        width: 100%;
+        gap: 1rem;
+        margin-bottom: 2rem;
+
+        .flex {
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+
+            @media screen and (min-width: 779px) {
+                flex-direction: row;
+                gap: 1.5rem;
+            }
+
+            label {
+                flex: 1;
+            }
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
         input {
             background-color: #F8F9F9;
             border: none;
             border-radius: 10px;
-            max-width: 25rem;
             height: 2.5rem;
+            padding: 0 1rem;
+            color: #222;
+            font-size: 1rem;
+            outline: none;
+
+            &:focus {
+                border: 2px solid var(--primary-color);
+            }
         }
 
         #check {
-            display: flex;
-            align-items: center;
-            margin-top: 2rem;
-            div{
-                display:flex;
+            label {
+                display: flex;
                 align-items: center;
-                gap:0.5rem;
+                flex-direction: row;
+                font-size: 14px;
+                gap: 1rem;
             }
+        }
+        
+        #login {
+            font-size: 14px;
+            color: #222;
+            cursor: pointer;
         }
 
-        #avancar{
-            width: 35%;
+        #avancar {
             height: 3rem;
             font-size: 20px;
-        }
-        #termos{
-            width: 1rem;
-            #termos-label{
-                width: 5px;
-            }
         }
     }
 }

@@ -1,11 +1,10 @@
 <template>
     <div class="container">
-        <div class="flex">
-            <BannerComponent :etapa-atual="etapaAtual" @changeToSignup="etapaAtual = 1" @changeToLogin="etapaAtual = 0" text="Seja bem vindo<br> A magia do nosso resort começa aqui !">
-            </BannerComponent>
-            <LoginFormComponent v-if="etapaAtual == 0" @changeToSignup="etapaAtual = 1"></LoginFormComponent>
-            <CadastroFormComponent v-if="etapaAtual == 1" @changeToLogin="etapaAtual = 0"></CadastroFormComponent>
-        </div>
+        <BannerComponent :etapa-atual="etapaAtual" @changeToSignup="etapaAtual = 1" @changeToLogin="etapaAtual = 0"
+            text="Seja bem vindo<br> A magia do nosso resort começa aqui !">
+        </BannerComponent>
+        <LoginFormComponent v-if="etapaAtual == 0" @changeToSignup="etapaAtual = 1" class="login"></LoginFormComponent>
+        <CadastroFormComponent v-if="etapaAtual == 1" @changeToLogin="etapaAtual = 0" class="cadastro"></CadastroFormComponent>
     </div>
 </template>
 
@@ -25,13 +24,19 @@ const etapaAtual = ref(opcoesForm.LOGIN)
 </script>
 
 <style scoped lang="scss">
-.flex {
+.container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-}
+    margin: 2rem 3rem 20rem;
+    justify-content: center;
 
-.container {
-    padding: 2rem 9rem;
+    @media screen and (min-width: 998px) {
+        justify-content: space-around;
+        margin: 2rem 3rem;
+    }
+
+    .login, .cadastro {
+        flex: 3;
+    }
 }
 </style>

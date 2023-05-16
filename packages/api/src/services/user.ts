@@ -11,7 +11,6 @@ export default class UserService {
       const users = await BaseDatabase.user.findMany({
         select: {
           name: true,
-          birthday: true,
           cpf: true,
           phone: true,
           email: true,
@@ -50,7 +49,6 @@ export default class UserService {
         where: { id },
         select: {
           name: true,
-          birthday: true,
           cpf: true,
           phone: true,
           email: true,
@@ -81,8 +79,7 @@ export default class UserService {
         !user.password ||
         !user.cpf ||
         !user.phone ||
-        !user.name ||
-        !user.birthday
+        !user.name
       ) {
         return {
           data: null,
@@ -109,7 +106,6 @@ export default class UserService {
       const salt = await bcrypt.genSalt(Number(process.env.SALT) || 10);
       const hash = await bcrypt.hash(user.password, salt);
       user.password = hash;
-      user.birthday = new Date(user.birthday);
 
       if (!user.admin) {
         user.admin = false;

@@ -2,7 +2,8 @@
     <div id="banner">
         <img id="img-fundo" src="@/assets/img/paw_print2.svg">
         <h1 id="title" v-html="text"></h1>
-        <Button text="Cadastre-se" v-if="etapaAtual == 0" @click="changeToSignup" theme="primary" id="button-banner"></Button>
+        <Button text="Cadastre-se" v-if="etapaAtual == 0" @click="changeToSignup" theme="primary"
+            id="button-banner"></Button>
         <Button text="Faça login" v-if="etapaAtual == 1" @click="changeToLogin" theme="primary" id="button-banner"></Button>
     </div>
 </template>
@@ -13,7 +14,7 @@ defineProps({
     etapaAtual: Number,
 })
 import Button from '../layout/Button.vue';
-const emit = defineEmits(['changeToSignup','changeToLogin'])
+const emit = defineEmits(['changeToSignup', 'changeToLogin'])
 
 const changeToSignup = () => {
     emit('changeToSignup');
@@ -31,38 +32,42 @@ const changeToLogin = () => {
 
 #banner {
     background: #E86A33;
-        max-width: 50%;
-        height: 77vh;
-        @media screen and (max-width: 1240px) {
-            display: none;
-        }
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding:5rem;
-        border-radius: 10px;
-        justify-content: center;
-        gap:3rem;
-        img{
-            max-width: 22rem;
-            position: absolute;
-            opacity: 0.3;
-        }
-        h1{
-                font-size: 2.5rem;
-                color: #ffffff;
-                font-weight: 500;
-                font-family: 'Digitalt', sans-serif;
-                text-shadow:  1px 2px #000000;
-                max-width: 89%;
+    max-width: 50%;
+    height: 77vh;
+    display: none;
 
-        }
-        #button-banner{
-            background-color: #E86A33;
-            border: 1px solid #fff;
-            width: 40%;
-            height: 3rem;
-            font-size: 20px;
-        }
-}
-</style>
+    @media screen and (min-width: 998px) {
+        display: flex;
+    }
+
+    align-items: center;
+    flex-direction: column;
+    padding:5rem;
+    border-radius: 10px;
+    justify-content: center;
+    gap:3rem;
+
+    img {
+        max-width: 22rem;
+        position: absolute;
+        opacity: 0.3;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        color: #ffffff;
+        font-weight: 500;
+        font-family: 'Digitalt', sans-serif;
+        text-shadow: 1px 2px #000000;
+        max-width: 89%;
+
+    }
+
+    #button-banner {
+        background-color: #E86A33;
+        border: 1px solid #fff;
+        min-width: 40%;
+        height: 3rem;
+        font-size: 20px;
+    }
+}</style>

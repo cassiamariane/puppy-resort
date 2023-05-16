@@ -1,13 +1,16 @@
 <template>
     <div id="form-container">
         <form>
-            <label for="email">E-mail</label>
-            <input type="email" name="email" id="email" v-model="identifier">
-            <label for="password">Senha</label>
-            <input type="password" name="password" id="password" v-model="password">
-            <p id="reset">Esqueceu a senha?</p>
-            <p id="create">Não possui conta? <span @click="changeToSignup">Cadastre-se</span></p>
+            <label for="email">
+                <span>E-mail</span>
+                <input type="email" name="email" id="email" v-model="identifier">
+            </label>
+            <label for="password">
+                <span>Senha</span>
+                <input type="password" name="password" id="password" v-model="password">
+            </label>
             <Button text="Entrar" theme="primary" id="entrar" @click.prevent="handleLogin"></Button>
+            <p id="create" @click="changeToSignup">Não possui conta? <span>Cadastre-se</span></p>
         </form>
     </div>
 </template>
@@ -54,37 +57,59 @@ const changeToSignup = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 77vh;
-    padding: 3rem;
     font-size: 1rem;
     width: 50%;
+    padding: 4rem 0 0;
+    
+    @media screen and (min-width: 779px) {
+        padding: 6rem 6rem 0;
+    }
 
     form {
         display: flex;
         flex-direction: column;
+        width: 100%;
+        gap: 2rem;
+
+        .flex {
+            display: flex;
+            gap: 1.5rem;
+            label {
+                flex: 1;
+            }
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
 
         input {
             background-color: #F8F9F9;
             border: none;
             border-radius: 10px;
-            width: 17rem;
             height: 2.5rem;
-        }
+            padding: 0 1rem;
+            color: #222;
+            font-size: 1rem;
+            outline: none;
 
-        #email {
-            margin-bottom: 2rem;
-        }
-
-        #password {
-            margin-bottom: 1rem;
+            &:focus {
+                border: 2px solid var(--primary-color);
+            }
         }
 
         #entrar {
-            margin-top: 2rem;
-            width: 100%;
+            margin-top: 1rem;
             height: 3rem;
             font-size: 20px;
+        }
+
+        #create {
+            font-size: 14px;
+            color: #222;
+            cursor: pointer;
         }
     }
 }</style>

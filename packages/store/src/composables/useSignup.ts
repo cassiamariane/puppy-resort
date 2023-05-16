@@ -6,7 +6,6 @@ type User = {
   email: string
   phone: string
   cpf: string
-  birthday: string
   password: string
 }
 
@@ -18,7 +17,6 @@ export function useSignup() {
     loading.value = true
     await post('http://localhost:8081/api/user/create', {
       name: user.name,
-      birthday: user.birthday,
       phone: user.phone,
       email: user.email,
       password: user.password,
