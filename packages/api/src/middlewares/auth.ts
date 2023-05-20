@@ -17,8 +17,8 @@ export async function authenticate(req: Request, res: Response, next: any) {
 
   try {
     const data = jwt.verify(token, process.env.TOKEN_SECRET ?? "foo");
-    const {id, email, nome, admin } = data as any;
-    req.user = { id, email, nome, admin };
+    const {id, email, name, admin } = data as any;
+    req.user = { id, email, name, admin };
     return next();
     
   } catch (error) {

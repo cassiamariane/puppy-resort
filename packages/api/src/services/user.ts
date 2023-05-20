@@ -9,13 +9,7 @@ export default class UserService {
   static async findAll() {
     try {
       const users = await BaseDatabase.user.findMany({
-        select: {
-          name: true,
-          cpf: true,
-          phone: true,
-          email: true,
-          admin: true,
-        }
+        select: { id: true, name: true, cpf: true, phone: true, email: true, admin: true },
       });
       return {
         data: users,
@@ -27,7 +21,7 @@ export default class UserService {
       return {
         data: null,
         status: 500,
-        error: "Houve um problema ao buscar o usuário.",
+        error: "Houve um problema ao encontrar os usuários.",
       };
     }
   }
@@ -47,13 +41,7 @@ export default class UserService {
       // Busca o usuário no banco
       const user = await BaseDatabase.user.findUnique({
         where: { id },
-        select: {
-          name: true,
-          cpf: true,
-          phone: true,
-          email: true,
-          admin: true,
-        }
+        select: { id: true, name: true, cpf: true, phone: true, email: true, admin: true },
       });
       return {
         data: user,
@@ -65,7 +53,7 @@ export default class UserService {
       return {
         data: null,
         status: 500,
-        error: "Houve um problema ao buscar o usuário.",
+        error: "Houve um problema ao encontrar o usuário.",
       };
     }
   }
@@ -74,13 +62,7 @@ export default class UserService {
   static async createUser(user: User) {
     try {
       // verifica se todos os dados foram passados
-      if (
-        !user.email ||
-        !user.password ||
-        !user.cpf ||
-        !user.phone ||
-        !user.name
-      ) {
+      if ( !user.email || !user.password || !user.cpf || !user.phone || !user.name ) {
         return {
           data: null,
           status: 400,
@@ -92,13 +74,9 @@ export default class UserService {
       const userExists = await BaseDatabase.user.findFirst({
         where: { OR: [{ email: user.email }, { cpf: user.cpf }] },
       });
-      
 
       if (userExists) {
-        return {
-          data: null,
-          status: 400,
-          error: "Usuário já cadastrado.",
+        return {data: null, status: 400, error: "Usuário já cadastrado.",
         };
       }
 
@@ -116,31 +94,7 @@ export default class UserService {
       // Cria o usuário no banco
       const userCreated = await BaseDatabase.user.create({ data: user });
       if (userCreated.id) {
-        // Salva as informações dele no token
-        const token = jwt.sign(
-          {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            admin: user.admin,
-          },
-          UserService.secret,
-          { expiresIn: "7d" }
-        );
-        if (!token) {
-          return {
-            data: null,
-            status: 401,
-            error: "Não autorizado",
-          };
-        }
-        return {
-          data: {
-            token,
-          },
-          status: 200,
-          error: "",
-        };
+        return this.generateToken( userCreated.id, user.email, user.name, user.admin);
       }
       return {
         data: null,
@@ -191,32 +145,9 @@ export default class UserService {
           error: "Senha incorreta.",
         };
       }
-      
+
       // Salva as informações dele no token
-      const token = jwt.sign(
-        {
-          id: userExists.id,
-          email: userExists.email,
-          name: userExists.name,
-          admin: userExists.admin,
-        },
-        UserService.secret,
-        { expiresIn: "7d" }
-      );
-      if (!token) {
-        return {
-          data: null,
-          status: 401,
-          error: "Não autorizado",
-        };
-      }
-      return {
-        data: {
-          token,
-        },
-        status: 200,
-        error: "",
-      };
+      return this.generateToken( userExists.id, userExists.email, userExists.name, userExists.admin);
     } catch (error) {
       console.log(error);
       return {
@@ -225,5 +156,23 @@ export default class UserService {
         error: "Houve um problema ao autenticar o usuário.",
       };
     }
+  }
+
+  private static generateToken( id: number, email: string, name: string, admin: boolean) {
+    const token = jwt.sign( {id, email, name, admin,}, UserService.secret, { expiresIn: "7d" });
+    if (!token) {
+      return {
+        data: null,
+        status: 401,
+        error: "Não autorizado",
+      };
+    }
+    return {
+      data: {
+        token,
+      },
+      status: 200,
+      error: "",
+    };
   }
 }

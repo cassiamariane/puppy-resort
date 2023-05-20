@@ -37,7 +37,6 @@ model Pet {
   name        String    @db.VarChar(255)
   species     String    @db.VarChar(255)
   breed       String    @db.VarChar(255)
-  color       String    @db.VarChar(255)
   description String    @db.VarChar(255)
   gender      Gender
   age         Int

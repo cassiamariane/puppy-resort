@@ -1,5 +1,6 @@
 import express, { Express,Request, Response } from 'express';
 import userRouter from './routes/user';
+import petRouter from './routes/pet';
 import cors from 'cors';
 
 export default class Server {
@@ -13,6 +14,7 @@ export default class Server {
             res.status(200).send({ok: true})
         })
         this.app.use('/api/user', userRouter);
+        this.app.use('/api/pet', petRouter);
     }
 
     run() {
