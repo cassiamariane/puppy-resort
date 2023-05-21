@@ -3,8 +3,14 @@
         <img src="@/assets/img/Logo.svg" id="logo" @click="router.push('/')">
         <div class="button-container">
             <Button text="Agendar hospedagem" theme="primary" id="agendar" @click="handleClickButton" />
-            <button type="button" id="menu-btn" title="Em breve"><img src="@/assets/img/icons/hamburger.png"
+            <div class="dropdown">
+                <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburger.png"
                     id="menu-strokes"><img src="@/assets/img/icons/user.png" id="user"></button>
+                <div class="dropdown-content">
+                  <a href="#"><img src="@/assets/img/icons/docs.png">Política e Privacidade</a>
+                  <a href="/login"><img src="@/assets/img/icons/enter.png">Login</a>
+                </div>
+              </div>
         </div>
     </header>
 </template>
@@ -82,6 +88,36 @@ header {
             #menu-strokes {
                 max-width: 0.7rem;
             }
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                a {
+                    color: black;
+                    padding: 12px 16px;
+                    text-decoration: none;
+                    display: block;
+                    img{
+                        max-width: 1rem;
+                        margin-right: 2px;
+                    }
+                }
+                a:hover {background-color: #f1f1f1}
+            }
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover #menu-btn {
+            background-color: #f1f1f1;
         }
     }
 }
