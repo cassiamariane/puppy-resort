@@ -1,6 +1,18 @@
 import { Request, Response } from "express";
 import UserService from "../services/user";
 export class UserController {
+  async getMe(req: Request, res: Response) {
+      const response = await UserService.getMe(Number(req.user?.id));
+      return res
+        .status(response.status)
+        .json({ data: response.data, error: response.error });
+  }
+  async getMyPets(req: Request, res: Response) {
+    const response = await UserService.getMyPets(Number(req.user?.id));
+    return res
+      .status(response.status)
+      .json({ data: response.data, error: response.error });
+}
   async findById(req: Request, res: Response) {
     if (req.user?.admin) {
       const response = await UserService.findById(Number(req.params.id));
