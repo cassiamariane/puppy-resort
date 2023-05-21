@@ -16,7 +16,7 @@ export function useSignup() {
   const signup = async (user: User) => {
     loading.value = true
     const api = process.env.BASE_API
-    await post(`${api}/user/create`, {
+    await post(`${api}/user`, {
       name: user.name,
       phone: user.phone,
       email: user.email,
