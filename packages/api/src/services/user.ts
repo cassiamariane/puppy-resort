@@ -5,6 +5,68 @@ import jwt from "jsonwebtoken";
 export default class UserService {
   private static secret = process.env.TOKEN_SECRET ?? "foo";
 
+  static async getMe(id: number) {
+    try {
+      // Verifica se o id foi passado e se é numérico
+      if (!id || typeof id != "number") {
+        return {
+          data: null,
+          status: 400,
+          error: "ID inválido ou inexistente.",
+        };
+      }
+
+      // Busca o usuário no banco
+      const user = await BaseDatabase.user.findUnique({
+        where: { id },
+        select: { id: true, name: true, cpf: true, phone: true, email: true},
+      });
+      return {
+        data: user,
+        status: 200,
+        error: "",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao encontrar o usuário.",
+      };
+    }
+  }
+
+  static async getMyPets(userId: number) {
+    try {
+      // Verifica se o id foi passado e se é numérico
+      if (!userId || typeof userId != "number") {
+        return {
+          data: null,
+          status: 400,
+          error: "ID inválido ou inexistente.",
+        };
+      }
+
+      // Busca o usuário no banco
+      const user = await BaseDatabase.pet.findMany({
+        where: { userId },
+        select: { id: true, name: true, breed: true, species: true, description: true, age: true, gender: true},
+      });
+      return {
+        data: user,
+        status: 200,
+        error: "",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao encontrar o usuário.",
+      };
+    }
+  }
+
   // Busca todos
   static async findAll() {
     try {
