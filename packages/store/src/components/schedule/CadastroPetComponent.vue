@@ -24,8 +24,7 @@
                 <span>Idade</span>
                 <input required type="number" name="idade" id="idade" v-model="idade">
             </label>
-            <Button text="Finalizar" theme="primary" id="finalizar"><img
-                src="@/assets/img/backward.svg"></Button>
+            <Button text="Finalizar" theme="primary" id="finalizar"></Button>
         </form>
     </div>
 </template>
@@ -48,7 +47,6 @@
     justify-content: center;
     height: 77vh;
     font-size: 1rem;
-    width: 50%;
     margin: 3rem 0;
 
     @media screen and (min-width: 779px) {
@@ -118,9 +116,10 @@
             color: #ff4848;
         }
 
-        #avancar {
+        #finalizar {
             height: 3rem;
             font-size: 20px;
+            width: 100%;
         }
     }
 }
