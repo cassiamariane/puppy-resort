@@ -18,15 +18,13 @@
 <script setup lang="ts">
 import router from '@/router';
 import Button from '../layout/Button.vue';
-import { useWhatsappMessage } from '@/composables/useWhatsappMessage';
-const {sendWppMessage} = useWhatsappMessage()
 
 const handleClickButton = () => {
     if (!isAuthenticated()) {
         router.push('/login');
         return;
     }
-    sendWppMessage()
+    router.push('/agendamento');
 }
 
 const isAuthenticated = () => {

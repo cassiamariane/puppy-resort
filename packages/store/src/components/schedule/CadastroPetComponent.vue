@@ -1,64 +1,79 @@
 <template>
     <div id="form-container">
+        <h2>Antes de tudo, vamos cadastrar seu pet</h2>
         <form>
             <label for="namepet">
                 <span>Nome do Pet</span>
-                <input required type="text" name="namepet" id="namepet" v-model="namepet">
+                <input required type="text" name="namepet" id="namepet" v-model="namepet" autofocus>
             </label>
-            <label for="especie">
-                <span>Espécie</span>
-                <select name="especie" id="especie" v-model="especie">
-                    <option value="dog">Cachorro</option>
-                    <option value="cat">Gato</option>
-                </select>
-            </label>
-            <label for="genero">
-                <span>Gênero</span>
-                <input required type="text" name="genero" id="genero" v-model="genero">
-            </label>
+            <div class="especie-genero">
+                <label for="especie">
+                    <span>Espécie</span>
+                    <select name="especie" id="especie" v-model="especie">
+                        <option value="dog">Cão</option>
+                        <option value="cat">Gato</option>
+                    </select>
+                </label>
+                <label for="genero">
+                    <span>Gênero</span>
+                    <select name="genero" id="genero" v-model="genero">
+                        <option value="dog">M</option>
+                        <option value="cat">F</option>
+                    </select>
+                </label>
+            </div>
             <label for="raca">
                 <span>Raça</span>
                 <input required type="text" name="raca" id="raca" v-model="raca">
             </label>
             <label for="idade">
                 <span>Idade</span>
-                <input required type="number" name="idade" id="idade" v-model="idade">
+                <input required type="number" min="0" name="idade" id="idade" v-model="idade">
             </label>
-            <Button text="Finalizar" theme="primary" id="finalizar"></Button>
+            <label for="descricao">
+                <span>Breve descrição do seu pet</span>
+                <textarea required rows="5" name="descricao" id="descricao" v-model="idade"></textarea>
+            </label>
+
+            <!-- faz um @click.prevent=funcao e essa funcao chama um composable pra cadastrar o pet, qualquer duvida me avisa -->
+            <Button text="Finalizar" theme="primary" id="finalizar" />
         </form>
     </div>
 </template>
 
 <script setup lang="ts">
-    import Button from '../layout/Button.vue';
-    import { ref } from 'vue';
-    const namepet = ref('');
-    const especie = ref('');
-    const genero = ref('');
-    const raca = ref('');
-    const idade = ref('');
+import Button from '../layout/Button.vue';
+import { ref } from 'vue';
+const namepet = ref('');
+const especie = ref('');
+const genero = ref('');
+const raca = ref('');
+const idade = ref('');
 </script>
 
 <style scoped lang="scss">
 #form-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    height: 77vh;
     font-size: 1rem;
-    margin: 3rem 0;
+    padding: 2rem;
+    gap: 2rem;
 
-    @media screen and (min-width: 779px) {
-        padding: 0 3rem;
+    @media screen and (min-width: 998px) {
+        min-width: 100%;
+    }
+
+    h2 {
+        color: var(--primary-color);
     }
 
     form {
         display: flex;
         flex-direction: column;
         width: 100%;
-        gap: 1rem;
-        margin-bottom: 2rem;
+        gap: 1.5rem;
 
         .flex {
             display: flex;
@@ -75,13 +90,21 @@
             }
         }
 
+        .especie-genero {
+            display: flex;
+            gap: 1rem;
+        }
+
         label {
             display: flex;
             flex-direction: column;
             gap: .5rem;
+            width: 100%;
         }
 
-        input, select {
+        input,
+        select,
+        textarea {
             background-color: #F8F9F9;
             border: none;
             border-radius: 10px;
@@ -96,6 +119,13 @@
             }
         }
 
+        textarea {
+            height: initial;
+            padding: 10px;
+            resize: none;
+            font-family: Roboto, sans-serif;
+        }
+
         #check {
             label {
                 display: flex;
@@ -105,7 +135,7 @@
                 gap: 1rem;
             }
         }
-        
+
         #login {
             font-size: 14px;
             color: #222;

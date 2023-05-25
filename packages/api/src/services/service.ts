@@ -28,16 +28,31 @@ export default class ServiceService {
             roomNumber: room.number,
             finished: false,
             endDate: {
-              gt: new Date(),
+              gt: new Date(new Date().setHours(0, 0, 0, 0)),
             },
           },
         });
 
+        let notAvailableAt = [];
+
+        for (let service of services) {
+          const start = service.startDate;
+          const end = service.endDate;
+          let dia = new Date(start);
+
+          while (dia.getTime() !== end.getTime()) {
+            notAvailableAt.push(new Date(dia));
+            dia = new Date(dia.getTime() + 24 * 60 * 60 * 1000);
+          }
+        }
+        
+
         unavailability.push({
           room: room.number,
-          notAvailableAt: services,
+          notAvailableAt,
         });
       }
+      
 
       return {
         data: unavailability,
@@ -80,13 +95,15 @@ export default class ServiceService {
 
     if (
       service.endDate <= service.startDate ||
-      service.startDate < new Date() ||
-      service.endDate < new Date()
+      service.startDate.setHours(0, 0, 0, 0) <
+        new Date().setHours(0, 0, 0, 0) ||
+      service.endDate.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
     ) {
       return {
         data: null,
         status: 400,
-        error: "A data de fim deve ser pelo menos um dia maior que a data de início.",
+        error:
+          "A data de fim deve ser pelo menos um dia maior que a data de início.",
       };
     }
     try {
@@ -125,6 +142,7 @@ export default class ServiceService {
           ],
         },
       });
+      
 
       if (currentServices.length) {
         return {

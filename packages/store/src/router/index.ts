@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import useLocalStorage from '@/composables/useLocalStorage';
+
+const {getFromLocalStorage} = useLocalStorage();
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,8 +12,8 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue'),
     },
     {
-      path: '/payment',
-      name: 'payment',
+      path: '/pagamento',
+      name: 'pagamento',
       component: () => import('../views/PaymentView.vue')
     },
     {
@@ -19,16 +22,27 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue'),
     },
     {
-      path: '/schedule',
-      name: 'schedule',
-      component: () => import('../views/ScheduleView.vue')
+      path: '/agendamento',
+      name: 'agendamento',
+      component: () => import('../views/ScheduleView.vue'),
     },
     {
-      path: '/profile',
-      name: 'profile',
+      path: '/perfil',
+      name: 'perfil',
       component: () => import('../views/ProfileView.vue')
     },
   ]
+})
+
+const isAuthenticated = () => {
+  return getFromLocalStorage('token');
+}
+
+router.beforeEach(async (to, from, next) => {
+  if (!isAuthenticated() && to.name !== 'login' && to.name !== 'home') {
+    return next('login')
+  }
+  return next();
 })
 
 export default router

@@ -19,11 +19,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Button from '../layout/Button.vue';
+import router from '@/router';
 
 import { useLogin } from '@/composables/useLogin';
-import { useWhatsappMessage } from '@/composables/useWhatsappMessage';
-const { data, error, loading, login } = useLogin();
-const { sendWppMessage } = useWhatsappMessage();
+const { data, error, login } = useLogin();
+
+import { useUserStore } from '@/stores/UserStore';
+const user = useUserStore();
+
+import useLocalStorage from '@/composables/useLocalStorage';
+const {saveToLocalStorage} = useLocalStorage();
 
 const identifier = ref('');
 const password = ref('');
@@ -38,12 +43,14 @@ const handleLogin = async () => {
         password: password.value,
     });
     if (!data.value) {
-        error.value = 'Algo deu errado ao fazer seu login. Por favor tente novamente mais tarde.'
         return;
     }
-    localStorage.setItem('token', data.value.token);
-    sendWppMessage();
-    return;
+    saveToLocalStorage('token', data.value.token)
+    saveToLocalStorage('name', data.value.name)
+    saveToLocalStorage('email', data.value.email)
+    saveToLocalStorage('admin', data.value.admin)
+    user.setUser(data.value)
+    return router.push('agendamento')
 }
 
 const emit = defineEmits(['changeToSignup'])

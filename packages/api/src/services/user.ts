@@ -232,6 +232,9 @@ export default class UserService {
     return {
       data: {
         token,
+        email,
+        name,
+        admin
       },
       status: 200,
       error: "",
