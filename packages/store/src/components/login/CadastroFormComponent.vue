@@ -1,5 +1,5 @@
 <template>
-    <div id="form-container">
+    <div class="container">
         <form>
             <label for="name">
                 <span>Nome completo</span>
@@ -35,8 +35,8 @@
             </div>
             <span class="error">{{ error }}</span>
             <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
-                src="@/assets/img/backward.svg"></Button>
-                <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
+                    src="@/assets/img/backward.svg"></Button>
+            <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
         </form>
     </div>
 </template>
@@ -52,7 +52,7 @@ import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
 
 import useLocalStorage from '@/composables/useLocalStorage';
-const {saveToLocalStorage} = useLocalStorage();
+const { saveToLocalStorage } = useLocalStorage();
 
 const name = ref('');
 const email = ref('');
@@ -99,7 +99,7 @@ const changeToLogin = () => {
 </script>
 
 <style scoped lang="scss">
-#form-container {
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -139,37 +139,29 @@ const changeToLogin = () => {
             display: flex;
             flex-direction: column;
             gap: .5rem;
-        }
 
-        input {
-            background-color: #F8F9F9;
-            border: none;
-            border-radius: 10px;
-            height: 2.5rem;
-            padding: 0 1rem;
-            color: #222;
-            font-size: 1rem;
-            outline: none;
+            input {
+                background-color: #F8F9F9;
+                border: none;
+                border-radius: 10px;
+                height: 2.5rem;
+                padding: 0 1rem;
+                color: #222;
+                font-size: 1rem;
+                outline: none;
 
-            &:focus {
-                border: 2px solid var(--primary-color);
+                &:focus {
+                    border: 2px solid var(--primary-color);
+                }
             }
         }
 
-        #check {
-            label {
-                display: flex;
-                align-items: center;
-                flex-direction: row;
-                font-size: 14px;
-                gap: 1rem;
-            }
-        }
-        
-        #login {
+        #check>label {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
             font-size: 14px;
-            color: #222;
-            cursor: pointer;
+            gap: 1rem;
         }
 
         span.error {
@@ -179,6 +171,12 @@ const changeToLogin = () => {
         #avancar {
             height: 3rem;
             font-size: 20px;
+        }
+
+        p#login {
+            font-size: 14px;
+            color: #222;
+            cursor: pointer;
         }
     }
 }

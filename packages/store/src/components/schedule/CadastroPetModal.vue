@@ -21,8 +21,8 @@
                         <label for="genero">
                             <span>Gênero</span>
                             <select name="genero" id="genero" v-model="gender">
-                                <option value="dog">M</option>
-                                <option value="cat">F</option>
+                                <option value="M">M</option>
+                                <option value="F">F</option>
                             </select>
                         </label>
                     </div>
@@ -38,9 +38,9 @@
                         <span>Breve descrição do seu pet</span>
                         <textarea required rows="5" name="descricao" id="descricao" v-model="description"></textarea>
                     </label>
-                    <span>{{error}}</span>
+                    <span class="error">{{error}}</span>
                     <!-- faz um @click.prevent=funcao e essa funcao chama um composable pra cadastrar o pet, qualquer duvida me avisa -->
-                    <Button text="Finalizar" theme="primary" id="finalizar" />
+                    <Button @click.prevent=cadastraPet text="Finalizar" theme="primary" id="finalizar" />
                 </form>
             </div>
         </div>
@@ -52,6 +52,7 @@ import Button from '../layout/Button.vue';
 import { ref } from 'vue';
 import { usePet } from '@/composables/usePet'
 const { createPet, data, error } = usePet();
+import router from '@/router';
 
 const name = ref('');
 const species = ref('');
@@ -60,7 +61,7 @@ const breed = ref('');
 const age = ref(0);
 const description = ref('');
 
-const emit = defineEmits(['fechaModal'])
+defineEmits(['fechaModal'])
 
 async function cadastraPet() {
     await createPet({
@@ -73,7 +74,7 @@ async function cadastraPet() {
     })
 
     if(data.value){
-        emit('fechaModal')
+        router.go(0);
         return
     }
 }

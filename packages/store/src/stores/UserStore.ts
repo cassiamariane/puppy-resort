@@ -15,6 +15,20 @@ export const useUserStore = defineStore('user', {
     actions: {
         setUser(user: any) {
             this.user = user;
+        },
+        logout() {
+            this.user = {
+                token: '',
+                name: '',
+                email: '',
+                admin: false,
+            }
+        }
+    },
+
+    getters: {
+        isAuthenticated(): boolean {
+            return !!this.user.token;
         }
     }
 })

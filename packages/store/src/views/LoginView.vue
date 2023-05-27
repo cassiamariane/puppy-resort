@@ -3,8 +3,8 @@
         <BannerComponent :etapa-atual="etapaAtual" @changeToSignup="etapaAtual = 1" @changeToLogin="etapaAtual = 0"
             text="Seja bem-vindo(a)(e)!<br> A magia do nosso resort começa aqui.">
         </BannerComponent>
-        <LoginFormComponent v-if="etapaAtual == 0" @changeToSignup="etapaAtual = 1" class="login"></LoginFormComponent>
-        <CadastroFormComponent v-if="etapaAtual == 1" @changeToLogin="etapaAtual = 0" class="cadastro"></CadastroFormComponent>
+        <LoginFormComponent v-if="etapaAtual == 0" @changeToSignup="etapaAtual = 1" id="login"></LoginFormComponent>
+        <CadastroFormComponent v-if="etapaAtual == 1" @changeToLogin="etapaAtual = 0" id="cadastro"></CadastroFormComponent>
     </div>
 </template>
 
@@ -35,7 +35,7 @@ const etapaAtual = ref(opcoesForm.LOGIN)
         margin: 2rem 3rem;
     }
 
-    .login, .cadastro {
+    #login, #cadastro {
         flex: 3;
     }
 }

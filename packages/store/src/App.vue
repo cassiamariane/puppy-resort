@@ -9,6 +9,9 @@ const user = useUserStore();
 import useLocalStorage from '@/composables/useLocalStorage';
 const {getFromLocalStorage} = useLocalStorage();
 
+import { storeToRefs } from 'pinia';
+const {isAuthenticated} = storeToRefs(user);
+
 const name = getFromLocalStorage('name')
 const token = getFromLocalStorage('token')
 const email = getFromLocalStorage('email')
@@ -24,7 +27,7 @@ user.setUser({
 </script>
 
 <template>
-  <TheHeader class="header" />
+  <TheHeader class="header" :isAuthenticated="isAuthenticated"/>
   <RouterView />
   <TheFooter />
 </template>

@@ -75,11 +75,17 @@ const roomNumber = ref(0);
 
 watch(checkIn, () => {
    checkOut.value = '';
+   error.value = '';
+})
+
+watch(checkOut, () => {
+   error.value = '';
 })
 
 watch(roomNumber, () => {
    checkIn.value = '';
    checkOut.value = '';
+   error.value = ''; 
 })
 
 const fechaModal = () => {
@@ -144,7 +150,7 @@ const datasHabilitadasParaCheckIn = computed(() => {
    const diasProximos = [];
 
    //odeio usar data em js ODEIOOOOOOO
-   let i = 0;
+   let i = 1;
    while (diasProximos.length < 30) {
       const data = new Date(hoje.getTime() + i * 24 * 60 * 60 * 1000);
       data.setUTCHours(0, 0, 0, 0);

@@ -4,13 +4,16 @@
         <div class="button-container">
             <Button text="Agendar hospedagem" theme="primary" id="agendar" @click="handleClickButton" />
             <div class="dropdown">
-                <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburger.png"
-                    id="menu-strokes"><img src="@/assets/img/icons/user.png" id="user"></button>
+                <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburger.png" id="menu-strokes">
+                    <img src="@/assets/img/icons/user.png" id="user"></button>
                 <div class="dropdown-content">
-                  <a href="#"><img src="@/assets/img/icons/docs.png">Política e Privacidade</a>
-                  <a href="/login"><img src="@/assets/img/icons/enter.png">Login</a>
+                    <a href="#"><img src="@/assets/img/icons/docs.png">Política e Privacidade</a>
+                    <router-link to="login" v-if="!props.isAuthenticated"><img src="@/assets/img/icons/enter.png">Faça
+                        login</router-link>
+                    <router-link to="#" v-if="props.isAuthenticated" class="logout" @click="logout"><img
+                            src="@/assets/img/icons/enter.png">Sair</router-link>
                 </div>
-              </div>
+            </div>
         </div>
     </header>
 </template>
@@ -18,19 +21,28 @@
 <script setup lang="ts">
 import router from '@/router';
 import Button from '../layout/Button.vue';
+import useLocalStorage from '@/composables/useLocalStorage';
+const { removeFromLocalStorage } = useLocalStorage();
+import { useUserStore } from '@/stores/UserStore';
+const user = useUserStore();
 
 const handleClickButton = () => {
-    if (!isAuthenticated()) {
+    if (!props.isAuthenticated) {
         router.push('/login');
         return;
     }
     router.push('/agendamento');
 }
 
-const isAuthenticated = () => {
-    const token = localStorage.getItem('token');
-    return !!token;
+const logout = () => {
+    removeFromLocalStorage('token');
+    user.logout()
+    router.push('/');
 }
+
+const props = defineProps({
+    isAuthenticated: Boolean,
+})
 </script>
 
 <style scoped lang="scss">
@@ -77,7 +89,6 @@ header {
             padding: .5rem 1rem;
             background: #ffffff;
             border: 1px solid #999999;
-            cursor: not-allowed;
 
             #user {
                 max-width: 1.5rem;
@@ -91,29 +102,40 @@ header {
         .dropdown {
             position: relative;
             display: inline-block;
+
             .dropdown-content {
                 display: none;
                 position: absolute;
                 background-color: #f9f9f9;
                 min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
                 z-index: 1;
-                a {
+
+                a,
+                router-link {
                     color: black;
                     padding: 12px 16px;
                     text-decoration: none;
-                    display: block;
-                    img{
+                    display: flex;
+                    align-items: center;
+                    gap: .5em;
+
+                    img {
                         max-width: 1rem;
                         margin-right: 2px;
                     }
                 }
-                a:hover {background-color: #f1f1f1}
+
+                a:hover {
+                    background-color: #f1f1f1
+                }
             }
         }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
         .dropdown:hover #menu-btn {
             background-color: #f1f1f1;
         }

@@ -10,6 +10,10 @@ const useLocalStorage = () => {
     return storedData ? storedData : null;
   };
 
+  const removeFromLocalStorage = (key: string): void => {
+    localStorage.removeItem(key);
+  };
+
   onMounted(() => {
     getFromLocalStorage
   });
@@ -17,6 +21,7 @@ const useLocalStorage = () => {
   return {
     saveToLocalStorage,
     getFromLocalStorage,
+    removeFromLocalStorage
   };
 };
 
