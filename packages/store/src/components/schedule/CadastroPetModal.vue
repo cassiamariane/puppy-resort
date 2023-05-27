@@ -8,19 +8,19 @@
                 <form>
                     <label for="namepet">
                         <span>Nome do Pet</span>
-                        <input required type="text" name="namepet" id="namepet" v-model="namepet" autofocus>
+                        <input required type="text" name="namepet" id="namepet" v-model="name" autofocus>
                     </label>
                     <div class="especie-genero">
                         <label for="especie">
                             <span>Espécie</span>
-                            <select name="especie" id="especie" v-model="especie">
+                            <select name="especie" id="especie" v-model="species">
                                 <option value="dog">Cão</option>
                                 <option value="cat">Gato</option>
                             </select>
                         </label>
                         <label for="genero">
                             <span>Gênero</span>
-                            <select name="genero" id="genero" v-model="genero">
+                            <select name="genero" id="genero" v-model="gender">
                                 <option value="dog">M</option>
                                 <option value="cat">F</option>
                             </select>
@@ -28,17 +28,17 @@
                     </div>
                     <label for="raca">
                         <span>Raça</span>
-                        <input required type="text" name="raca" id="raca" v-model="raca">
+                        <input required type="text" name="raca" id="raca" v-model="breed">
                     </label>
                     <label for="idade">
                         <span>Idade</span>
-                        <input required type="number" min="0" name="idade" id="idade" v-model="idade">
+                        <input required type="number" min="0" name="idade" id="idade" v-model="age">
                     </label>
                     <label for="descricao">
                         <span>Breve descrição do seu pet</span>
                         <textarea required rows="5" name="descricao" id="descricao" v-model="description"></textarea>
                     </label>
-
+                    <span>{{error}}</span>
                     <!-- faz um @click.prevent=funcao e essa funcao chama um composable pra cadastrar o pet, qualquer duvida me avisa -->
                     <Button text="Finalizar" theme="primary" id="finalizar" />
                 </form>
@@ -50,14 +50,34 @@
 <script setup lang="ts">
 import Button from '../layout/Button.vue';
 import { ref } from 'vue';
-const namepet = ref('');
-const especie = ref('');
-const genero = ref('');
-const raca = ref('');
-const idade = ref('');
+import { usePet } from '@/composables/usePet'
+const { createPet, data, error } = usePet();
+
+const name = ref('');
+const species = ref('');
+const gender = ref('');
+const breed = ref('');
+const age = ref(0);
 const description = ref('');
 
-defineEmits(['fechaModal'])
+const emit = defineEmits(['fechaModal'])
+
+async function cadastraPet() {
+    await createPet({
+        name: name.value,
+        species: species.value,
+        gender: gender.value,
+        breed: breed.value,
+        age: age.value,
+        description: description.value
+    })
+
+    if(data.value){
+        emit('fechaModal')
+        return
+    }
+}
+
 
 defineProps({
     modalActive: Boolean,
