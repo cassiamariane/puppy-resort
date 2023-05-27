@@ -77,7 +77,7 @@ const changeToSignup = () => {
         display: flex;
         flex-direction: column;
         width: 100%;
-        gap: 2rem;
+        gap: 1.5rem;
 
         .flex {
             display: flex;
@@ -113,7 +113,6 @@ const changeToSignup = () => {
         }
 
         #entrar {
-            margin-top: 1rem;
             height: 3rem;
             font-size: 20px;
         }

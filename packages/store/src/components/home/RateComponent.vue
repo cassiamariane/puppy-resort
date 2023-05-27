@@ -69,11 +69,6 @@
             flex: 1 1 11rem;
             box-shadow: 1px 1px 5px #000000;
 
-            &:hover {
-                transform: scale(1.02);
-                transition: .2s;
-            }
-
             .paws {
                 display: flex;
                 gap: 0.3rem;

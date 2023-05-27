@@ -44,19 +44,14 @@
          <Button v-if="success" text="Voltar para a home" theme="primary" id="voltar"
             @click.prevent="handleVoltarParaHome"></Button>
       </form>
-      <div id="modal-container" v-if="modalActive" @click="fechaModal">
-      </div>
-      <div id="modal" v-if="modalActive">
-         <button id="closeModal" @click="fechaModal" v-if="pet.pets.length">+</button>
-         <CadastroPet></CadastroPet>
-      </div>
+      <CadastroPetModal :modalActive="modalActive" @fechaModal="fechaModal"></CadastroPetModal>
    </div>
 </template>
 
 <script setup lang="ts">
 import Button from '@/components/layout/Button.vue';
 import { computed, onMounted, ref, watch } from 'vue'
-import CadastroPet from '@/components/schedule/CadastroPetComponent.vue';
+import CadastroPetModal from '@/components/schedule/CadastroPetModal.vue';
 
 // Pets
 import { usePetStore } from '@/stores/PetStore'
@@ -363,47 +358,6 @@ onMounted(async () => {
    span.success {
       color: #4bb543;
       margin-bottom: 1rem;
-   }
-
-   #modal-container {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      width: 100vw;
-      background: rgba($color: #000000, $alpha: 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      overflow: hidden;
-   }
-
-   #modal {
-      position: absolute;
-      box-shadow: 1px 1px 5px #000;
-      z-index: 101;
-      border-radius: 10px;
-      top: -50px;
-      background-color: #fff;
-      display: flex;
-      flex-direction: column;
-      padding-top: 10px;
-      width: 90%;
-      
-      @media screen and (min-width: 779px) {
-         width: 40%;
-      }
-
-      #closeModal {
-         z-index: 102;
-         position: absolute;
-         top: 0;
-         right: 15px;
-         font-size: 30px;
-         color: #000000;
-         background: transparent;
-         transform: rotate(45deg);
-      }
    }
 }
 </style>
