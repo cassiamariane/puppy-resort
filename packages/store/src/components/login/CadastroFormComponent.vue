@@ -34,6 +34,7 @@
                 </label>
             </div>
             <span class="error">{{ error }}</span>
+            <TheLoading v-if="loading" />
             <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
                     src="@/assets/img/backward.svg"></Button>
             <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
@@ -45,8 +46,9 @@
 import { ref } from 'vue';
 import Button from '../layout/Button.vue';
 import { useSignup } from '@/composables/useSignup';
+import TheLoading from '../layout/TheLoading.vue';
 import router from '@/router';
-const { data, error, signup } = useSignup();
+const { data, error, signup, loading } = useSignup();
 
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();

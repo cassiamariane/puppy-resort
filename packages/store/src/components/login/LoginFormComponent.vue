@@ -10,7 +10,8 @@
                 <input required type="password" name="password" id="password" v-model="password">
             </label>
             <span class="error">{{ error }}</span>
-            <Button text="Entrar" theme="primary" id="entrar" @click.prevent="handleLogin"></Button>
+            <TheLoading v-if="loading" />
+            <Button text="Entrar" theme="primary" id="entrar" @click.prevent="handleLogin" v-else></Button>
             <p id="create" @click.prevent="changeToSignup">Não possui conta? <span>Cadastre-se</span></p>
         </form>
     </div>
@@ -20,9 +21,10 @@
 import { ref } from 'vue';
 import Button from '../layout/Button.vue';
 import router from '@/router';
+import TheLoading from '../layout/TheLoading.vue';
 
 import { useLogin } from '@/composables/useLogin';
-const { data, error, login } = useLogin();
+const { data, error, login, loading } = useLogin();
 
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
@@ -50,7 +52,9 @@ const handleLogin = async () => {
     saveToLocalStorage('email', data.value.email)
     saveToLocalStorage('admin', data.value.admin)
     user.setUser(data.value)
-    return router.push('agendamento')
+    if (user.isAuthenticated) {
+        router.push('agendamento')
+    }
 }
 
 const emit = defineEmits(['changeToSignup'])

@@ -76,7 +76,7 @@ header {
             display: none;
 
             @media screen and (min-width: 779px) {
-                display: inline-block;
+                display: flex;
                 min-width: 200px;
             }
         }

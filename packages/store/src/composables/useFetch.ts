@@ -1,12 +1,15 @@
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/UserStore'
 
 export function useFetch() {
   const data = ref(null) as any
   const error = ref('')
   const { user } = useUserStore()
+  const loading = ref(false)
 
   const get = async (url: string) => {
+    loading.value = true;
+    console.log(loading.value);
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -25,9 +28,14 @@ export function useFetch() {
     } catch (e) {
       console.log(e)
     }
+    finally {
+      loading.value = false;
+      console.log(loading.value);
+    }
   }
 
   const post = async (url: string, body: any) => {
+    loading.value = true;
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -43,12 +51,16 @@ export function useFetch() {
     } catch (e) {
       console.log(e)
     }
+    finally {
+      loading.value = false;
+    }
   }
 
   return {
     get,
     post,
     data,
-    error
+    error,
+    loading
   }
 }

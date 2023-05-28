@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import useLocalStorage from '@/composables/useLocalStorage';
-
-const {getFromLocalStorage} = useLocalStorage();
+import { useUserStore } from '@/stores/UserStore';
+import { storeToRefs } from 'pinia';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,12 +33,10 @@ const router = createRouter({
   ]
 })
 
-const isAuthenticated = () => {
-  return getFromLocalStorage('token');
-}
-
 router.beforeEach(async (to, from, next) => {
-  if (!isAuthenticated() && to.name !== 'login' && to.name !== 'home') {
+  const user = useUserStore();
+  const {isAuthenticated} = storeToRefs(user);
+  if (!isAuthenticated && to.name !== 'login' && to.name !== 'home') {
     return next('login')
   }
   return next();

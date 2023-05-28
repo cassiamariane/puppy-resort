@@ -1,6 +1,7 @@
 <template>
    <div id="container">
-      <form>
+      <TheLoading v-if="serviceLoading || petLoading"></TheLoading>
+      <form v-else>
          <span class="hotel">Puppy Resort - <span class="cidade">Rio de Janeiro</span></span>
          <br>
          <br>
@@ -52,19 +53,20 @@
 import Button from '@/components/layout/Button.vue';
 import { computed, onMounted, ref, watch } from 'vue'
 import CadastroPetModal from '@/components/schedule/CadastroPetModal.vue';
+import TheLoading from '@/components/layout/TheLoading.vue';
 
 // Pets
 import { usePetStore } from '@/stores/PetStore'
 import { usePet } from '@/composables/usePet';
 const pet = usePetStore();
-const { myPets } = usePet();
+const { myPets, petLoading } = usePet();
 
 // Quartos e serviços
 import { useRoomStore } from '@/stores/RoomStore';
 import { useService } from '@/composables/useService';
 import router from '@/router';
 const room = useRoomStore()
-const { getRooms, schedule, data, error } = useService()
+const { getRooms, schedule, error, serviceLoading } = useService()
 
 const success = ref('');
 const valorDiario = ref(70);
@@ -220,7 +222,9 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 #container {
+   align-items: center;
    display: flex;
+   min-height: 90vh;
    justify-content: center;
    padding: 3rem 2rem 8rem;
    background-image: url("@/assets/img/paw_print3.svg");

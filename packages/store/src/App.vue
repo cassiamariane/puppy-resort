@@ -28,15 +28,9 @@ user.setUser({
 
 <template>
   <TheHeader class="header" :isAuthenticated="isAuthenticated"/>
-  <RouterView />
+  <RouterView/>
   <TheFooter />
 </template>
 
 <style scoped lang="scss">
-#app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-}
 </style>
