@@ -59,8 +59,8 @@ model Service {
   petId      Int
   room       Room     @relation(fields: [roomNumber], references: [number])
   roomNumber Int
-  payment    Payment  @relation(fields: [paymentId], references: [id])
-  paymentId  Int
+  paymentId  Int?      
+  payment    Payment?  @relation(fields: [paymentId], references: [id])
 }
 
 model Hotel {
@@ -84,10 +84,9 @@ model Payment {
   installment Int           @db.Int
   discount    Float         @db.Double
   interest    Float         @db.Double
-  serviceId   Int           @unique
   method      PaymentMethod
   status      PaymentStatus
-  Service     Service[]
+  services    Service[]
 }
 
 model Room {

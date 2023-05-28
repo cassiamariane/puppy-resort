@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { useFetch } from './useFetch'
 
 type User = {
@@ -10,11 +9,9 @@ type User = {
 }
 
 export function useSignup() {
-  const loading = ref(false)
-  const { data, error, post } = useFetch()
+  const { data, error, post, loading } = useFetch()
 
   const signup = async (user: User) => {
-    loading.value = true
     const api = process.env.BASE_API
     await post(`${api}/user`, {
       name: user.name,
@@ -23,13 +20,12 @@ export function useSignup() {
       password: user.password,
       cpf: user.cpf
     })
-    loading.value = false
   }
 
   return {
     data,
     error,
-    loading,
-    signup
+    signup,
+    loading
   }
 }

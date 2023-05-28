@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-
 import { mount } from '@vue/test-utils'
+
 import Button from '../layout/Button.vue'
 import BannerComponent from '../home/BannerComponent.vue'
 import TheFooter from '../layout/TheFooter.vue'

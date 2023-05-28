@@ -20,8 +20,6 @@ export class PetController {
     return res.status(401).json({ data: null, error: "Não autorizado" });
   }
   async create(req: Request, res: Response) {
-    console.log(req.user);
-    
     const response = await Pet.createPet({ ...req.body, userId: req.user?.id });
     return res
       .status(response.status)

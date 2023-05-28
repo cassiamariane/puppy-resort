@@ -16,6 +16,9 @@ button {
     font-size: 1rem;
     box-shadow: 1px 1px 5px #000000;
     height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
         transform: scale(1.02);
