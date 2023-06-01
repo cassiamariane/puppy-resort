@@ -13,6 +13,12 @@ export class UserController {
       .status(response.status)
       .json({ data: response.data, error: response.error });
 }
+async getMyAddress(req: Request, res: Response) {
+  const response = await UserService.getMyAddress(Number(req.user?.id));
+  return res
+    .status(response.status)
+    .json({ data: response.data, error: response.error });
+}
   async findById(req: Request, res: Response) {
     if (req.user?.admin) {
       const response = await UserService.findById(Number(req.params.id));

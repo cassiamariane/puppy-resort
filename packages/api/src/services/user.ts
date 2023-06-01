@@ -67,6 +67,37 @@ export default class UserService {
     }
   }
 
+  static async getMyAddress(userId: number) {
+    try {
+      // Verifica se o id foi passado e se é numérico
+      if (!userId || typeof userId != "number") {
+        return {
+          data: null,
+          status: 400,
+          error: "ID inválido ou inexistente.",
+        };
+      }
+
+      // Busca o usuário no banco
+      const user = await BaseDatabase.address.findUnique({
+        where: { userId },
+        select: { id: true, code: true, street: true, number: true, neighborhood: true, city: true, state: true, complement: true },
+      });
+      return {
+        data: user,
+        status: 200,
+        error: "",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao encontrar o usuário.",
+      };
+    }
+  }
+
   // Busca todos
   static async findAll() {
     try {

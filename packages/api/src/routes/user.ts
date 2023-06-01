@@ -8,6 +8,7 @@ const controller = new UserController();
 router.get('/', authenticate, controller.findAll)
 router.get('/me', authenticate, controller.getMe)
 router.get('/pets', authenticate, controller.getMyPets)
+router.get('/address', authenticate, controller.getMyAddress)
 router.get('/:id', authenticate, controller.findById)
 router.post('/login', controller.login)
 router.post('/', controller.create)
