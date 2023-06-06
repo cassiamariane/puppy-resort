@@ -2,42 +2,36 @@
     <div class="container">
         <form>
             <label for="name">
-                <span>Nome completo</span>
-                <input required type="text" name="name" id="name" v-model="name">
+                <span>Nome completo:</span>
+                <input autofocus required type="text" name="name" id="name" v-model="name">
             </label>
             <label for="email">
-                <span>E-mail</span>
+                <span>E-mail:</span>
                 <input required type="email" name="email" id="email" v-model="email">
             </label>
             <div class="flex">
                 <label for="phone">
-                    <span>Celular</span>
+                    <span>Telefone de emergência:</span>
                     <input required type="tel" name="phone" id="phone" v-model="phone">
                 </label>
                 <label for="cpf">
-                    <span>CPF</span>
+                    <span>CPF:</span>
                     <input required type="text" name="cpf" id="cpf" v-model="cpf">
                 </label>
             </div>
             <label for="password">
-                <span>Senha</span>
+                <span>Senha:</span>
                 <input required type="password" name="password" id="password" v-model="password">
             </label>
             <label for="password_2">
-                <span>Confirme sua senha</span>
+                <span>Confirme sua senha:</span>
                 <input required type="password" name="password_2" id="password_2" v-model="passwordConfirmation">
             </label>
-            <div id="check">
-                <label for="termos">
-                    <input required type="checkbox" name="termos" id="termos" v-model="termos">
-                    <span>Eu li e concordo com os termos de uso da plataforma</span>
-                </label>
-            </div>
             <span class="error">{{ error }}</span>
             <TheLoading v-if="loading" />
             <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
                     src="@/assets/img/backward.svg"></Button>
-            <p id="login" @click="changeToLogin">Já possui conta? Fazer login</p>
+            <p id="login" @click="changeToLogin">Já possui conta? <span class="green">Fazer login</span></p>
         </form>
     </div>
 </template>
@@ -47,7 +41,6 @@ import { ref } from 'vue';
 import Button from '../layout/Button.vue';
 import { useSignup } from '@/composables/useSignup';
 import TheLoading from '../layout/TheLoading.vue';
-import router from '@/router';
 const { data, error, signup, loading } = useSignup();
 
 import { useUserStore } from '@/stores/UserStore';
@@ -62,16 +55,11 @@ const phone = ref('');
 const cpf = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
-const termos = ref(false);
 
 const handleSignup = async () => {
     error.value = '';
     if (password.value != passwordConfirmation.value) {
         error.value = 'As senhas não coincidem.'
-        return;
-    }
-    if (!termos.value) {
-        error.value = 'Aceite os termos de uso para prosseguir.'
         return;
     }
     await signup({
@@ -88,14 +76,20 @@ const handleSignup = async () => {
     saveToLocalStorage('name', data.value.name)
     saveToLocalStorage('email', data.value.email)
     saveToLocalStorage('admin', data.value.admin)
-    user.setUser(data.value)
-    return router.push('agendamento')
+    user.loadToken();
+    user.loadUser();
+    data.value = null;
+    return changeToAddress()
 }
 
-const emit = defineEmits(['changeToLogin']);
+const emit = defineEmits(['changeToLogin', 'changeToAddress']);
 
 const changeToLogin = () => {
     emit('changeToLogin');
+}
+
+const changeToAddress = () => {
+    emit('changeToAddress');
 }
 
 </script>
@@ -145,7 +139,7 @@ const changeToLogin = () => {
             input {
                 background-color: #F8F9F9;
                 border: none;
-                border-radius: 10px;
+                border-radius: 5px;
                 height: 2.5rem;
                 padding: 0 1rem;
                 color: #222;
@@ -168,6 +162,11 @@ const changeToLogin = () => {
 
         span.error {
             color: #ff4848;
+        }
+
+        span.green, span.green > * {
+            color: var(--primary-color);
+            text-decoration: underline;
         }
 
         #avancar {

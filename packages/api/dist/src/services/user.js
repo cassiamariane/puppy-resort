@@ -59,7 +59,15 @@ class UserService {
                 }
                 const user = yield BaseDatabase_1.BaseDatabase.pet.findMany({
                     where: { userId },
-                    select: { id: true, name: true, breed: true, species: true, description: true, age: true, gender: true },
+                    select: {
+                        id: true,
+                        name: true,
+                        breed: true,
+                        species: true,
+                        description: true,
+                        age: true,
+                        gender: true,
+                    },
                 });
                 return {
                     data: user,
@@ -77,6 +85,32 @@ class UserService {
             }
         });
     }
+    static isSignupComplete(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const address = yield this.getMyAddress(userId);
+                if (address.data) {
+                    return {
+                        data: true,
+                        status: 200,
+                        error: "",
+                    };
+                }
+                return {
+                    data: false,
+                    status: 404,
+                    error: "",
+                };
+            }
+            catch (error) {
+                return {
+                    data: null,
+                    status: 500,
+                    error: "Houve um problema ao buscar essa informação.",
+                };
+            }
+        });
+    }
     static getMyAddress(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -89,7 +123,16 @@ class UserService {
                 }
                 const user = yield BaseDatabase_1.BaseDatabase.address.findUnique({
                     where: { userId },
-                    select: { id: true, code: true, street: true, number: true, neighborhood: true, city: true, state: true, complement: true },
+                    select: {
+                        id: true,
+                        code: true,
+                        street: true,
+                        number: true,
+                        neighborhood: true,
+                        city: true,
+                        state: true,
+                        complement: true,
+                    },
                 });
                 return {
                     data: user,
@@ -111,7 +154,14 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const users = yield BaseDatabase_1.BaseDatabase.user.findMany({
-                    select: { id: true, name: true, cpf: true, phone: true, email: true, admin: true },
+                    select: {
+                        id: true,
+                        name: true,
+                        cpf: true,
+                        phone: true,
+                        email: true,
+                        admin: true,
+                    },
                 });
                 return {
                     data: users,
@@ -141,7 +191,14 @@ class UserService {
                 }
                 const user = yield BaseDatabase_1.BaseDatabase.user.findUnique({
                     where: { id },
-                    select: { id: true, name: true, cpf: true, phone: true, email: true, admin: true },
+                    select: {
+                        id: true,
+                        name: true,
+                        cpf: true,
+                        phone: true,
+                        email: true,
+                        admin: true,
+                    },
                 });
                 return {
                     data: user,
@@ -162,7 +219,11 @@ class UserService {
     static createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (!user.email || !user.password || !user.cpf || !user.phone || !user.name) {
+                if (!user.email ||
+                    !user.password ||
+                    !user.cpf ||
+                    !user.phone ||
+                    !user.name) {
                     return {
                         data: null,
                         status: 400,
@@ -173,8 +234,7 @@ class UserService {
                     where: { OR: [{ email: user.email }, { cpf: user.cpf }] },
                 });
                 if (userExists) {
-                    return { data: null, status: 400, error: "Usuário já cadastrado.",
-                    };
+                    return { data: null, status: 400, error: "Usuário já cadastrado." };
                 }
                 const salt = yield bcryptjs_1.default.genSalt(Number(process.env.SALT) || 10);
                 const hash = yield bcryptjs_1.default.hash(user.password, salt);
@@ -247,7 +307,9 @@ class UserService {
         });
     }
     static generateToken(id, email, name, admin) {
-        const token = jsonwebtoken_1.default.sign({ id, email, name, admin, }, UserService.secret, { expiresIn: "7d" });
+        const token = jsonwebtoken_1.default.sign({ id, email, name, admin }, UserService.secret, {
+            expiresIn: "7d",
+        });
         if (!token) {
             return {
                 data: null,
@@ -260,7 +322,7 @@ class UserService {
                 token,
                 email,
                 name,
-                admin
+                admin,
             },
             status: 200,
             error: "",

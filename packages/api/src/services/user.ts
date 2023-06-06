@@ -19,7 +19,34 @@ export default class UserService {
       // Busca o usuário no banco
       const user = await BaseDatabase.user.findUnique({
         where: { id },
-        select: { id: true, name: true, cpf: true, phone: true, email: true},
+        select: {
+          id: true,
+          name: true,
+          cpf: true,
+          phone: true,
+          email: true,
+          pets: {
+            select: {
+              name: true,
+              species: true,
+              breed: true,
+              age: true,
+              description: true,
+              gender: true,
+            },
+          },
+          address: {
+            select: {
+              code: true,
+              number: true,
+              street: true,
+              neighborhood: true,
+              city: true,
+              state: true,
+              complement: true,
+            },
+          },
+        },
       });
       return {
         data: user,
@@ -48,12 +75,20 @@ export default class UserService {
       }
 
       // Busca o usuário no banco
-      const user = await BaseDatabase.pet.findMany({
+      const pets = await BaseDatabase.pet.findMany({
         where: { userId },
-        select: { id: true, name: true, breed: true, species: true, description: true, age: true, gender: true},
+        select: {
+          id: true,
+          name: true,
+          breed: true,
+          species: true,
+          description: true,
+          age: true,
+          gender: true,
+        },
       });
       return {
-        data: user,
+        data: pets,
         status: 200,
         error: "",
       };
@@ -63,6 +98,30 @@ export default class UserService {
         data: null,
         status: 500,
         error: "Houve um problema ao encontrar o usuário.",
+      };
+    }
+  }
+
+  static async isSignupComplete(userId: number) {
+    try {
+      const address = await this.getMyAddress(userId);
+      if (address.data) {
+        return {
+          data: true,
+          status: 200,
+          error: "",
+        };
+      }
+      return {
+        data: false,
+        status: 404,
+        error: "",
+      };
+    } catch (error) {
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao buscar essa informação.",
       };
     }
   }
@@ -81,7 +140,16 @@ export default class UserService {
       // Busca o usuário no banco
       const user = await BaseDatabase.address.findUnique({
         where: { userId },
-        select: { id: true, code: true, street: true, number: true, neighborhood: true, city: true, state: true, complement: true },
+        select: {
+          id: true,
+          code: true,
+          street: true,
+          number: true,
+          neighborhood: true,
+          city: true,
+          state: true,
+          complement: true,
+        },
       });
       return {
         data: user,
@@ -102,7 +170,14 @@ export default class UserService {
   static async findAll() {
     try {
       const users = await BaseDatabase.user.findMany({
-        select: { id: true, name: true, cpf: true, phone: true, email: true, admin: true },
+        select: {
+          id: true,
+          name: true,
+          cpf: true,
+          phone: true,
+          email: true,
+          admin: true,
+        },
       });
       return {
         data: users,
@@ -134,7 +209,14 @@ export default class UserService {
       // Busca o usuário no banco
       const user = await BaseDatabase.user.findUnique({
         where: { id },
-        select: { id: true, name: true, cpf: true, phone: true, email: true, admin: true },
+        select: {
+          id: true,
+          name: true,
+          cpf: true,
+          phone: true,
+          email: true,
+          admin: true,
+        },
       });
       return {
         data: user,
@@ -155,7 +237,13 @@ export default class UserService {
   static async createUser(user: User) {
     try {
       // verifica se todos os dados foram passados
-      if ( !user.email || !user.password || !user.cpf || !user.phone || !user.name ) {
+      if (
+        !user.email ||
+        !user.password ||
+        !user.cpf ||
+        !user.phone ||
+        !user.name
+      ) {
         return {
           data: null,
           status: 400,
@@ -169,8 +257,7 @@ export default class UserService {
       });
 
       if (userExists) {
-        return {data: null, status: 400, error: "Usuário já cadastrado.",
-        };
+        return { data: null, status: 400, error: "Usuário já cadastrado." };
       }
 
       // Faz o hash da senha
@@ -187,7 +274,12 @@ export default class UserService {
       // Cria o usuário no banco
       const userCreated = await BaseDatabase.user.create({ data: user });
       if (userCreated.id) {
-        return this.generateToken( userCreated.id, user.email, user.name, user.admin);
+        return this.generateToken(
+          userCreated.id,
+          user.email,
+          user.name,
+          user.admin
+        );
       }
       return {
         data: null,
@@ -240,7 +332,12 @@ export default class UserService {
       }
 
       // Salva as informações dele no token
-      return this.generateToken( userExists.id, userExists.email, userExists.name, userExists.admin);
+      return this.generateToken(
+        userExists.id,
+        userExists.email,
+        userExists.name,
+        userExists.admin
+      );
     } catch (error) {
       console.log(error);
       return {
@@ -251,8 +348,15 @@ export default class UserService {
     }
   }
 
-  private static generateToken( id: number, email: string, name: string, admin: boolean) {
-    const token = jwt.sign( {id, email, name, admin,}, UserService.secret, { expiresIn: "7d" });
+  private static generateToken(
+    id: number,
+    email: string,
+    name: string,
+    admin: boolean
+  ) {
+    const token = jwt.sign({ id, email, name, admin }, UserService.secret, {
+      expiresIn: "7d",
+    });
     if (!token) {
       return {
         data: null,
@@ -265,7 +369,7 @@ export default class UserService {
         token,
         email,
         name,
-        admin
+        admin,
       },
       status: 200,
       error: "",

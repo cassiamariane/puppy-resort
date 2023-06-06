@@ -9,6 +9,7 @@ router.get('/', auth_1.authenticate, controller.findAll);
 router.get('/me', auth_1.authenticate, controller.getMe);
 router.get('/pets', auth_1.authenticate, controller.getMyPets);
 router.get('/address', auth_1.authenticate, controller.getMyAddress);
+router.get('/iscomplete', auth_1.authenticate, controller.isSignupComplete);
 router.get('/:id', auth_1.authenticate, controller.findById);
 router.post('/login', controller.login);
 router.post('/', controller.create);

@@ -42,6 +42,15 @@ class UserController {
                 .json({ data: response.data, error: response.error });
         });
     }
+    isSignupComplete(req, res) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield user_1.default.isSignupComplete(Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id));
+            return res
+                .status(response.status)
+                .json({ data: response.data, error: response.error });
+        });
+    }
     findById(req, res) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {

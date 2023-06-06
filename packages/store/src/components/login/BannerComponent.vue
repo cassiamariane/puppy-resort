@@ -1,6 +1,6 @@
 <template>
     <div id="banner">
-        <img id="img-fundo" src="@/assets/img/paw_print2.svg">
+        <img id="img-fundo" src="@/assets/img/icons/paw_print2.svg">
         <h1 id="title" v-html="text"></h1>
         <Button text="Cadastre-se" v-if="etapaAtual == 0" @click="changeToSignup" theme="primary"
             id="button-banner"></Button>

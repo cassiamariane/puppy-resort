@@ -17,15 +17,15 @@ export function usePet() {
   const { get, post, data, error} = useFetch()
   const petLoading = ref(false);
 
-  const myPets = async () => {
+  const myPets = async (token: string) => {
     petLoading.value = true;
     const api = process.env.BASE_API
-    await get(`${api}/user/pets`)
+    await get(`${api}/user/pets`, token)
     pet.pets = data.value;
     petLoading.value = false;
   }
 
-  const createPet = async (pet: Pet) => {
+  const createPet = async (pet: Pet, token: string) => {
     petLoading.value = true;
     const api = process.env.BASE_API
     await post(`${api}/pet`, {
@@ -35,7 +35,7 @@ export function usePet() {
       gender: pet.gender,
       breed: pet.breed,
       species: pet.species
-    })
+    }, token)
     petLoading.value = false;
   }
 

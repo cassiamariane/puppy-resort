@@ -1,21 +1,18 @@
-import { onMounted, ref } from 'vue'
-import { useUserStore } from '@/stores/UserStore'
+import { ref } from 'vue'
 
 export function useFetch() {
   const data = ref(null) as any
   const error = ref('')
-  const { user } = useUserStore()
   const loading = ref(false)
 
-  const get = async (url: string) => {
+  const get = async (url: string, token: string = '') => {
     loading.value = true;
-    console.log(loading.value);
     try {
       const response = await fetch(url, {
         method: 'GET',
         headers: [
           ['Content-Type', 'application/json'],
-          ['Authorization', user.token ? `Bearer ${user.token}` : '']
+          ['Authorization', token ? `Bearer ${token}` : '']
         ]
       })
       const result = await response.json()
@@ -30,16 +27,15 @@ export function useFetch() {
     }
     finally {
       loading.value = false;
-      console.log(loading.value);
     }
   }
 
-  const post = async (url: string, body: any) => {
+  const post = async (url: string, body: any, token: string = '') => {
     loading.value = true;
     try {
       const response = await fetch(url, {
         method: 'POST',
-        headers: [['Content-Type', 'application/json'], ['Authorization', user.token ? `Bearer ${user.token}` : '']],
+        headers: [['Content-Type', 'application/json'], ['Authorization', token ? `Bearer ${token}` : '']],
         body: JSON.stringify({ ...body }),
       })
       const result = await response.json()

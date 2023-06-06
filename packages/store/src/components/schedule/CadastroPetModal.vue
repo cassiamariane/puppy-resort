@@ -51,6 +51,8 @@
 import Button from '../layout/Button.vue';
 import { ref } from 'vue';
 import { usePet } from '@/composables/usePet'
+import { useUserStore } from '@/stores/UserStore';
+const user = useUserStore()
 const { createPet, data, error } = usePet();
 import router from '@/router';
 
@@ -71,7 +73,7 @@ async function cadastraPet() {
         breed: breed.value,
         age: age.value,
         description: description.value
-    })
+    }, user.token)
 
     if(data.value){
         router.go(0);
@@ -134,7 +136,7 @@ const pet = usePetStore();
     position: absolute;
     box-shadow: 1px 1px 5px #000;
     z-index: 101;
-    border-radius: 10px;
+    border-radius: 5px;
     top: -50px;
     background-color: #fff;
     display: flex;
@@ -201,7 +203,7 @@ const pet = usePetStore();
             textarea {
                 background-color: #F8F9F9;
                 border: none;
-                border-radius: 10px;
+                border-radius: 5px;
                 height: 2.5rem;
                 padding: 0 1rem;
                 color: #222;

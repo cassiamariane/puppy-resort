@@ -28,7 +28,7 @@ export default class ServiceService {
             roomNumber: room.number,
             finished: false,
             endDate: {
-              gt: new Date(new Date().setHours(0, 0, 0, 0)),
+              gt: new Date(new Date().setHours(9, 0, 0, 0)),
             },
           },
         });
@@ -95,9 +95,9 @@ export default class ServiceService {
 
     if (
       service.endDate <= service.startDate ||
-      service.startDate.setHours(0, 0, 0, 0) <
-        new Date().setHours(0, 0, 0, 0) ||
-      service.endDate.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+      service.startDate.setHours(9, 0, 0, 0) <
+        new Date().setHours(9, 0, 0, 0) ||
+      service.endDate.setHours(9, 0, 0, 0) < new Date().setHours(9, 0, 0, 0)
     ) {
       return {
         data: null,

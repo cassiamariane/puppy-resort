@@ -4,14 +4,14 @@
         <div class="button-container">
             <Button text="Agendar hospedagem" theme="primary" id="agendar" @click="handleClickButton" />
             <div class="dropdown">
-                <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburger.png" id="menu-strokes">
-                    <img src="@/assets/img/icons/user.png" id="user"></button>
+                <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburguer.svg" id="menu-strokes"></button>
                 <div class="dropdown-content">
-                    <a href="#"><img src="@/assets/img/icons/docs.png">Política e Privacidade</a>
-                    <router-link to="login" v-if="!props.isAuthenticated"><img src="@/assets/img/icons/enter.png">Faça
+                    <router-link to="agendamento" v-if="props.isAuthenticated"><img src="@/assets/img/icons/schedule.svg"/>Agendar</router-link>
+                    <router-link to="perfil" v-if="props.isAuthenticated"><img src="@/assets/img/icons/user.svg"/>Meu perfil</router-link>
+                    <router-link to="login" v-if="!props.isAuthenticated"><img src="@/assets/img/icons/login.svg">Faça
                         login</router-link>
                     <router-link to="#" v-if="props.isAuthenticated" class="logout" @click="logout"><img
-                            src="@/assets/img/icons/enter.png">Sair</router-link>
+                            src="@/assets/img/icons/logout.svg">Sair</router-link>
                 </div>
             </div>
         </div>
@@ -37,6 +37,9 @@ const handleClickButton = () => {
 const logout = () => {
     removeFromLocalStorage('token');
     user.logout()
+    if (window.location.pathname == '/') {
+        return router.go(0)
+    }
     router.push('/');
 }
 
@@ -88,7 +91,10 @@ header {
             align-items: center;
             padding: .5rem 1rem;
             background: #ffffff;
-            border: 1px solid #999999;
+
+            img {
+                min-width: 20px;
+            }
 
             #user {
                 max-width: 1.5rem;
@@ -106,6 +112,7 @@ header {
             .dropdown-content {
                 display: none;
                 position: absolute;
+                left: -50px;
                 background-color: #f9f9f9;
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);

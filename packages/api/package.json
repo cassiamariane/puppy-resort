@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "start": "npm run build && node dist/src/App.js",
-    "dev": "ts-node-dev src/App.ts"
+    "dev": "ts-node-dev src/App.ts",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

@@ -28,7 +28,7 @@ model Address {
   city         String @db.VarChar(255)
   state        String @db.VarChar(255)
   complement   String @db.VarChar(255)
-  user         User   @relation(fields: [userId], references: [id])
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int    @unique
 }
 
@@ -40,7 +40,7 @@ model Pet {
   description String    @db.VarChar(255)
   gender      Gender
   age         Int
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   services    Service[]
 }
@@ -55,12 +55,12 @@ model Service {
   startDate  DateTime @db.Date
   endDate    DateTime @db.Date
   finished   Boolean  @default(false)
-  pet        Pet      @relation(fields: [petId], references: [id])
+  pet        Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
   petId      Int
   room       Room     @relation(fields: [roomNumber], references: [number])
   roomNumber Int
   paymentId  Int?      
-  payment    Payment?  @relation(fields: [paymentId], references: [id])
+  payment    Payment?  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
 }
 
 model Hotel {
@@ -93,7 +93,7 @@ model Room {
   number    Int       @id
   available Boolean   @default(true)
   Service   Service[]
-  hotel     Hotel     @relation(fields: [hotelId], references: [id])
+  hotel     Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   hotelId   Int
 }
 

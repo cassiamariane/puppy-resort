@@ -2,17 +2,17 @@
     <div class="container">
         <form>
             <label for="email">
-                <span>E-mail</span>
-                <input required type="email" name="email" id="email" v-model="identifier">
+                <span>E-mail ou cpf:</span>
+                <input autofocus required type="email" name="email" id="email" v-model="identifier">
             </label>
             <label for="password">
-                <span>Senha</span>
+                <span>Senha:</span>
                 <input required type="password" name="password" id="password" v-model="password">
             </label>
             <span class="error">{{ error }}</span>
             <TheLoading v-if="loading" />
             <Button text="Entrar" theme="primary" id="entrar" @click.prevent="handleLogin" v-else></Button>
-            <p id="create" @click.prevent="changeToSignup">Não possui conta? <span>Cadastre-se</span></p>
+            <p id="create" @click.prevent="changeToSignup">Não possui conta? <span class="green">Cadastre-se</span></p>
         </form>
     </div>
 </template>
@@ -24,13 +24,10 @@ import router from '@/router';
 import TheLoading from '../layout/TheLoading.vue';
 
 import { useLogin } from '@/composables/useLogin';
-const { data, error, login, loading } = useLogin();
+const { data, error, login, isComplete, loading } = useLogin();
 
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
-
-import useLocalStorage from '@/composables/useLocalStorage';
-const { saveToLocalStorage } = useLocalStorage();
 
 const identifier = ref('');
 const password = ref('');
@@ -47,20 +44,33 @@ const handleLogin = async () => {
     if (!data.value) {
         return;
     }
-    saveToLocalStorage('token', data.value.token)
-    saveToLocalStorage('name', data.value.name)
-    saveToLocalStorage('email', data.value.email)
-    saveToLocalStorage('admin', data.value.admin)
-    user.setUser(data.value)
+    user.setToken(data.value.token);
+    user.setUser({
+        name: data.value.name,
+        email: data.value.email,
+        admin: data.value.admin,
+    });
+    data.value = null;
     if (user.isAuthenticated) {
-        router.push('agendamento')
+        console.log('here 1');
+        
+        await isComplete(user.token);
+        if (data.value) {
+            console.log('here 2');
+            return router.push('/agendamento')
+        }
+        return changeToAddress();
     }
 }
 
-const emit = defineEmits(['changeToSignup'])
+const emit = defineEmits(['changeToSignup', 'changeToAddress']);
 
 const changeToSignup = () => {
     emit('changeToSignup');
+}
+
+const changeToAddress = () => {
+    emit('changeToAddress');
 }
 </script>
 
@@ -91,7 +101,7 @@ const changeToSignup = () => {
             input {
                 background-color: #F8F9F9;
                 border: none;
-                border-radius: 10px;
+                border-radius: 5px;
                 height: 2.5rem;
                 padding: 0 1rem;
                 color: #222;
@@ -106,6 +116,12 @@ const changeToSignup = () => {
 
         span.error {
             color: #ff4848;
+        }
+
+        span.green,
+        span.green>* {
+            color: var(--primary-color);
+            text-decoration: underline;
         }
 
         #entrar {
