@@ -25,4 +25,10 @@ export class AddressController {
         .status(response.status)
         .json({ data: response.data, error: response.error });
     }
+    async update(req: Request, res: Response) {
+      const response = await Address.updateAddress(Number(req.params.id), req.body, req.user?.id);
+      return res
+        .status(response.status)
+        .json({ data: response.data, error: response.error });
+    }
   }

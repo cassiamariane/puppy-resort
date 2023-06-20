@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import Button from '../layout/Button.vue';
+import Button from '../layout/TheButton.vue';
 import useLocalStorage from '@/composables/useLocalStorage';
 const { removeFromLocalStorage } = useLocalStorage();
 import { useUserStore } from '@/stores/UserStore';

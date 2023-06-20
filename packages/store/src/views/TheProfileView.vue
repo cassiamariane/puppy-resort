@@ -7,6 +7,8 @@
                 <p>{{ me.name }}</p>
                 <p>{{ me.email }}</p>
                 <p>CPF: {{ me.cpf }}</p>
+                <img src="../assets/img/icons/pencil.svg" alt="Editar dados pessoais" title="Editar dados pessoais"
+                    @click="openProfileEditModal">
             </div>
             <div class="phone-container">
                 <h3>Contato de emergência</h3>
@@ -17,6 +19,8 @@
         </div>
         <div id="address-data" v-if="me.address">
             <h3>Endereço</h3>
+            <img src="../assets/img/icons/pencil.svg" alt="Editar endereço" title="Editar endereço"
+                @click="openAddressEditModal">
             <article>
                 <span>{{ me.address.street }}, {{ me.address.number }}</span>
                 <span>{{ me.address.neighborhood }}, {{ me.address.city }} - {{ me.address.state }}</span>
@@ -31,28 +35,71 @@
                         <img src="@/assets/img/icons/dog.svg" alt="Cão" v-if="pet.species == 'dog'">
                         <img src="@/assets/img/icons/cat.svg" alt="Gato" v-if="pet.species == 'cat'">
                         <span>{{ pet.name }}, {{ pet.age }} {{ pet.age == 1 ? 'ano' : 'anos' }}</span>
+                        <img src="../assets/img/icons/pencil.svg" alt="Editar pets" title="Editar pets"
+                            @click="openPetsEditModal(pet)">
                     </div>
                     <span>{{ pet.breed }}, {{ pet.gender == 'F' ? 'Fêmea' : 'Macho' }}</span>
                     <span>{{ pet.description }}</span>
                 </article>
             </div>
         </div>
+        <EditPetModal v-if="isPetsEditModalActive" :pet-to-edit="petToEdit" :modal-active="isPetsEditModalActive"
+            @fechaModal="isPetsEditModalActive = false"></EditPetModal>
+        <EditAddressModal v-if="isAddressEditModalActive" :modal-active="isAddressEditModalActive"
+        @fechaModal="isAddressEditModalActive = false"></EditAddressModal>
+        <EditProfileModal v-if="isProfileEditModalActive" :modal-active="isProfileEditModalActive"
+        @fechaModal="isProfileEditModalActive = false"></EditProfileModal>
     </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import TheLoading from '@/components/layout/TheLoading.vue';
+import EditPetModal from '@/components/profile/EditPetModal.vue'
+import EditAddressModal from '@/components/profile/EditAddressModal.vue';
+import EditProfileModal from '@/components/profile/EditProfileModal.vue';
 
 import { useLogin } from '@/composables/useLogin'
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
-const { getMe, data, error, loading } = useLogin();
+const { getMe, data, error } = useLogin();
+
+import { usePet } from '@/composables/usePet';
+const { myPets } = usePet();
+
+const loading = ref(false);
 
 const me = ref('') as any;
 
+const isProfileEditModalActive = ref(false);
+const isAddressEditModalActive = ref(false);
+const isPetsEditModalActive = ref(false);
+const isPetRegisterModalActive = ref(false);
+
+const openProfileEditModal = () => {
+    isProfileEditModalActive.value = true;
+}
+
+const openAddressEditModal = () => {
+    isAddressEditModalActive.value = true;
+}
+
+const petToEdit = ref(null) as any;
+
+const openPetsEditModal = (pet: any) => {
+    petToEdit.value = pet;
+    isPetsEditModalActive.value = true;
+}
+
+const openPetRegisterModal = () => {
+    isPetRegisterModalActive.value = true;
+}
+
 onMounted(async () => {
+    loading.value = true;
     await getMe(user.token)
+    await myPets(user.token)
+    loading.value = false;
 
     if (data.value) {
         me.value = data.value
@@ -72,8 +119,8 @@ onMounted(async () => {
     position: relative;
 
     @media screen and (min-width: 998px) {
-            padding: 3rem 25rem;
-        }
+        padding: 3rem 25rem;
+    }
 
     h3,
     h4 {
@@ -108,6 +155,10 @@ onMounted(async () => {
             gap: 5px;
             padding-bottom: 16px;
             border-bottom: 2px solid #c6c6c6;
+
+            img {
+                cursor: pointer;
+            }
         }
 
         .phone-container {
@@ -132,7 +183,17 @@ onMounted(async () => {
     }
 
     #address-data {
+        position: relative;
 
+        &>img {
+            position: absolute;
+            top: 0;
+            left: 100px;
+            cursor: pointer;
+        }
+    }
+
+    #address-data {
         article {
             display: flex;
             flex-direction: column;
@@ -157,6 +218,7 @@ onMounted(async () => {
 
                     img {
                         max-width: 20px;
+                        cursor: pointer;
                     }
                 }
             }

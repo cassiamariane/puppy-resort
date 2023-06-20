@@ -1,29 +1,12 @@
 <template>
-    <ModalComponent :is-close-button-active="!!pet.pets.length" :modal-active="modalActive"
-        @fechaModal="$emit('fechaModal')">
+    <ModalComponent :is-close-button-active="true" :modal-active="modalActive" @fechaModal="$emit('fechaModal')">
         <div id="form-container">
-            <h2>Antes de tudo, vamos cadastrar seu pet</h2>
+            <h2>Edição de pet</h2>
             <form>
                 <label for="namepet">
                     <span>Nome do Pet</span>
                     <input required type="text" name="namepet" id="namepet" v-model="name" autofocus>
                 </label>
-                <div class="especie-genero">
-                    <label for="especie">
-                        <span>Espécie</span>
-                        <select name="especie" id="especie" v-model="species">
-                            <option value="dog">Cão</option>
-                            <option value="cat">Gato</option>
-                        </select>
-                    </label>
-                    <label for="genero">
-                        <span>Gênero</span>
-                        <select name="genero" id="genero" v-model="gender">
-                            <option value="M">M</option>
-                            <option value="F">F</option>
-                        </select>
-                    </label>
-                </div>
                 <label for="raca">
                     <span>Raça</span>
                     <input required type="text" name="raca" id="raca" v-model="breed">
@@ -33,12 +16,12 @@
                     <input required type="number" min="0" name="idade" id="idade" v-model="age">
                 </label>
                 <label for="descricao">
-                    <span>Breve descrição do seu pet</span>
+                    <span>Descrição do seu pet</span>
                     <textarea required rows="5" name="descricao" id="descricao" v-model="description"></textarea>
                 </label>
                 <span class="error">{{ error }}</span>
                 <!-- faz um @click.prevent=funcao e essa funcao chama um composable pra cadastrar o pet, qualquer duvida me avisa -->
-                <Button @click.prevent=cadastraPet text="Finalizar" theme="primary" id="finalizar" />
+                <Button text="Atualizar" theme="primary" id="finalizar" @click.prevent="editaPet" />
             </form>
         </div>
     </ModalComponent>
@@ -47,42 +30,52 @@
 <script setup lang="ts">
 import ModalComponent from '@/components/layout/ModalComponent.vue'
 import Button from '../layout/TheButton.vue';
-import { ref } from 'vue';
-import { usePet } from '@/composables/usePet'
-import { useUserStore } from '@/stores/UserStore';
-const user = useUserStore()
-const { createPet, data, error } = usePet();
-import router from '@/router';
+import { onMounted, ref } from 'vue';
 
+import { usePet } from '@/composables/usePet';
+const { updatePet, data, error } = usePet();
+
+import { useUserStore } from '@/stores/UserStore';
+import router from '@/router';
+const user = useUserStore();
+
+const id = ref(0);
 const name = ref('');
-const species = ref('');
-const gender = ref('');
 const breed = ref('');
 const age = ref(0);
 const description = ref('');
 
-async function cadastraPet() {
-    await createPet({
-        name: name.value,
-        species: species.value,
-        gender: gender.value,
-        breed: breed.value,
-        age: age.value,
-        description: description.value
-    }, user.token)
+async function editaPet() {
+    if (name.value && breed.value && age.value && description.value) {
+        await updatePet({
+            id: id.value,
+            name: name.value,
+            breed: breed.value,
+            age: age.value,
+            description: description.value
+        }, user.token)
 
-    if (data.value) {
-        router.go(0);
-        return
+        if (data.value) {
+            router.go(0);
+            return
+        }
     }
 }
 
-defineProps({
-    modalActive: Boolean,
-})
+onMounted(() => {
+    if (props.petToEdit) {
+        id.value = props.petToEdit.id
+        name.value = props.petToEdit.name;
+        breed.value = props.petToEdit.breed;
+        age.value = props.petToEdit.age;
+        description.value = props.petToEdit.description;
+    }
+});
 
-import { usePetStore } from '@/stores/PetStore'
-const pet = usePetStore();
+const props = defineProps({
+    modalActive: Boolean,
+    petToEdit: Object,
+})
 </script>
 
 <style scoped lang="scss">

@@ -7,7 +7,7 @@
             </label>
             <label for="email">
                 <span>E-mail:</span>
-                <input required type="email" name="email" id="email" v-model="email">
+                <input required type="email" name="email" id="email" v-model="email" @blur="validateEmail">
             </label>
             <div class="flex">
                 <label for="phone">
@@ -37,11 +37,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import Button from '../layout/Button.vue';
+import { ref, watch } from 'vue';
+import Button from '../layout/TheButton.vue';
 import { useSignup } from '@/composables/useSignup';
 import TheLoading from '../layout/TheLoading.vue';
-const { data, error, signup, loading } = useSignup();
+const { data, error, signup } = useSignup();
+const loading = ref(false);
 
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
@@ -51,17 +52,36 @@ const { saveToLocalStorage } = useLocalStorage();
 
 const name = ref('');
 const email = ref('');
-const phone = ref('');
+const phone = ref('+55');
 const cpf = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
 
+const validateEmail = () => {
+    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+
+    if (!emailRegex.test(email.value)) {
+        error.value = 'E-mail inválido.'
+        return false;
+    }
+    error.value = '';
+    return true;
+}
+
+watch(email, () => {
+    error.value = '';
+})
+
 const handleSignup = async () => {
     error.value = '';
+    if (!validateEmail()) {
+        return false;
+    }
     if (password.value != passwordConfirmation.value) {
         error.value = 'As senhas não coincidem.'
         return;
     }
+    loading.value = true;
     await signup({
         name: name.value,
         email: email.value,
@@ -69,6 +89,7 @@ const handleSignup = async () => {
         cpf: cpf.value,
         password: password.value
     });
+    loading.value = false;
     if (!data.value) {
         return;
     }
@@ -164,7 +185,8 @@ const changeToAddress = () => {
             color: #ff4848;
         }
 
-        span.green, span.green > * {
+        span.green,
+        span.green>* {
             color: var(--primary-color);
             text-decoration: underline;
         }

@@ -3,8 +3,8 @@
         <form>
             <label for="cep">
                 <span>CEP</span>
-                <input autofocus required type="text" name="cep" id="cep" v-model="cep">
-                <small id="login" @click="changeToLogin">Não sabe seu cep? <span class="green"><a
+                <input autofocus required type="text" name="cep" id="cep" v-model="cep" placeholder="Apenas números">
+                <small id="login">Não sabe seu cep? <span class="green"><a
                             href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank">Veja
                             aqui</a></span></small>
             </label>
@@ -43,7 +43,7 @@
                 </label>
             </div>
             <span class="error">{{ error }}</span>
-            <TheLoading v-if="addressLoading" />
+            <TheLoading v-if="loading" />
             <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
                     src="@/assets/img/backward.svg"></Button>
             <p id="login" @click="changeToLogin">Já possui conta? <span class="green">Fazer login</span></p>
@@ -53,13 +53,14 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import Button from '../layout/Button.vue';
+import Button from '../layout/TheButton.vue';
 import TheLoading from '../layout/TheLoading.vue';
 import router from '@/router';
 import { useAddress } from '@/composables/useAddress';
-const { createAddress, addressLoading, data, error } = useAddress();
+const { createAddress, data, error } = useAddress();
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
+const loading = ref(false);
 
 const cep = ref('');
 const cidade = ref('');
@@ -73,14 +74,18 @@ const numeroRef = ref(null)
 
 watch(cep, async () => {
     if (cep.value.length === 8) {
+        loading.value = true;
         const res = await fetch(`https://viacep.com.br/ws/${cep.value}/json/`);
         const r = await res.json();
-        logradouro.value = r.logradouro;
-        bairro.value = r.bairro;
-        cidade.value = r.localidade;
-        uf.value = r.uf;
-        if (cidade.value && numeroRef.value) {
-            (numeroRef.value as HTMLInputElement).focus();
+        loading.value = false;
+        if (r.logradouro) {
+            logradouro.value = r.logradouro;
+            bairro.value = r.bairro;
+            cidade.value = r.localidade;
+            uf.value = r.uf;
+            if (cidade.value && numeroRef.value) {
+                (numeroRef.value as HTMLInputElement).focus();
+            }
         }
     }
 })

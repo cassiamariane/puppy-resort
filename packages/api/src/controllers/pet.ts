@@ -25,4 +25,16 @@ export class PetController {
       .status(response.status)
       .json({ data: response.data, error: response.error });
   }
+  async update(req: Request, res: Response) {
+    const response = await Pet.updatePet(Number(req.params.id), req.body, req.user?.id);
+    return res
+      .status(response.status)
+      .json({ data: response.data, error: response.error });
+  }
+  async delete(req: Request, res: Response) {
+    const response = await Pet.deletePet(Number(req.params.id), req.user?.id);
+    return res
+      .status(response.status)
+      .json({ data: response.data, error: response.error });
+  }
 }
