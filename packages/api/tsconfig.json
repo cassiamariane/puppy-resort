@@ -11,6 +11,10 @@
       "./src",
       "./test",
     ],
+    "typeRoots": [
+      "./src/@types",
+      "./node_modules/@types"
+    ],
     "resolveJsonModule": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,

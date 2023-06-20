@@ -10,7 +10,6 @@ datasource db {
 model User {
   id       Int      @id @default(autoincrement())
   name     String   @db.VarChar(255)
-  birthday DateTime @db.Date
   password String   @db.VarChar(255)
   cpf      String   @unique @db.VarChar(255)
   email    String   @unique @db.VarChar(255)
@@ -38,7 +37,6 @@ model Pet {
   name        String    @db.VarChar(255)
   species     String    @db.VarChar(255)
   breed       String    @db.VarChar(255)
-  color       String    @db.VarChar(255)
   description String    @db.VarChar(255)
   gender      Gender
   age         Int
@@ -61,8 +59,8 @@ model Service {
   petId      Int
   room       Room     @relation(fields: [roomNumber], references: [number])
   roomNumber Int
-  payment    Payment  @relation(fields: [paymentId], references: [id])
-  paymentId  Int
+  paymentId  Int?      
+  payment    Payment?  @relation(fields: [paymentId], references: [id])
 }
 
 model Hotel {
@@ -70,7 +68,7 @@ model Hotel {
   phone        String @db.VarChar(255)
   code         String @db.VarChar(255)
   dailyPrice   Float  @db.Double
-  discount     Float  @db.Double
+  cashDiscount Float  @db.Double
   street       String @db.VarChar(255)
   neighborhood String @db.VarChar(255)
   city         String @db.VarChar(255)
@@ -86,10 +84,9 @@ model Payment {
   installment Int           @db.Int
   discount    Float         @db.Double
   interest    Float         @db.Double
-  serviceId   Int           @unique
   method      PaymentMethod
   status      PaymentStatus
-  Service     Service[]
+  services    Service[]
 }
 
 model Room {

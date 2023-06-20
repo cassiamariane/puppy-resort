@@ -41,7 +41,7 @@
     padding: 2rem;
 
     @media screen and (min-width: 779px) {
-        padding: 2rem 5rem;
+        padding: 2rem 3rem;
     }
 
     h2 {
@@ -68,11 +68,6 @@
             padding: 1rem;
             flex: 1 1 11rem;
             box-shadow: 1px 1px 5px #000000;
-
-            &:hover {
-                transform: scale(1.02);
-                transition: .2s;
-            }
 
             .paws {
                 display: flex;
