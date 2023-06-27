@@ -27,6 +27,9 @@
         <th class="text-left">
           Valor
         </th>
+        <th class="text-left">
+          Finalizar
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -38,6 +41,7 @@
         <td>{{ item.startDate }}</td>
         <td>{{ item.endDate }}</td>
         <td>{{ item.value }}</td>
+        <td><Button text="Finalizar serviço" theme="primary" id="finalizar"/></td>
     </tr>
     </tbody>
   </v-table>
@@ -45,6 +49,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import Button from '../layout/Button.vue';
 
 const bookings = ref([
   {
@@ -166,6 +171,12 @@ const bookings = ref([
   }
   tr:nth-child(even) {
     background-color:  rgba(232, 106, 51, 0.5);
+  }
+  td{
+    #finalizar{
+      background-color: red;
+      padding: 0.5rem;
+    }
   }
   @media screen and (min-width: 779px) {
     thead, th, tr{
