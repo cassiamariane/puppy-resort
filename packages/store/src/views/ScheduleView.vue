@@ -1,6 +1,6 @@
 <template>
    <div id="container">
-      <TheLoading v-if="serviceLoading || petLoading"></TheLoading>
+      <TheLoading v-if="serviceLoading || petLoading || roomLoading"></TheLoading>
       <form v-else>
          <span class="hotel">Puppy Resort - <span class="cidade">Rio de Janeiro</span></span>
          <br>
@@ -64,9 +64,11 @@ const { myPets, petLoading } = usePet();
 // Quartos e serviços
 import { useRoomStore } from '@/stores/RoomStore';
 import { useService } from '@/composables/useService';
+import { useRoom } from '@/composables/useRoom';
 import router from '@/router';
 const room = useRoomStore()
-const { getRooms, schedule, error, serviceLoading } = useService()
+const { schedule, error, serviceLoading } = useService()
+const { getAvailableRooms, roomLoading } = useRoom()
 
 const success = ref('');
 const valorDiario = ref(70);
@@ -210,7 +212,7 @@ const precoFormatter = (preco: number) => {
 
 onMounted(async () => {
    await myPets()
-   await getRooms()
+   await getAvailableRooms()
 
    if (!pet.pets.length) {
       abreModal()

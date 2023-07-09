@@ -31,9 +31,9 @@ const router = createRouter({
       component: () => import('../views/ProfileView.vue')
     },
     {
-      path: '/booking',
-      name: 'booking',
-      component: () => import('../views/BookingView.vue')
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/AdminView.vue')
     },
   ]
 })

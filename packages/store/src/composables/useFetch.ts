@@ -9,7 +9,6 @@ export function useFetch() {
 
   const get = async (url: string) => {
     loading.value = true;
-    console.log(loading.value);
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -30,7 +29,6 @@ export function useFetch() {
     }
     finally {
       loading.value = false;
-      console.log(loading.value);
     }
   }
 

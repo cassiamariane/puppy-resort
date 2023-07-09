@@ -1,195 +1,136 @@
 <template>
-    <div id="services-container">
-        <div id="services">
-            <div class="card brown" v-for="item in rooms" :key="item.roomNumber">
-              <div id="number">
-                {{ item.roomNumber }}
-              </div>
-              <div id="flex-info">
-                <div class="info">
-                  <img src="@/assets/img/icons/cat.svg">
-                  {{ item.pet }}
-                </div>
-                <div class="info">
-                  <img src="@/assets/img/icons/tutor.png">
-                  {{ item.tutor }}
-                </div>
-                <div class="info">
-                  <img src="@/assets/img/icons/tel.png">
-                  {{ item.tel }}
-                </div>
-                <div class="info">
-                  <img src="@/assets/img/icons/calendar.svg">
-                  {{ item.startDate }} - {{ item.endDate }}
-                </div>
-              </div>
-            </div>
+  <div id="rooms-container">
+    <div id="rooms" v-if="room.rooms">
+      <div class="card brown" v-for="r in room.rooms" :key="r.number">
+        <div id="number" :class="{ available: r.available }">
+          {{ r.number }}
         </div>
+        <div id="flex-info" v-if="!r.available && r.services.length">
+          <div class="info">
+            <img src="@/assets/img/icons/cat.svg">
+            {{ r.services[0].pet.name }}
+          </div>
+          <div class="info">
+            <img src="@/assets/img/icons/tutor.png">
+            {{ r.services[0].pet.user.name }}
+          </div>
+          <div class="info">
+            <img src="@/assets/img/icons/tel.png">
+            {{ r.services[0].pet.user.phone }}
+          </div>
+          <div class="info">
+            <img src="@/assets/img/icons/calendar.svg">
+            {{ new Date(r.services[0]?.startDate).toLocaleDateString('pt-br') }} - {{ new
+              Date(r.services[0]?.endDate).toLocaleDateString('pt-br') }}
+          </div>
+        </div>
+        <p v-else id="quarto-disponivel">Quarto disponível</p>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRoomStore } from '@/stores/RoomStore';
+import { useRoom } from '../../composables/useRoom';
+const { getAllRooms } = useRoom();
+const room = useRoomStore();
 
-const rooms = ref([
-  {
-    roomNumber: 101,
-    status:'Ocupado',
-    pet: 'Safira',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Daniel',
-    tel: '(99) 99999-9999'
-  },
-  {
-    roomNumber: 102,
-    status:'Ocupado',
-    pet: 'Malhada',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Daniel',
-    tel: '(99) 99999-9999'
-  },
-  {
-    roomNumber: 103,
-    status:'Ocupado',
-    pet: 'Lui',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Daniel',
-    tel: '(99) 99999-9999' 
-  },
-  {
-    roomNumber: 104,
-    status:'Ocupado',
-    pet: 'Joelma',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Daniel',
-    tel: '(99) 99999-9999' 
-  },
-  {
-    roomNumber: 105,
-    status:'Ocupado',
-    pet: 'Hello Kitty',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Cássia',
-    tel: '(99) 99999-9999' 
-  },
-  {
-    roomNumber: 201,
-    status:'Ocupado',
-    pet: 'Lizzy',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Cássia',
-    tel: '(99) 99999-9999' 
-  },
-  {
-    roomNumber: 202,
-    status:'Ocupado',
-    pet: 'Dualipas',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Cássia',
-    tel: '(99) 99999-9999' 
-  },
-  {
-    roomNumber: 203,
-    status:'Ocupado',
-    pet: 'Badtz-Maru',
-    startDate: '01-01-2023',
-    endDate: '03-01-2023',
-    tutor: 'Cássia',
-    tel: '(99) 99999-9999' 
-  },
-  {
-    roomNumber: 204,
-    status:'Disponível' 
-  },
-  {
-    roomNumber: 205,
-    status:'Disponível' 
-  },
-]);
+
+onMounted(async () => {
+  await getAllRooms()
+});
+
 </script>
 
 <style scoped lang="scss">
-#services-container {
-    padding: 2rem;
+#rooms-container {
+  padding: 2rem;
+
+  @media screen and (min-width: 779px) {
+    padding: 2rem 3rem;
+  }
+
+  #rooms {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 
     @media screen and (min-width: 779px) {
-        padding: 2rem 3rem;
+      gap: 2rem;
     }
 
-    #services {
+    .card {
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      gap: 1.5rem;
+      align-items: center;
+      flex: 1;
+      box-shadow: 1px 1px 5px #000000;
+      transition: .2s;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+
+      @media screen and (max-width: 464px) and (min-width: 328px) {
+        &:nth-child(3) {
+          order: 4;
+        }
+
+        &:nth-child(6) {
+          order: 7;
+        }
+      }
+
+      img {
+        max-width: 1.5rem;
+      }
+
+      &.green {
+        background-color: rgba(65, 100, 74, 0.2);
+      }
+
+      &.brown {
+        background-color: rgba(232, 106, 51, 0.2);
+      }
+
+      #number {
+        background-color: #E86A33;
+        width: 100%;
+        text-align: center;
+        padding: 0.5rem;
+        border-radius: 10px 10px 0 0;
+        color: #fff;
+        font-weight: bold;
+        overflow: hidden;
+
+        &.available {
+          background: var(--primary-color);
+        }
+      }
+
+      #flex-info {
         display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        justify-content: center;
 
-        @media screen and (min-width: 779px) {
-            gap: 2rem;
+        .info {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          white-space: nowrap;
         }
+      }
 
-        .card {
-            display: flex;
-            flex-direction: column;
-            border-radius: 1rem;
-            gap: 1.5rem;
-            align-items: center;
-            flex-grow: 1;
-            flex-basis: 8rem;
-            box-shadow: 1px 1px 5px #000000;
-
-            &:hover {
-                transform: scale(1.02);
-                transition: .2s;
-            }
-
-            @media screen and (max-width: 464px) and (min-width: 328px) {
-                &:nth-child(3) {
-                    order: 4;
-                }
-
-                &:nth-child(6) {
-                    order: 7;
-                }
-            }
-
-            img {
-                max-width: 1.5rem;
-            }
-            &.green {
-                background-color:  rgba(65, 100, 74, 0.2);
-            }
-
-            &.brown {
-                background-color:  rgba(232, 106, 51, 0.2);
-            }
-            #number{
-              background-color: #E86A33;
-              width:100%;
-              border-radius: 1rem 1rem 0 0;
-              text-align: center;
-              padding: 0.5rem;
-              color: #fff;
-              font-weight: bold;
-            }
-            #flex-info{
-              display: flex;
-              flex-direction: column;
-              gap: 1rem;
-              padding: 1rem;
-              justify-content: center;
-              .info{
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                white-space: nowrap;
-              }
-            }
-        }
+      #quarto-disponivel {
+        padding: 1rem;
+      }
     }
+  }
 }
 </style>

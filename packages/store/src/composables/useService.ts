@@ -1,19 +1,12 @@
 import { ref } from 'vue';
 import { useFetch } from './useFetch'
-import { useRoomStore } from '@/stores/RoomStore'
-const room = useRoomStore();
+import { useServiceStore } from '@/stores/ServiceStore';
+const service = useServiceStore();
 
 export function useService() {
   const { get, post, data, error } = useFetch()
   const serviceLoading = ref(false);
   const api = process.env.BASE_API
-
-  const getRooms = async () => {
-    serviceLoading.value = true;
-    await get(`${api}/service/1`)
-    room.rooms = data.value;
-    serviceLoading.value = false;
-  }
 
   const schedule = async (startDate: string, endDate: string, petId: number, roomNumber: number) => {
     serviceLoading.value = true;
@@ -26,13 +19,19 @@ export function useService() {
     serviceLoading.value = false;
   }
 
-
+  //admin
+  const getAllServices = async () => {
+    serviceLoading.value = true;
+    await get(`${api}/service/all`)
+    service.services = data.value;
+    serviceLoading.value = false;
+  }
 
   return {
-    getRooms,
     schedule,
+    getAllServices,
     data,
     error,
-    serviceLoading
+    serviceLoading,
   }
 }

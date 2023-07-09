@@ -146,12 +146,7 @@ export default class UserService {
       const salt = await bcrypt.genSalt(Number(process.env.SALT) || 10);
       const hash = await bcrypt.hash(user.password, salt);
       user.password = hash;
-
-      if (!user.admin) {
-        user.admin = false;
-      } else {
-        user.admin = true;
-      }
+      user.admin = false;
 
       // Cria o usuário no banco
       const userCreated = await BaseDatabase.user.create({ data: user });
