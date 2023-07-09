@@ -105,7 +105,7 @@ const changeToSignup = () => {
         }
 
         span.error {
-            color: #ff4848;
+            color: var(--error-color);;
         }
 
         #entrar {

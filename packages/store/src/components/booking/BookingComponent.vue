@@ -6,20 +6,23 @@
   <v-table fixed-header height="90vh" id="services-table">
     <thead>
       <tr>
-        <th class="text-left">
+        <th class="text-center">
           Código da Reserva
         </th>
-        <th class="text-left">
+        <th class="text-center">
           CPF do cliente
         </th>
-        <th class="text-left">
+        <th class="text-center">
           Quarto
         </th>
-        <th class="text-left">
+        <th class="text-center">
           Check-in
         </th>
-        <th class="text-left">
+        <th class="text-center">
           Check-out
+        </th>
+        <th class="text-center">
+          Finalizar
         </th>
       </tr>
     </thead>
@@ -30,15 +33,17 @@
         <td>{{ item.roomNumber }}</td>
         <td>{{ new Date(item.startDate).toLocaleDateString('pt-br') }}</td>
         <td>{{ new Date(item.endDate).toLocaleDateString('pt-br') }}</td>
+        <td><Button text="Finalizar serviço" theme="primary" id="finalizar" /></td>
       </tr>
     </tbody>
   </v-table>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useService } from '../../composables/useService';
 import { useServiceStore } from '../../stores/ServiceStore';
+import Button from '../layout/Button.vue';
 const service = useServiceStore();
 const { getAllServices } = useService();
 
@@ -96,6 +101,14 @@ tr:nth-child(even) {
   background-color: rgba(232, 106, 51, 0.5);
 }
 
+td {
+  #finalizar {
+    background-color: var(--error-color);
+    padding: 0.5rem 1rem;
+    min-width: 150px;
+  }
+}
+
 @media screen and (min-width: 779px) {
 
   thead,
@@ -103,6 +116,7 @@ tr:nth-child(even) {
   tr {
     margin: 0 auto;
     width: 12.5rem;
+    text-align: center;
   }
 }
 </style>

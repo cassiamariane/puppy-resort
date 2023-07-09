@@ -237,7 +237,7 @@ const pet = usePetStore();
             }
 
             span.error {
-                color: #ff4848;
+                color: var(--error-color);;
             }
 
             #finalizar {

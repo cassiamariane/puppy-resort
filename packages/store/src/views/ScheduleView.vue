@@ -363,7 +363,7 @@ onMounted(async () => {
    }
 
    span.error {
-      color: #ff4848;
+      color: var(--error-color);;
       margin-bottom: 1rem;
    }
 
