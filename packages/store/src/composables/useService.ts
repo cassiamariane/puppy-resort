@@ -8,39 +8,39 @@ export function useService() {
   const serviceLoading = ref(false);
   const api = process.env.BASE_API
 
-  const schedule = async (startDate: string, endDate: string, petId: number, roomNumber: number) => {
+  const schedule = async (startDate: string, endDate: string, petId: number, roomNumber: number, token: string) => {
     serviceLoading.value = true;
     await post(`${api}/service`, {
       startDate,
       endDate,
       petId,
       roomNumber
-    });
+    }, token);
     serviceLoading.value = false;
   }
 
   //admin
-  const getAllServices = async () => {
+  const getAllServices = async (token: string) => {
     serviceLoading.value = true;
-    await get(`${api}/service/all`)
+    await get(`${api}/service/all`, token)
     service.services = data.value;
     serviceLoading.value = false;
   }
 
-  const confirmCheckIn = async (serviceId: number) => {
+  const confirmCheckIn = async (serviceId: number, token: string) => {
     serviceLoading.value = true;
     await post(`${api}/service/confirm/${serviceId}`, {
       confirm: true,
-    })
+    }, token)
     service.services = data.value;
     serviceLoading.value = false;
   }
 
-  const finishService = async (serviceId: number) => {
+  const finishService = async (serviceId: number, token: string) => {
     serviceLoading.value = true;
     await post(`${api}/service/finish/${serviceId}`, {
       finish: true,
-    })
+    }, token)
     service.services = data.value;
     serviceLoading.value = false;
   }

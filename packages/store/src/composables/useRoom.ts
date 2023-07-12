@@ -8,17 +8,17 @@ export function useRoom() {
   const roomLoading = ref(false);
   const api = process.env.BASE_API
 
-  const getAvailableRooms = async () => {
+  const getAvailableRooms = async (token: string) => {
     roomLoading.value = true;
-    await get(`${api}/room/1`)
+    await get(`${api}/room/1`, token)
     room.rooms = data.value;
     roomLoading.value = false;
   }
 
   // admin
-  const getAllRooms = async () => {
+  const getAllRooms = async (token: string) => {
     roomLoading.value = true;
-    await get(`${api}/room/current`)
+    await get(`${api}/room/current`, token)
     room.rooms = data.value;
     roomLoading.value = false;
   }

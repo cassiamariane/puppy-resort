@@ -19,14 +19,14 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all .2s linear;
 
     &:hover {
         transform: scale(1.02);
-        transition: .2s;
     }
 
     &.primary {
-        background-color: #51B53C;
+        background-color: var(--primary-color);
         color: white;
     }
 

@@ -52,16 +52,19 @@ import Button from '../layout/Button.vue';
 const service = useServiceStore();
 const { getAllServices, confirmCheckIn, finishService, serviceLoading } = useService();
 
+import { useUserStore } from '@/stores/UserStore';
+const user = useUserStore();
+
 const confirm = async (serviceId: number) => {
-  await confirmCheckIn(serviceId);
+  await confirmCheckIn(serviceId, user.token);
 }
 
 const finish = async (serviceId: number) => {
-  await finishService(serviceId);
+  await finishService(serviceId, user.token);
 }
 
 onMounted(async () => {
-  await getAllServices();
+  await getAllServices(user.token);
 });
 </script>
 

@@ -12,17 +12,8 @@ const {getFromLocalStorage} = useLocalStorage();
 import { storeToRefs } from 'pinia';
 const {isAuthenticated} = storeToRefs(user);
 
-const name = getFromLocalStorage('name')
-const token = getFromLocalStorage('token')
-const email = getFromLocalStorage('email')
-const admin = getFromLocalStorage('admin')
-
-user.setUser({
-  name,
-  token,
-  email,
-  admin
-})
+user.loadToken();
+user.loadUser();
 
 </script>
 

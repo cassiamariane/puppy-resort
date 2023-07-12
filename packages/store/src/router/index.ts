@@ -41,6 +41,13 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const user = useUserStore();
   const {isAuthenticated} = storeToRefs(user);
+  
+  if (to.name != 'login') {
+    user.loadToken();
+    user.loadUser();
+    return next(true);
+  }
+
   if (!isAuthenticated && to.name !== 'login' && to.name !== 'home') {
     return next('login')
   }

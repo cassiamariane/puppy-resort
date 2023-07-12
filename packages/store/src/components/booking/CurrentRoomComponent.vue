@@ -37,9 +37,11 @@ import { useRoom } from '../../composables/useRoom';
 const { getAllRooms } = useRoom();
 const room = useRoomStore();
 
+import { useUserStore } from '@/stores/UserStore';
+const user = useUserStore();
 
 onMounted(async () => {
-  await getAllRooms()
+  await getAllRooms(user.token)
 });
 
 </script>

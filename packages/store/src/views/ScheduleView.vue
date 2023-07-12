@@ -1,7 +1,7 @@
 <template>
    <div id="container">
-      <TheLoading v-if="serviceLoading || petLoading || roomLoading"></TheLoading>
-      <form v-else>
+      <TheLoading v-if="serviceLoading || petLoading"></TheLoading>
+      <form v-else-if="room.rooms && pet.pets && user.user">
          <span class="hotel">Puppy Resort - <span class="cidade">Rio de Janeiro</span></span>
          <br>
          <br>
@@ -70,6 +70,9 @@ const room = useRoomStore()
 const { schedule, error, serviceLoading } = useService()
 const { getAvailableRooms, roomLoading } = useRoom()
 
+import { useUserStore } from '@/stores/UserStore';
+const user = useUserStore();
+
 const success = ref('');
 const valorDiario = ref(70);
 const checkIn = ref('');
@@ -118,7 +121,7 @@ const handleAgendar = async () => {
       return;
    }
 
-   await schedule(checkIn.value, checkOut.value, petId.value, roomNumber.value);
+   await schedule(checkIn.value, checkOut.value, petId.value, roomNumber.value, user.token);
 
    if (!error.value) {
       success.value = 'Hospedagem agendada com sucesso! Entraremos em contato pelo Whatsapp para prosseguir com o pagamento.'
@@ -135,9 +138,9 @@ const modalActive = ref(false)
 const quantidadeDeDias = computed(() => {
    const umDiaEmMilissegundos = 24 * 60 * 60 * 1000;
    const data1SemHora = new Date(checkOut.value);
-   data1SemHora.setUTCHours(0, 0, 0, 0);
+   data1SemHora.setUTCHours(9, 0, 0, 0);
    const data2SemHora = new Date(checkIn.value);
-   data2SemHora.setUTCHours(0, 0, 0, 0);
+   data2SemHora.setUTCHours(9, 0, 0, 0);
    const diferencaEmMilissegundos = Math.abs(data1SemHora.getTime() - data2SemHora.getTime());
    const diferencaEmDias = Math.round(diferencaEmMilissegundos / umDiaEmMilissegundos);
    return diferencaEmDias;
@@ -157,10 +160,10 @@ const datasHabilitadasParaCheckIn = computed(() => {
    let i = 1;
    while (diasProximos.length < 30) {
       const data = new Date(hoje.getTime() + i * 24 * 60 * 60 * 1000);
-      data.setUTCHours(0, 0, 0, 0);
+      data.setUTCHours(9, 0, 0, 0);
       if (diasNaoHabilitados?.some(dia => {
          let diaObjeto = new Date(new Date(dia).getTime() + 24 * 60 * 60 * 1000);
-         diaObjeto.setUTCHours(0, 0, 0, 0);
+         diaObjeto.setUTCHours(9, 0, 0, 0);
          return diaObjeto.getTime() === data.getTime();
       })) {
          i++;
@@ -182,10 +185,10 @@ const datasHabilitadasParaCheckOut = computed(() => {
       let i = 1;
       while (diasProximos.length < 30) {
          const data = new Date(new Date(checkIn.value).getTime() + i * 24 * 60 * 60 * 1000);
-         data.setUTCHours(0, 0, 0, 0);
+         data.setUTCHours(9, 0, 0, 0);
          if (diasNaoHabilitados?.some(dia => {
             let diaObjeto = new Date(new Date(dia).getTime() + 24 * 60 * 60 * 1000);
-            diaObjeto.setUTCHours(0, 0, 0, 0);
+            diaObjeto.setUTCHours(9, 0, 0, 0);
             return diaObjeto.getTime() === data.getTime();
          })) {
             i++;
@@ -211,8 +214,8 @@ const precoFormatter = (preco: number) => {
 }
 
 onMounted(async () => {
-   await myPets()
-   await getAvailableRooms()
+   await myPets(user.token)
+   await getAvailableRooms(user.token)
 
    if (!pet.pets.length) {
       abreModal()
@@ -238,9 +241,9 @@ onMounted(async () => {
       display: flex;
       flex-direction: column;
       gap: .5rem;
-      border-radius: 2rem;
+      border-radius: 5px;
       padding: 2rem;
-      box-shadow: 1px 1px 5px #000;
+      box-shadow: -10px 10px 20px rgba(0, 0, 0, .3);
       background-color: #fff;
       box-sizing: border-box;
       min-width: 100%;
@@ -261,7 +264,7 @@ onMounted(async () => {
          background: #fff;
          outline: none;
          padding: 10px;
-         border-radius: 10px;
+         border-radius: 5px;
          border: 1px solid #777;
       }
 
@@ -341,7 +344,7 @@ onMounted(async () => {
       input {
          background-color: #F8F9F9;
          border: none;
-         border-radius: 10px;
+         border-radius: 5px;
          height: 2.5rem;
          padding: 0 1rem;
          color: #222;
@@ -368,7 +371,7 @@ onMounted(async () => {
    }
 
    span.success {
-      color: #4bb543;
+      color: var(--primary-color);
       margin-bottom: 1rem;
    }
 }

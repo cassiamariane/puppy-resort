@@ -10,7 +10,7 @@ const year = new Date().getFullYear();
 
 <style scoped lang="scss">
 footer {
-    background: linear-gradient(to right, var(--primary-color), rgba(232, 106, 51, 1));
+    background: var(--primary-color);
     display: flex;
     justify-content: center;
     align-items: center;
