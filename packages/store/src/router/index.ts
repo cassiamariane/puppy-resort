@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '@/stores/UserStore';
+import { storeToRefs } from 'pinia';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -6,29 +8,58 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../views/TheHomeView.vue'),
     },
     {
-      path: '/payment',
-      name: 'payment',
-      component: () => import('../views/PaymentView.vue')
+      path: '/pagamento',
+      name: 'pagamento',
+      component: () => import('../views/ThePaymentView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue'),
+      component: () => import('../views/TheLoginView.vue'),
     },
     {
-      path: '/schedule',
-      name: 'schedule',
-      component: () => import('../views/ScheduleView.vue')
+      path: '/agendamento',
+      name: 'agendamento',
+      component: () => import('../views/TheScheduleView.vue'),
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: () => import('../views/ProfileView.vue')
+      path: '/perfil',
+      name: 'perfil',
+      component: () => import('../views/TheProfileView.vue')
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/AdminView.vue')
     },
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  const user = useUserStore();
+  const { isAuthenticated } = storeToRefs(user);
+  
+  if (to.name !== 'login') {
+    user.loadToken();
+    user.loadUser();
+  }
+
+  if (to.name === 'agendamento' && !isAuthenticated) {
+    return next('login');
+  }
+
+  if (!isAuthenticated && to.name !== 'login' && to.name !== 'home') {
+    return next('login');
+  }
+
+  if (to.name === 'admin' && !user.user.admin) {
+    return next('login');
+  }
+
+  return next();
 })
 
 export default router

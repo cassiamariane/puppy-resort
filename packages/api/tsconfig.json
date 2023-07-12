@@ -11,6 +11,10 @@
       "./src",
       "./test",
     ],
+    "typeRoots": [
+      "./src/@types",
+      "./node_modules/@types"
+    ],
     "resolveJsonModule": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
@@ -28,7 +32,7 @@
   },
   "include": [
     "./src/**/*.ts",
-    "./test/**/*.ts",
+    "./__tests__/**/*.ts",
     "prisma/BaseDatabase.ts",
   ],
   "exclude": [

@@ -3,27 +3,27 @@
         <h2>Serviços inclusos em nossas hospedagens</h2>
         <div id="services">
             <div class="card green">
-                <img src="@/assets/img/icons/dog-food.svg">
+                <img src="@/assets/img/icons/services/dog-food.svg">
                 <p>Alimentação</p>
             </div>
             <div class="card brown">
-                <img src="@/assets/img/icons/backyard.svg">
+                <img src="@/assets/img/icons/services/backyard.svg">
                 <p>Grande espaço</p>
             </div>
             <div class="card green">
-                <img src="@/assets/img/icons/pet-taxi.svg">
+                <img src="@/assets/img/icons/services/pet-taxi.svg">
                 <p>Taxi dog</p>
             </div>
             <div class="card brown">
-                <img src="@/assets/img/icons/clinica.svg">
+                <img src="@/assets/img/icons/services/clinica.svg">
                 <p>Clínica 24 horas</p>
             </div>
             <div class="card green">
-                <img src="@/assets/img/icons/banho-tosa.svg">
+                <img src="@/assets/img/icons/services/banho-tosa.svg">
                 <p>Banho e tosa</p>
             </div>
             <div class="card brown">
-                <img src="@/assets/img/icons/pet-toy.svg">
+                <img src="@/assets/img/icons/services/pet-toy.svg">
                 <p>Recreação e piscina</p>
             </div>
         </div>
@@ -37,7 +37,7 @@
     padding: 2rem;
 
     @media screen and (min-width: 779px) {
-        padding: 2rem 5rem;
+        padding: 2rem 3rem;
     }
 
     h2 {
@@ -57,16 +57,17 @@
             display: flex;
             flex-direction: column;
             padding: 1rem;
-            border-radius: 1rem;
+            border-radius: 5px;
             gap: 1.5rem;
             align-items: center;
             flex-grow: 1;
             flex-basis: 8rem;
+            max-height: 135px;
             box-shadow: 1px 1px 5px #000000;
+            transition: .2s;
 
             &:hover {
                 transform: scale(1.02);
-                transition: .2s;
             }
 
             @media screen and (max-width: 464px) and (min-width: 328px) {
@@ -89,11 +90,11 @@
 
 
             &.green {
-                background-color: #51B53C;
+                background-color: var(--primary-color);
             }
 
             &.brown {
-                background-color: #E86A33;
+                background-color: var(--secondary-color);
             }
         }
     }

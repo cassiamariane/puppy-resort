@@ -2,24 +2,31 @@
     <div id="banner">
         <img src="@/assets/img/dog.avif" alt="">
         <h1 id="title">Aqui seu pet estará em boas patas</h1>
-        <Button text="Agendar hospedagem" theme="primary" class="agendar" @click="sendWppMessage"/>
+        <Button text="Agendar hospedagem" theme="primary" class="agendar" @click="handleClickButton" />
     </div>
 </template>
 
 <script setup lang="ts">
-import Button from '../layout/Button.vue';
+import router from '@/router';
+import Button from '../layout/TheButton.vue';
 
-const sendWppMessage = () => {
-    const phone = '5524993954501';
-    const now = new Date().getHours();
-    const greeting = now >= 5 && now < 12 ? 'Bom dia!' : now >= 12 && now < 18 ? 'Boa tarde!' : 'Boa noite!';
-    const text = `${greeting} Eu gostaria de agendar uma hospedagem para o meu pet.`
-    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`);
+const handleClickButton = () => {
+    if (!isAuthenticated()) {
+        router.push('/login');
+        return;
+    }
+    router.push('/agendamento');
+}
+
+const isAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    return !!token;
 }
 </script>
 
 <style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
 @font-face {
     font-family: Digitalt;
     src: url(@/assets/fonts/Digitalt-04no.ttf)
@@ -41,7 +48,7 @@ const sendWppMessage = () => {
         -webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: #222;
         */
-        text-shadow:  2px 5px #000000;
+        text-shadow: 2px 5px #000000;
         max-width: 35%;
         display: none;
 

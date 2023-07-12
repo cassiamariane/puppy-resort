@@ -10,16 +10,16 @@
             </div>
             <div id="contact">
                 <ul>
-                    <li><img src="@/assets/img/icons/whatsapp.png" alt="">
+                    <li><img src="@/assets/img/icons/whatsapp.svg" alt="">
                         <p>+55 (21) 99999-9999</p>
                     </li>
-                    <li><img src="@/assets/img/icons/relogio.png" alt="">
+                    <li><img src="@/assets/img/icons/clock.svg" alt="">
                         <p>Segunda a sexta de 8h às 18h</p>
                     </li>
-                    <li><img src="@/assets/img/icons/email.png" alt="">
+                    <li><img src="@/assets/img/icons/email.svg" alt="">
                         <p>atendimento@puppyresort.com</p>
                     </li>
-                    <li><img src="@/assets/img/icons/instagram.png" alt="">
+                    <li><img src="@/assets/img/icons/instagram.svg" alt="">
                         <p>@puppyresort</p>
                     </li>
                 </ul>
@@ -38,7 +38,7 @@
     padding: 2rem;
 
     @media screen and (min-width: 779px) {
-        padding: 2rem 5rem;
+        padding: 2rem 3rem;
     }
 
     h2 {
