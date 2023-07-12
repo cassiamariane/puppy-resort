@@ -6,10 +6,14 @@
             <div class="dropdown">
                 <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburguer.svg" id="menu-strokes"></button>
                 <div class="dropdown-content">
-                    <router-link to="agendamento" v-if="props.isAuthenticated"><img src="@/assets/img/icons/schedule.svg"/>Agendar</router-link>
-                    <router-link to="perfil" v-if="props.isAuthenticated"><img src="@/assets/img/icons/user.svg"/>Meu perfil</router-link>
+                    <router-link to="agendamento" v-if="props.isAuthenticated"><img
+                            src="@/assets/img/icons/schedule.svg" />Agendar</router-link>
+                    <router-link to="perfil" v-if="props.isAuthenticated"><img src="@/assets/img/icons/user.svg" />Meu
+                        perfil</router-link>
                     <router-link to="login" v-if="!props.isAuthenticated"><img src="@/assets/img/icons/login.svg">Faça
                         login</router-link>
+                    <router-link to="admin" v-if="props.isAuthenticated && user.user.admin"><img
+                            src="@/assets/img/icons/admin.svg">Admin</router-link>
                     <router-link to="#" v-if="props.isAuthenticated" class="logout" @click="logout"><img
                             src="@/assets/img/icons/logout.svg">Sair</router-link>
                 </div>
@@ -108,6 +112,7 @@ header {
         .dropdown {
             position: relative;
             display: inline-block;
+            z-index: 100;
 
             .dropdown-content {
                 display: none;

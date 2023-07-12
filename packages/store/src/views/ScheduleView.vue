@@ -68,7 +68,7 @@ import { useRoom } from '@/composables/useRoom';
 import router from '@/router';
 const room = useRoomStore()
 const { schedule, error, serviceLoading } = useService()
-const { getAvailableRooms, roomLoading } = useRoom()
+const { getAvailableRooms } = useRoom()
 
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();

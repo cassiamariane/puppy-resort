@@ -34,7 +34,7 @@
         <td>{{ new Date(item.startDate).toLocaleDateString('pt-br') }}</td>
         <td>{{ new Date(item.endDate).toLocaleDateString('pt-br') }}</td>
         <td v-if="item?.room?.available && !item?.finished"><Button @click="confirm(item.id)" text="Confirmar check-in" theme="primary" id="confirmar"/></td>
-        <td v-else-if="!item?.room?.available && !item?.finished"><span>Serviço em andamento</span></td>
+        <td v-else-if="!item?.room?.available && !item?.finished"><span>Quarto indisponível</span></td>
         <td v-else-if="item?.finished"><span>Serviço finalizado</span></td>
         <td v-if="!item?.finished"><Button @click="finish(item.id)" text="Finalizar serviço" theme="primary" id="finalizar" /></td>
         <td v-else><span>Serviço finalizado</span></td>
