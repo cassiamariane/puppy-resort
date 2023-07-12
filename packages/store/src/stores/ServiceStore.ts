@@ -9,10 +9,14 @@ export const useServiceStore = defineStore('service', {
           startDate: '',
           endDate: '',
           roomNumber: '',
+          finished: false,
           pet: {
             user: {
               cpf: ''
             }
+          },
+          room: {
+            available: false,
           }
         }
       ]

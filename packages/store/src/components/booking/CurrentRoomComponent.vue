@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useRoomStore } from '@/stores/RoomStore';
 import { useRoom } from '../../composables/useRoom';
 const { getAllRooms } = useRoom();

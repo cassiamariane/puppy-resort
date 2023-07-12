@@ -11,6 +11,7 @@ export default class ServiceService {
           startDate: true,
           endDate: true,
           roomNumber: true,
+          finished: true,
           pet: {
             select: {
               user: {
@@ -20,6 +21,11 @@ export default class ServiceService {
               },
             },
           },
+          room: {
+            select: {
+              available: true,
+            }
+          }
         },
       });
 
@@ -133,6 +139,90 @@ export default class ServiceService {
         status: 500,
         error:
           "Houve um problema ao agendar seu serviço. Tente novamente mais tarde.",
+      };
+    }
+  }
+
+  static async finishService(id: number) {
+    if (!id) {
+      return {
+        data: null,
+        status: 400,
+        error: "Informações insuficientes.",
+      };
+    }
+
+    try {
+      const serviceFinished = await BaseDatabase.service.update({
+        where: {
+          id,
+        },
+        data: {
+          finished: true,
+          room: {
+            update: {
+              available: true,
+            },
+          },
+        },
+      });
+      return {
+        data: (await this.getAllServices()).data,
+        status: 200,
+        error: "",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao finalizar o serviço.",
+      };
+    }
+  }
+
+  static async confirmCheckIn(id: number) {
+    if (!id) {
+      return {
+        data: null,
+        status: 400,
+        error: "Informações insuficientes.",
+      };
+    }
+
+    try {
+      const service = await BaseDatabase.service.findFirst({
+        where: {
+          id,
+        },
+      });
+      if (!service) {
+        return {
+          data: null,
+          status: 400,
+          error: "Serviço não encontrado.",
+        };
+      }
+      const roomNumber = service.roomNumber;
+      const roomUnavailable = await BaseDatabase.room.update({
+        where: {
+          number: roomNumber,
+        },
+        data: {
+          available: false,
+        },
+      });
+      return {
+        data: (await this.getAllServices()).data,
+        status: 200,
+        error: "",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao confirmar o check-in.",
       };
     }
   }

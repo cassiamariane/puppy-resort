@@ -27,9 +27,29 @@ export function useService() {
     serviceLoading.value = false;
   }
 
+  const confirmCheckIn = async (serviceId: number) => {
+    serviceLoading.value = true;
+    await post(`${api}/service/confirm/${serviceId}`, {
+      confirm: true,
+    })
+    service.services = data.value;
+    serviceLoading.value = false;
+  }
+
+  const finishService = async (serviceId: number) => {
+    serviceLoading.value = true;
+    await post(`${api}/service/finish/${serviceId}`, {
+      finish: true,
+    })
+    service.services = data.value;
+    serviceLoading.value = false;
+  }
+
   return {
     schedule,
     getAllServices,
+    confirmCheckIn,
+    finishService,
     data,
     error,
     serviceLoading,

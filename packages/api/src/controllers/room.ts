@@ -10,12 +10,12 @@ export class RoomController {
       .json({ data: response.data, error: response.error });
   }
   async getAll(req: Request, res: Response) {
-    if (req.user?.admin) {
+    // if (req.user?.admin) {
       const response = await Service.getAll();
       return res
         .status(response.status)
         .json({ data: response.data, error: response.error });
-    }
+    // }
     return res.status(401).json({ data: null, error: "Não autorizado" });
   }
 }

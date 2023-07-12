@@ -1,9 +1,6 @@
 <template>
-  <!-- <label for="search-bar">
-    <input type="text" name="search-bar" id="search-bar">
-    <button type="button"><img src="@/assets/img/icons/search.svg"></button>
-  </label> -->
-  <v-table fixed-header height="90vh" id="services-table">
+  <TheLoading v-if="serviceLoading" />
+  <v-table fixed-header height="90vh" id="services-table" v-else>
     <thead>
       <tr>
         <th class="text-center">
@@ -22,6 +19,9 @@
           Check-out
         </th>
         <th class="text-center">
+          Confirmar
+        </th>
+        <th class="text-center">
           Finalizar
         </th>
       </tr>
@@ -29,11 +29,15 @@
     <tbody v-if="service.services">
       <tr v-for="item in service.services" :key="item.id">
         <td>#{{ item.id }}</td>
-        <td>{{ item.pet.user.cpf }}</td>
+        <td>{{ item?.pet?.user?.cpf }}</td>
         <td>{{ item.roomNumber }}</td>
         <td>{{ new Date(item.startDate).toLocaleDateString('pt-br') }}</td>
         <td>{{ new Date(item.endDate).toLocaleDateString('pt-br') }}</td>
-        <td><Button text="Finalizar serviço" theme="primary" id="finalizar" /></td>
+        <td v-if="item?.room?.available && !item?.finished"><Button @click="confirm(item.id)" text="Confirmar check-in" theme="primary" id="confirmar"/></td>
+        <td v-else-if="!item?.room?.available && !item?.finished"><span>Serviço em andamento</span></td>
+        <td v-else-if="item?.finished"><span>Serviço finalizado</span></td>
+        <td v-if="!item?.finished"><Button @click="finish(item.id)" text="Finalizar serviço" theme="primary" id="finalizar" /></td>
+        <td v-else><span>Serviço finalizado</span></td>
       </tr>
     </tbody>
   </v-table>
@@ -43,9 +47,18 @@
 import { onMounted } from 'vue';
 import { useService } from '../../composables/useService';
 import { useServiceStore } from '../../stores/ServiceStore';
+import TheLoading from '../../components/layout/TheLoading.vue';
 import Button from '../layout/Button.vue';
 const service = useServiceStore();
-const { getAllServices } = useService();
+const { getAllServices, confirmCheckIn, finishService, serviceLoading } = useService();
+
+const confirm = async (serviceId: number) => {
+  await confirmCheckIn(serviceId);
+}
+
+const finish = async (serviceId: number) => {
+  await finishService(serviceId);
+}
 
 onMounted(async () => {
   await getAllServices();
@@ -104,8 +117,6 @@ tr:nth-child(even) {
 td {
   #finalizar {
     background-color: var(--error-color);
-    padding: 0.5rem 1rem;
-    min-width: 150px;
   }
 }
 

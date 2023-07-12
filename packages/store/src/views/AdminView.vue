@@ -5,9 +5,6 @@
             <span></span>
             <button @click="unactiveShowBooking" :class="{ active: !showBooking }">Quartos</button>
         </div>
-        <!-- <div id="filter-container">
-            <button id="filter"><img src="@/assets/img/icons/filter.svg"></button>
-        </div> -->
         <BookingComponent v-if="showBooking"></BookingComponent>
         <CurrentRoomComponent v-else></CurrentRoomComponent>
     </div>
