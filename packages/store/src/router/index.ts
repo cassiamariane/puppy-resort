@@ -8,27 +8,27 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../views/TheHomeView.vue'),
     },
     {
       path: '/pagamento',
       name: 'pagamento',
-      component: () => import('../views/PaymentView.vue')
+      component: () => import('../views/ThePaymentView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue'),
+      component: () => import('../views/TheLoginView.vue'),
     },
     {
       path: '/agendamento',
       name: 'agendamento',
-      component: () => import('../views/ScheduleView.vue'),
+      component: () => import('../views/TheScheduleView.vue'),
     },
     {
       path: '/perfil',
       name: 'perfil',
-      component: () => import('../views/ProfileView.vue')
+      component: () => import('../views/TheProfileView.vue')
     },
     {
       path: '/admin',

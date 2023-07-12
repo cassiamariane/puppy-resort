@@ -5,12 +5,14 @@ import addressRouter from './routes/address';
 import serviceRouter from './routes/service';
 import roomRouter from './routes/room';
 import cors from 'cors';
+import helmet from 'helmet';
 
 export default class Server {
     constructor(private app: Express, private port: number) { }
 
     config() {
         this.app.use(cors());
+        this.app.use(helmet());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.get('/api/health', (req: Request, res: Response)=> {

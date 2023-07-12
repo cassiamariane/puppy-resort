@@ -14,19 +14,15 @@ type Address = {
 }
 
 export function useAddress() {
-  const { get, post, data, error } = useFetch()
-  const addressLoading = ref(false)
+  const { get, post, put, data, error } = useFetch()
 
   const myAddress = async (token: string) => {
-    addressLoading.value = true
     const api = process.env.BASE_API
     await get(`${api}/user/address`, token)
     address.address = data.value
-    addressLoading.value = false
   }
 
   const createAddress = async (address: Address, token: string) => {
-    addressLoading.value = true
     const api = process.env.BASE_API
     await post(`${api}/address`, {
       code: address.code,
@@ -37,14 +33,26 @@ export function useAddress() {
       state: address.state,
       complement: address.complement
     }, token)
-    addressLoading.value = false
+  }
+
+  const updateAddress = async (address: any, token: string) => {
+    const api = process.env.BASE_API
+    await put(`${api}/address/${address.id}`, {
+        code: address.code,
+        street: address.street,
+        number: address.number,
+        neighborhood: address.neighborhood,
+        city: address.city,
+        state: address.state,
+        complement: address.complement,
+    }, token)
   }
 
   return {
     myAddress,
     createAddress,
+    updateAddress,
     data,
     error,
-    addressLoading
   }
 }

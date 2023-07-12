@@ -1,6 +1,6 @@
 <template>
    <div id="container">
-      <TheLoading v-if="serviceLoading || petLoading"></TheLoading>
+      <TheLoading v-if="loading"></TheLoading>
       <form v-else-if="room.rooms && pet.pets && user.user">
          <span class="hotel">Puppy Resort - <span class="cidade">Rio de Janeiro</span></span>
          <br>
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from '@/components/layout/Button.vue';
+import Button from '@/components/layout/TheButton.vue';
 import { computed, onMounted, ref, watch } from 'vue'
 import CadastroPetModal from '@/components/schedule/CadastroPetModal.vue';
 import TheLoading from '@/components/layout/TheLoading.vue';
@@ -59,7 +59,7 @@ import TheLoading from '@/components/layout/TheLoading.vue';
 import { usePetStore } from '@/stores/PetStore'
 import { usePet } from '@/composables/usePet';
 const pet = usePetStore();
-const { myPets, petLoading } = usePet();
+const { myPets } = usePet();
 
 // Quartos e serviços
 import { useRoomStore } from '@/stores/RoomStore';
@@ -79,6 +79,7 @@ const checkIn = ref('');
 const checkOut = ref('');
 const petId = ref(0);
 const roomNumber = ref(0);
+const loading = ref(false);
 
 watch(checkIn, () => {
    checkOut.value = '';
@@ -121,7 +122,11 @@ const handleAgendar = async () => {
       return;
    }
 
+   loading.value = true;
+
    await schedule(checkIn.value, checkOut.value, petId.value, roomNumber.value, user.token);
+
+   loading.value = false;
 
    if (!error.value) {
       success.value = 'Hospedagem agendada com sucesso! Entraremos em contato pelo Whatsapp para prosseguir com o pagamento.'
@@ -214,8 +219,10 @@ const precoFormatter = (preco: number) => {
 }
 
 onMounted(async () => {
+   loading.value = true;
    await myPets(user.token)
    await getAvailableRooms(user.token)
+   loading.value = false;
 
    if (!pet.pets.length) {
       abreModal()

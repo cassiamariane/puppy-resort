@@ -6,7 +6,7 @@ type Auth = {
 }
 
 export function useLogin() {
-  const { data, error, post, get, loading } = useFetch()
+  const { data, error, post, get, put } = useFetch()
 
   const login = async (user: Auth) => {
     const api = process.env.BASE_API
@@ -26,12 +26,22 @@ export function useLogin() {
     await get(`${api}/user/iscomplete`, token)
   }
 
+  const updateUser = async (user: any, token: string) => {
+    const api = process.env.BASE_API
+    await put(`${api}/user/${user.id}`, {
+      name: user.name,
+      phone: user.phone,
+      password: user.password
+    }, token)
+  }
+  
+
   return {
     data,
     error,
     login,
     isComplete,
     getMe,
-    loading
+    updateUser,
   }
 }

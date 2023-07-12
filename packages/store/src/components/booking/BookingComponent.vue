@@ -48,7 +48,7 @@ import { onMounted } from 'vue';
 import { useService } from '../../composables/useService';
 import { useServiceStore } from '../../stores/ServiceStore';
 import TheLoading from '../../components/layout/TheLoading.vue';
-import Button from '../layout/Button.vue';
+import Button from '../layout/TheButton.vue';
 const service = useServiceStore();
 const { getAllServices, confirmCheckIn, finishService, serviceLoading } = useService();
 

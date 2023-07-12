@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import Button from '../layout/Button.vue';
+import Button from '../layout/TheButton.vue';
 
 const handleClickButton = () => {
     if (!isAuthenticated()) {

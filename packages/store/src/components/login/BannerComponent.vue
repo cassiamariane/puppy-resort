@@ -13,7 +13,7 @@ defineProps({
     text: String,
     etapaAtual: Number,
 })
-import Button from '../layout/Button.vue';
+import Button from '../layout/TheButton.vue';
 const emit = defineEmits(['changeToSignup', 'changeToLogin'])
 
 const changeToSignup = () => {

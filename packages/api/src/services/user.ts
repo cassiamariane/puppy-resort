@@ -27,6 +27,7 @@ export default class UserService {
           email: true,
           pets: {
             select: {
+              id: true,
               name: true,
               species: true,
               breed: true,
@@ -233,6 +234,12 @@ export default class UserService {
     }
   }
 
+  static async hashPassword(password: string) {
+    const salt = await bcrypt.genSalt(Number(process.env.SALT) || 10);
+    const hash = await bcrypt.hash(password, salt);
+    return hash;
+  }
+
   // Cadastro de usuário
   static async createUser(user: User) {
     try {
@@ -261,10 +268,14 @@ export default class UserService {
       }
 
       // Faz o hash da senha
-      const salt = await bcrypt.genSalt(Number(process.env.SALT) || 10);
-      const hash = await bcrypt.hash(user.password, salt);
-      user.password = hash;
-      user.admin = false;
+
+      user.password = await this.hashPassword(user.password);
+
+      if (!user.admin) {
+        user.admin = false;
+      } else {
+        user.admin = true;
+      }
 
       // Cria o usuário no banco
       const userCreated = await BaseDatabase.user.create({ data: user });
@@ -287,6 +298,122 @@ export default class UserService {
         data: null,
         status: 500,
         error: "Houve um problema ao cadastrar o usuário.",
+      };
+    }
+  }
+
+  // Atualização de usuário
+  static async updateUser(id: number, user: User, userId: number) {
+    try {
+      // verifica se algum dado foi passado
+      if (!user.password && !user.phone && !user.name) {
+        return {
+          data: null,
+          status: 400,
+          error: "Informações insuficientes.",
+        };
+      }
+
+      // Verifica se o usuário existe
+      const userExists = await BaseDatabase.user.findFirst({ where: { id } });
+
+      if (!userExists) {
+        return { data: null, status: 400, error: "Usuário não cadastrado." };
+      }
+
+      if (userExists.id !== userId) {
+        return {
+          data: false,
+          status: 401,
+          error: "Você não tem permissão para atualizar este usuário.",
+        };
+      }
+
+      // Atualiza o usuário no banco
+      const userUpdated = await BaseDatabase.user.update({
+        where: {
+          id,
+        },
+        data: {
+          name: user.name ? user.name : userExists.name,
+          phone: user.phone ? user.phone : userExists.phone,
+          password: user.password ? await this.hashPassword(user.password) : userExists.password,
+        },
+      });
+      if (userUpdated.id) {
+        return this.generateToken(
+          userUpdated.id,
+          user.email,
+          user.name,
+          user.admin
+        );
+      }
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao atualizar o usuário.",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao atualizar o usuário.",
+      };
+    }
+  }
+
+  // Deleção de usuário
+  static async deleteUser(id: number, userId: number) {
+    try {
+      // verifica se o id foi passado
+      if (!id) {
+        return {
+          data: null,
+          status: 400,
+          error: "Informações insuficientes.",
+        };
+      }
+
+      // Verifica se o usuário existe
+      const userExists = await BaseDatabase.user.findFirst({ where: { id } });
+
+      if (!userExists) {
+        return { data: null, status: 400, error: "Usuário não cadastrado." };
+      }
+
+      if (userExists.id !== userId) {
+        return {
+          data: false,
+          status: 401,
+          error: "Você não tem permissão para deletar este usuário.",
+        };
+      }
+
+      // Deleta o usuário no banco
+      const userDeleted = await BaseDatabase.user.delete({
+        where: {
+          id,
+        },
+      });
+      if (userDeleted.id) {
+        return {
+          data: "Usuário deletado com sucesso.",
+          status: 200,
+          error: "",
+        };
+      }
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao deletar o usuário.",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Houve um problema ao deletar o usuário.",
       };
     }
   }

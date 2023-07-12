@@ -19,12 +19,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Button from '../layout/Button.vue';
+import Button from '../layout/TheButton.vue';
 import router from '@/router';
 import TheLoading from '../layout/TheLoading.vue';
 
 import { useLogin } from '@/composables/useLogin';
-const { data, error, login, isComplete, loading } = useLogin();
+const { data, error, login, isComplete } = useLogin();
+const loading = ref(false);
 
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
@@ -37,10 +38,12 @@ const handleLogin = async () => {
     if (!identifier.value || !password.value) {
         return;
     }
+    loading.value = true;
     await login({
         identifier: identifier.value,
         password: password.value,
     });
+    loading.value = false;
     if (!data.value) {
         return;
     }
@@ -52,12 +55,10 @@ const handleLogin = async () => {
     });
     data.value = null;
     if (user.isAuthenticated) {
-        console.log('here 1');
         
         await isComplete(user.token);
         if (data.value) {
-            console.log('here 2');
-            return router.push('/agendamento')
+            return router.push('/agendamento').then(r => router.go(0));
         }
         return changeToAddress();
     }

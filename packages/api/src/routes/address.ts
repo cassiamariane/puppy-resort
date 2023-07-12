@@ -8,5 +8,6 @@ const controller = new AddressController();
 router.get('/', authenticate, controller.findAll)
 router.get('/:id', authenticate, controller.findById)
 router.post('/', authenticate, controller.create)
+router.put('/:id', authenticate, controller.update)
 
 export default router;

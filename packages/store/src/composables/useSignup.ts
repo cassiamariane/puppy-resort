@@ -9,7 +9,7 @@ type User = {
 }
 
 export function useSignup() {
-  const { data, error, post, loading } = useFetch()
+  const { data, error, post } = useFetch()
 
   const signup = async (user: User) => {
     const api = process.env.BASE_API
@@ -26,6 +26,5 @@ export function useSignup() {
     data,
     error,
     signup,
-    loading
   }
 }

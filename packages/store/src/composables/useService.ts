@@ -5,18 +5,17 @@ const service = useServiceStore();
 
 export function useService() {
   const { get, post, data, error } = useFetch()
-  const serviceLoading = ref(false);
   const api = process.env.BASE_API
 
+  const serviceLoading = ref(false);
+
   const schedule = async (startDate: string, endDate: string, petId: number, roomNumber: number, token: string) => {
-    serviceLoading.value = true;
     await post(`${api}/service`, {
       startDate,
       endDate,
       petId,
       roomNumber
     }, token);
-    serviceLoading.value = false;
   }
 
   //admin

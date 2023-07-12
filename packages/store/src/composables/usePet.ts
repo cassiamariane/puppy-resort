@@ -14,19 +14,15 @@ type Pet = {
 }
 
 export function usePet() {
-  const { get, post, data, error} = useFetch()
-  const petLoading = ref(false);
+  const { get, post, put, data, error} = useFetch()
 
   const myPets = async (token: string) => {
-    petLoading.value = true;
     const api = process.env.BASE_API
     await get(`${api}/user/pets`, token)
     pet.pets = data.value;
-    petLoading.value = false;
   }
 
   const createPet = async (pet: Pet, token: string) => {
-    petLoading.value = true;
     const api = process.env.BASE_API
     await post(`${api}/pet`, {
       name: pet.name,
@@ -36,14 +32,23 @@ export function usePet() {
       breed: pet.breed,
       species: pet.species
     }, token)
-    petLoading.value = false;
+  }
+
+  const updatePet = async (pet: any, token: string) => {
+    const api = process.env.BASE_API
+    await put(`${api}/pet/${pet.id}`, {
+      name: pet.name,
+      age: pet.age,
+      description: pet.description,
+      breed: pet.breed,
+    }, token)
   }
 
   return {
     myPets,
     createPet,
+    updatePet,
     data,
     error,
-    petLoading
   }
 }
