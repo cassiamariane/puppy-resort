@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_1 = require("../middlewares/auth");
+const room_1 = require("../controllers/room");
+const router = (0, express_1.Router)();
+const controller = new room_1.RoomController();
+router.get("/current", auth_1.authenticate, controller.getAll);
+router.get("/:hotelId", auth_1.authenticate, controller.getAvailable);
+exports.default = router;

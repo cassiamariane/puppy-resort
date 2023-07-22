@@ -8,7 +8,9 @@ const user_1 = __importDefault(require("./routes/user"));
 const pet_1 = __importDefault(require("./routes/pet"));
 const address_1 = __importDefault(require("./routes/address"));
 const service_1 = __importDefault(require("./routes/service"));
+const room_1 = __importDefault(require("./routes/room"));
 const cors_1 = __importDefault(require("cors"));
+const helmet_1 = __importDefault(require("helmet"));
 class Server {
     constructor(app, port) {
         this.app = app;
@@ -16,6 +18,7 @@ class Server {
     }
     config() {
         this.app.use((0, cors_1.default)());
+        this.app.use((0, helmet_1.default)());
         this.app.use(express_1.default.json());
         this.app.use(express_1.default.urlencoded({ extended: true }));
         this.app.get('/api/health', (req, res) => {
@@ -23,6 +26,7 @@ class Server {
         });
         this.app.use('/api/user', user_1.default);
         this.app.use('/api/pet', pet_1.default);
+        this.app.use('/api/room', room_1.default);
         this.app.use('/api/address', address_1.default);
         this.app.use('/api/service', service_1.default);
     }

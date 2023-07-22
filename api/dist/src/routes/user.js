@@ -13,4 +13,6 @@ router.get('/iscomplete', auth_1.authenticate, controller.isSignupComplete);
 router.get('/:id', auth_1.authenticate, controller.findById);
 router.post('/login', controller.login);
 router.post('/', controller.create);
+router.put('/:id', auth_1.authenticate, controller.update);
+router.delete('/:id', auth_1.authenticate, controller.delete);
 exports.default = router;

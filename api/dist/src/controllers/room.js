@@ -12,25 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServiceController = void 0;
-const service_1 = __importDefault(require("../services/service"));
-class ServiceController {
-    findAvailableRooms(req, res) {
+exports.RoomController = void 0;
+const room_1 = __importDefault(require("../services/room"));
+class RoomController {
+    getAvailable(req, res) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield service_1.default.findAvailableRooms(Number((_a = req.params) === null || _a === void 0 ? void 0 : _a.hotelId));
+            const response = yield room_1.default.getAvailable(Number((_a = req.params) === null || _a === void 0 ? void 0 : _a.hotelId));
             return res
                 .status(response.status)
                 .json({ data: response.data, error: response.error });
         });
     }
-    schedule(req, res) {
+    getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield service_1.default.schedule(req.body);
+            const response = yield room_1.default.getAll();
             return res
                 .status(response.status)
                 .json({ data: response.data, error: response.error });
+            return res.status(401).json({ data: null, error: "Não autorizado" });
         });
     }
 }
-exports.ServiceController = ServiceController;
+exports.RoomController = RoomController;

@@ -29,7 +29,35 @@ class UserService {
                 }
                 const user = yield BaseDatabase_1.BaseDatabase.user.findUnique({
                     where: { id },
-                    select: { id: true, name: true, cpf: true, phone: true, email: true },
+                    select: {
+                        id: true,
+                        name: true,
+                        cpf: true,
+                        phone: true,
+                        email: true,
+                        pets: {
+                            select: {
+                                id: true,
+                                name: true,
+                                species: true,
+                                breed: true,
+                                age: true,
+                                description: true,
+                                gender: true,
+                            },
+                        },
+                        address: {
+                            select: {
+                                code: true,
+                                number: true,
+                                street: true,
+                                neighborhood: true,
+                                city: true,
+                                state: true,
+                                complement: true,
+                            },
+                        },
+                    },
                 });
                 return {
                     data: user,
@@ -57,7 +85,7 @@ class UserService {
                         error: "ID inválido ou inexistente.",
                     };
                 }
-                const user = yield BaseDatabase_1.BaseDatabase.pet.findMany({
+                const pets = yield BaseDatabase_1.BaseDatabase.pet.findMany({
                     where: { userId },
                     select: {
                         id: true,
@@ -70,7 +98,7 @@ class UserService {
                     },
                 });
                 return {
-                    data: user,
+                    data: pets,
                     status: 200,
                     error: "",
                 };
@@ -216,6 +244,13 @@ class UserService {
             }
         });
     }
+    static hashPassword(password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const salt = yield bcryptjs_1.default.genSalt(Number(process.env.SALT) || 10);
+            const hash = yield bcryptjs_1.default.hash(password, salt);
+            return hash;
+        });
+    }
     static createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -236,9 +271,7 @@ class UserService {
                 if (userExists) {
                     return { data: null, status: 400, error: "Usuário já cadastrado." };
                 }
-                const salt = yield bcryptjs_1.default.genSalt(Number(process.env.SALT) || 10);
-                const hash = yield bcryptjs_1.default.hash(user.password, salt);
-                user.password = hash;
+                user.password = yield this.hashPassword(user.password);
                 if (!user.admin) {
                     user.admin = false;
                 }
@@ -261,6 +294,105 @@ class UserService {
                     data: null,
                     status: 500,
                     error: "Houve um problema ao cadastrar o usuário.",
+                };
+            }
+        });
+    }
+    static updateUser(id, user, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!user.password && !user.phone && !user.name) {
+                    return {
+                        data: null,
+                        status: 400,
+                        error: "Informações insuficientes.",
+                    };
+                }
+                const userExists = yield BaseDatabase_1.BaseDatabase.user.findFirst({ where: { id } });
+                if (!userExists) {
+                    return { data: null, status: 400, error: "Usuário não cadastrado." };
+                }
+                if (userExists.id !== userId) {
+                    return {
+                        data: false,
+                        status: 401,
+                        error: "Você não tem permissão para atualizar este usuário.",
+                    };
+                }
+                const userUpdated = yield BaseDatabase_1.BaseDatabase.user.update({
+                    where: {
+                        id,
+                    },
+                    data: {
+                        name: user.name ? user.name : userExists.name,
+                        phone: user.phone ? user.phone : userExists.phone,
+                        password: user.password ? yield this.hashPassword(user.password) : userExists.password,
+                    },
+                });
+                if (userUpdated.id) {
+                    return this.generateToken(userUpdated.id, user.email, user.name, user.admin);
+                }
+                return {
+                    data: null,
+                    status: 500,
+                    error: "Houve um problema ao atualizar o usuário.",
+                };
+            }
+            catch (error) {
+                console.log(error);
+                return {
+                    data: null,
+                    status: 500,
+                    error: "Houve um problema ao atualizar o usuário.",
+                };
+            }
+        });
+    }
+    static deleteUser(id, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!id) {
+                    return {
+                        data: null,
+                        status: 400,
+                        error: "Informações insuficientes.",
+                    };
+                }
+                const userExists = yield BaseDatabase_1.BaseDatabase.user.findFirst({ where: { id } });
+                if (!userExists) {
+                    return { data: null, status: 400, error: "Usuário não cadastrado." };
+                }
+                if (userExists.id !== userId) {
+                    return {
+                        data: false,
+                        status: 401,
+                        error: "Você não tem permissão para deletar este usuário.",
+                    };
+                }
+                const userDeleted = yield BaseDatabase_1.BaseDatabase.user.delete({
+                    where: {
+                        id,
+                    },
+                });
+                if (userDeleted.id) {
+                    return {
+                        data: "Usuário deletado com sucesso.",
+                        status: 200,
+                        error: "",
+                    };
+                }
+                return {
+                    data: null,
+                    status: 500,
+                    error: "Houve um problema ao deletar o usuário.",
+                };
+            }
+            catch (error) {
+                console.log(error);
+                return {
+                    data: null,
+                    status: 500,
+                    error: "Houve um problema ao deletar o usuário.",
                 };
             }
         });

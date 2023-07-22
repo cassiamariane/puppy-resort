@@ -12,50 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserController = void 0;
-const user_1 = __importDefault(require("../services/user"));
-class UserController {
-    getMe(req, res) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.getMe(Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id));
-            return res
-                .status(response.status)
-                .json({ data: response.data, error: response.error });
-        });
-    }
-    getMyPets(req, res) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.getMyPets(Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id));
-            return res
-                .status(response.status)
-                .json({ data: response.data, error: response.error });
-        });
-    }
-    getMyAddress(req, res) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.getMyAddress(Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id));
-            return res
-                .status(response.status)
-                .json({ data: response.data, error: response.error });
-        });
-    }
-    isSignupComplete(req, res) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.isSignupComplete(Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id));
-            return res
-                .status(response.status)
-                .json({ data: response.data, error: response.error });
-        });
-    }
+exports.AddressController = void 0;
+const address_1 = __importDefault(require("../services/address"));
+class AddressController {
     findById(req, res) {
-        var _a;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
-            if ((_a = req.user) === null || _a === void 0 ? void 0 : _a.admin) {
-                const response = yield user_1.default.findById(Number(req.params.id));
+            const response = yield address_1.default.findById(Number(req.params.id));
+            if (((_a = req.user) === null || _a === void 0 ? void 0 : _a.admin) || ((_b = response.data) === null || _b === void 0 ? void 0 : _b.user.id) == ((_c = req.user) === null || _c === void 0 ? void 0 : _c.id)) {
                 return res
                     .status(response.status)
                     .json({ data: response.data, error: response.error });
@@ -67,7 +31,7 @@ class UserController {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if ((_a = req.user) === null || _a === void 0 ? void 0 : _a.admin) {
-                const response = yield user_1.default.findAll();
+                const response = yield address_1.default.findAll();
                 return res
                     .status(response.status)
                     .json({ data: response.data, error: response.error });
@@ -76,20 +40,22 @@ class UserController {
         });
     }
     create(req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.createUser(req.body);
+            const response = yield address_1.default.createAddress(Object.assign(Object.assign({}, req.body), { userId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id }));
             return res
                 .status(response.status)
                 .json({ data: response.data, error: response.error });
         });
     }
-    login(req, res) {
+    update(req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.login(req.body);
+            const response = yield address_1.default.updateAddress(Number(req.params.id), req.body, (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
             return res
                 .status(response.status)
                 .json({ data: response.data, error: response.error });
         });
     }
 }
-exports.UserController = UserController;
+exports.AddressController = AddressController;

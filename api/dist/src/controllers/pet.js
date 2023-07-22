@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddressController = void 0;
-const address_1 = __importDefault(require("../services/address"));
-class AddressController {
+exports.PetController = void 0;
+const pet_1 = __importDefault(require("../services/pet"));
+class PetController {
     findById(req, res) {
         var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield address_1.default.findById(Number(req.params.id));
+            const response = yield pet_1.default.findById(Number(req.params.id));
             if (((_a = req.user) === null || _a === void 0 ? void 0 : _a.admin) || ((_b = response.data) === null || _b === void 0 ? void 0 : _b.user.id) == ((_c = req.user) === null || _c === void 0 ? void 0 : _c.id)) {
                 return res
                     .status(response.status)
@@ -31,7 +31,7 @@ class AddressController {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if ((_a = req.user) === null || _a === void 0 ? void 0 : _a.admin) {
-                const response = yield address_1.default.findAll();
+                const response = yield pet_1.default.findAll();
                 return res
                     .status(response.status)
                     .json({ data: response.data, error: response.error });
@@ -42,11 +42,29 @@ class AddressController {
     create(req, res) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield address_1.default.createAddress(Object.assign(Object.assign({}, req.body), { userId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id }));
+            const response = yield pet_1.default.createPet(Object.assign(Object.assign({}, req.body), { userId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id }));
+            return res
+                .status(response.status)
+                .json({ data: response.data, error: response.error });
+        });
+    }
+    update(req, res) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield pet_1.default.updatePet(Number(req.params.id), req.body, (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
+            return res
+                .status(response.status)
+                .json({ data: response.data, error: response.error });
+        });
+    }
+    delete(req, res) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield pet_1.default.deletePet(Number(req.params.id), (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
             return res
                 .status(response.status)
                 .json({ data: response.data, error: response.error });
         });
     }
 }
-exports.AddressController = AddressController;
+exports.PetController = PetController;
