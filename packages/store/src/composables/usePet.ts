@@ -19,6 +19,8 @@ export function usePet() {
   const myPets = async (token: string) => {
     const api = process.env.BASE_API
     await get(`${api}/user/pets`, token)
+    console.log('buscou');
+    
     pet.pets = data.value;
   }
 

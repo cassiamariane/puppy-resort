@@ -1,7 +1,7 @@
 <template>
    <div id="container">
       <TheLoading v-if="loading"></TheLoading>
-      <form v-else-if="room.rooms && pet.pets && user.user">
+      <form v-else-if="room.rooms && pet?.pets && user.user">
          <span class="hotel">Puppy Resort - <span class="cidade">Rio de Janeiro</span></span>
          <br>
          <br>
@@ -14,7 +14,7 @@
          <div class="quantidade">
             <label>Qual pet?
                <select name="qtd" id="qtd" v-model="petId">
-                  <option :value="p.id" v-for="p in pet.pets" :key="p.id">{{ p.name }}</option>
+                  <option :value="p.id" v-for="p in pet?.pets" :key="p.id">{{ p.name }}</option>
                </select>
             </label>
          </div>
@@ -97,7 +97,7 @@ watch(roomNumber, () => {
 })
 
 const fechaModal = () => {
-   if (pet.pets.length) {
+   if (pet?.pets?.length) {
       modalActive.value = false;
    }
 }
@@ -107,7 +107,7 @@ const abreModal = () => {
 }
 
 const handleAgendar = async () => {
-   if (!pet.pets.length) {
+   if (!pet?.pets?.length) {
       abreModal()
       return;
    }
@@ -224,11 +224,11 @@ onMounted(async () => {
    await getAvailableRooms(user.token)
    loading.value = false;
 
-   if (!pet.pets.length) {
+   if (!pet?.pets?.length) {
       abreModal()
    }
-   roomNumber.value = room.rooms[0].room ?? 0;
-   petId.value = pet.pets[0].id ?? 0;
+   roomNumber.value = room?.rooms[0].room ?? 0;
+   petId.value = pet?.pets[0].id ?? 0;
 });
 </script>
 

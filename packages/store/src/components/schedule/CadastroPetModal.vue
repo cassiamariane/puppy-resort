@@ -1,5 +1,5 @@
 <template>
-    <ModalComponent :is-close-button-active="!!pet.pets.length" :modal-active="modalActive"
+    <ModalComponent :is-close-button-active="!!pet?.pets?.length" :modal-active="modalActive"
         @fechaModal="$emit('fechaModal')">
         <div id="form-container">
             <h2>Antes de tudo, vamos cadastrar seu pet</h2>
@@ -53,6 +53,8 @@ import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore()
 const { createPet, data, error } = usePet();
 import router from '@/router';
+import { usePetStore } from '@/stores/PetStore'
+const pet = usePetStore();
 
 const name = ref('');
 const species = ref('');
@@ -81,8 +83,6 @@ defineProps({
     modalActive: Boolean,
 })
 
-import { usePetStore } from '@/stores/PetStore'
-const pet = usePetStore();
 </script>
 
 <style scoped lang="scss">

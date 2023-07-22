@@ -9,6 +9,13 @@ export function useService() {
 
   const serviceLoading = ref(false);
 
+  const getMyServices = async (token: string) => {
+    serviceLoading.value = true;
+    await get(`${api}/service`, token)
+    service.services = data.value;
+    serviceLoading.value = false;
+  }
+
   const schedule = async (startDate: string, endDate: string, petId: number, roomNumber: number, token: string) => {
     await post(`${api}/service`, {
       startDate,
@@ -46,6 +53,7 @@ export function useService() {
 
   return {
     schedule,
+    getMyServices,
     getAllServices,
     confirmCheckIn,
     finishService,

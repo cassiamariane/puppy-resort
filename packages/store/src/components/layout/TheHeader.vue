@@ -8,6 +8,8 @@
                 <div class="dropdown-content">
                     <router-link to="agendamento" v-if="props.isAuthenticated"><img
                             src="@/assets/img/icons/schedule.svg" />Agendar</router-link>
+                    <router-link to="reservas" v-if="props.isAuthenticated"><img
+                            src="@/assets/img/icons/reservas.svg" />Minhas reservas</router-link>
                     <router-link to="perfil" v-if="props.isAuthenticated"><img src="@/assets/img/icons/user.svg" />Meu
                         perfil</router-link>
                     <router-link to="login" v-if="!props.isAuthenticated"><img src="@/assets/img/icons/login.svg">Faça
@@ -119,7 +121,7 @@ header {
                 position: absolute;
                 left: -50px;
                 background-color: #f9f9f9;
-                min-width: 160px;
+                min-width: max-content;
                 box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
                 z-index: 1;
 

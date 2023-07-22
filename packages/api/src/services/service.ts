@@ -24,13 +24,68 @@ export default class ServiceService {
           room: {
             select: {
               available: true,
-            }
-          }
+            },
+          },
         },
       });
 
       return {
         data: services,
+        status: 200,
+        error: "",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error:
+          "Houve um problema ao buscar os serviços. Tente novamente mais tarde.",
+      };
+    }
+  }
+
+  static async getClientServices(userId: number) {
+    const calculateServiceValue = (startDate: string, endDate: string) => {
+      const valorDiario = 70;
+      const umDiaEmMilissegundos = 24 * 60 * 60 * 1000;
+      const data1SemHora = new Date(endDate);
+      data1SemHora.setUTCHours(9, 0, 0, 0);
+      const data2SemHora = new Date(startDate);
+      data2SemHora.setUTCHours(9, 0, 0, 0);
+      const diferencaEmMilissegundos = Math.abs(
+        data1SemHora.getTime() - data2SemHora.getTime()
+      );
+      const diferencaEmDias = Math.round(
+        diferencaEmMilissegundos / umDiaEmMilissegundos
+      );
+      return diferencaEmDias * valorDiario;
+    };
+    try {
+      const services = await BaseDatabase.service.findMany({
+        select: {
+          id: true,
+          startDate: true,
+          endDate: true,
+          roomNumber: true,
+          finished: true,
+          pet: {
+            select: {
+              name: true,
+              species: true,
+            },
+          },
+        },
+        where: {
+          userId,
+        },
+      });
+
+      return {
+        data: services.map((s: any) => ({
+          ...s,
+          value: calculateServiceValue(s.startDate, s.endDate),
+        })),
         status: 200,
         error: "",
       };
@@ -204,7 +259,7 @@ export default class ServiceService {
         };
       }
       const roomNumber = service.roomNumber;
-      const roomUnavailable = await BaseDatabase.room.update({
+      await BaseDatabase.room.update({
         where: {
           number: roomNumber,
         },

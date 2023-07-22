@@ -10,7 +10,10 @@ export const useServiceStore = defineStore('service', {
           endDate: '',
           roomNumber: '',
           finished: false,
+          value: 0,
           pet: {
+            name: '',
+            species: '',
             user: {
               cpf: ''
             }

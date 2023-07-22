@@ -19,7 +19,7 @@
             {{ r.services[0].pet.user.phone }}
           </div>
           <div class="info">
-            <img src="@/assets/img/icons/calendar.svg">
+            <img src="@/assets/img/icons/schedule.svg">
             {{ new Date(r.services[0]?.startDate).toLocaleDateString('pt-br') }} - {{ new
               Date(r.services[0]?.endDate).toLocaleDateString('pt-br') }}
           </div>

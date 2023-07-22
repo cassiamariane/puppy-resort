@@ -1,18 +1,23 @@
 <template>
     <div id="container">
-        <!--
-        <div class="box" id="pix-box">
-            <span>Copie o código ou escaneie o QR CODE</span>
+        <TheLoading v-if="loading"></TheLoading>
+        <div class="box" id="pix-box" v-if="!estaPago && !loading">
+            <span>Copie o código ou escaneie o QR CODE abaixo.</span>
             <p>Ao copiar o código, abra o seu aplicativo de preferência cadastrado no PIX e realize o pagamento.</p>
+            <span class="codigo">{{ codigoAleatorioPIX }}</span>
             <img id="qrimg" src="@/assets/img/qrcode.svg">
-            <Button text="Copiar código" theme="primary" id="copiar"></Button>
+            <div class="text-center ma-2 snackbar">
+                <v-snackbar v-model="snackbar" :timeout="3000">
+                    Código copiado!
+                </v-snackbar>
+            </div>
+            <Button text="Copiar código" theme="primary" id="copiar" @click="copiaCodigoPIX"></Button>
         </div>
-        -->
-        <div class="box" id="confirm-box">
+        <div class="box" id="confirm-box" v-if="estaPago && !loading">
             <span>Obrigado!</span>
             <p>O seu pagamento foi confirmado com sucesso. Te desejamos uma ótima experiência conosco.</p>
             <img src="@/assets/img/pgtrealizado.png" id="confirma">
-            <Button text="Consultar minhas reservas" theme="primary" id="reservas"></Button>
+            <Button text="Consultar minhas reservas" theme="primary" id="reservas" @click="router.push('reservas')"></Button>
         </div>
     </div>
 </template>
@@ -20,6 +25,33 @@
 <script setup lang="ts">
 import Button from '@/components/layout/TheButton.vue';
 import TheLoading from '@/components/layout/TheLoading.vue';
+import router from '@/router';
+import { onMounted, ref } from 'vue';
+import { uuid } from 'vue-uuid';
+
+const codigoAleatorioPIX = ref('');
+const snackbar = ref(false);
+const estaPago = ref(false);
+const loading = ref(false)
+
+onMounted(() => {
+    codigoAleatorioPIX.value = 'puppy_resort_'.concat(uuid.v4().toString());
+    setTimeout(() => {
+        loading.value = true;
+        setTimeout(() => {
+            loading.value = false;
+            estaPago.value = true;
+        }, 1000)
+    }, 5000)
+});
+
+const copiaCodigoPIX = () => {
+    navigator.clipboard.writeText(codigoAleatorioPIX.value).then(() => {
+        snackbar.value = true;
+    }).catch(() => {
+        alert('Não foi possível copiar o código.');
+    })
+}
 
 </script>
 
@@ -29,8 +61,9 @@ import TheLoading from '@/components/layout/TheLoading.vue';
     display: flex;
     min-height: 90vh;
     justify-content: center;
-    padding: 3rem 2rem 8rem;
-   .box{
+    padding: 1rem 2rem 8rem;
+
+    .box {
         flex: 0 1;
         display: flex;
         flex-direction: column;
@@ -43,29 +76,40 @@ import TheLoading from '@/components/layout/TheLoading.vue';
         min-width: 100%;
         align-items: center;
         justify-content: center;
-        span{
+
+        .codigo {
+            margin: 1em 0 0;
+            word-break: break-all;
+        }
+
+        span {
             font-size: 20px;
             font-weight: bold;
         }
-        p{
+
+        p {
             font-size: 15px;
         }
-        #qr-img{
-            max-width: 20rem;
+
+        img {
+            max-width: 300px;
         }
-        #confirma{
-            margin-top:2rem;
+
+        #confirma {
+            margin-top: 2rem;
             margin-bottom: 2rem;
             max-width: 100%;
             width: 10rem;
         }
-        button{
+
+        button {
             width: 100%;
         }
+
         @media screen and (min-width: 998px) {
             min-width: 40%;
             max-width: 40%;
-         }
+        }
     }
 }
 </style>
