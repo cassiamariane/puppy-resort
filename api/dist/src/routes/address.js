@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const address_1 = require("../controllers/address");
+const auth_1 = require("../middlewares/auth");
+const router = (0, express_1.Router)();
+const controller = new address_1.AddressController();
+router.get('/', auth_1.authenticate, controller.findAll);
+router.get('/:id', auth_1.authenticate, controller.findById);
+router.post('/', auth_1.authenticate, controller.create);
+router.put('/:id', auth_1.authenticate, controller.update);
+exports.default = router;
