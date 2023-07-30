@@ -1,33 +1,37 @@
 <template>
     <div class="container">
         <form>
-            <label for="name">
+            <label for="name" :class="{error: nameError}">
                 <span>Nome completo:</span>
-                <input autofocus required type="text" name="name" id="name" v-model="name">
+                <input autofocus required type="text" name="name" id="name" v-model="name" @blur="validateFullName(name)">
+                <span class="error">{{ nameError }}</span>
             </label>
-            <label for="email">
+            <label for="email" :class="{error: emailError}">
                 <span>E-mail:</span>
-                <input required type="email" name="email" id="email" v-model="email" @blur="validateEmail">
+                <input required type="email" name="email" id="email" v-model="email" @blur="validateEmail(email)">
+                <span class="error">{{ emailError }}</span>
             </label>
             <div class="flex">
                 <label for="phone">
                     <span>Telefone de emergência:</span>
-                    <input required type="tel" name="phone" id="phone" v-model="phone">
+                    <input required type="tel" name="phone" id="phone" v-model="phone" v-maska data-maska="(##) #####-####">
                 </label>
-                <label for="cpf">
+                <label for="cpf" :class="{error: cpfError}">
                     <span>CPF:</span>
-                    <input required type="text" name="cpf" id="cpf" v-model="cpf">
+                    <input required type="text" name="cpf" id="cpf" v-model="cpf" @blur="validateCPF(cpf)" v-maska data-maska="###.###.###-##">
+                    <span class="error">{{ cpfError }}</span>
                 </label>
             </div>
-            <label for="password">
+            <label for="password" :class="{error: passwordError}">
                 <span>Senha:</span>
-                <input required type="password" name="password" id="password" v-model="password">
+                <input required type="password" name="password" id="password" v-model="password" @blur="validatePassword(password)">
+                <span class="error">{{ passwordError }}</span>
             </label>
-            <label for="password_2">
+            <label for="password_2" :class="{error: confPasswordError}">
                 <span>Confirme sua senha:</span>
-                <input required type="password" name="password_2" id="password_2" v-model="passwordConfirmation">
+                <input required type="password" name="password_2" id="password_2" v-model="passwordConfirmation" @blur="validateConfPassword(password, passwordConfirmation)">
+                <span class="error">{{ confPasswordError }}</span>
             </label>
-            <span class="error">{{ error }}</span>
             <TheLoading v-if="loading" />
             <Button text="Avançar" theme="primary" id="avancar" @click.prevent="handleSignup"><img
                     src="@/assets/img/backward.svg"></Button>
@@ -37,7 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
+
+import { vMaska } from "maska"
+
 import Button from '../layout/TheButton.vue';
 import { useSignup } from '@/composables/useSignup';
 import TheLoading from '../layout/TheLoading.vue';
@@ -50,36 +57,20 @@ const user = useUserStore();
 import useLocalStorage from '@/composables/useLocalStorage';
 const { saveToLocalStorage } = useLocalStorage();
 
+import { useValidation } from '@/composables/useValidation';
+const {validateEmail, validatePassword, validateConfPassword, validateCPF, validateFullName, nameError, emailError, passwordError, cpfError, confPasswordError} = useValidation()
+
 const name = ref('');
 const email = ref('');
-const phone = ref('+55');
+const phone = ref('');
 const cpf = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
 
-const validateEmail = () => {
-    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
-
-    if (!emailRegex.test(email.value)) {
-        error.value = 'E-mail inválido.'
-        return false;
-    }
-    error.value = '';
-    return true;
-}
-
-watch(email, () => {
-    error.value = '';
-})
-
 const handleSignup = async () => {
     error.value = '';
-    if (!validateEmail()) {
+    if (nameError.value || emailError.value || passwordError.value || cpfError.value || confPasswordError.value) {
         return false;
-    }
-    if (password.value != passwordConfirmation.value) {
-        error.value = 'As senhas não coincidem.'
-        return;
     }
     loading.value = true;
     await signup({
@@ -181,8 +172,16 @@ const changeToAddress = () => {
             gap: 1rem;
         }
 
-        span.error {
-            color: var(--error-color);;
+        label.error {
+
+            input {
+                border: 2px solid var(--error-color);
+            }
+
+            
+            span.error {
+                color: var(--error-color);;
+            }
         }
 
         span.green,

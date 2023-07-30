@@ -40,6 +40,11 @@ const router = createRouter({
       name: 'reservas',
       component: () => import('../views/TheReservationsView.vue')
     },
+    {
+      path: '/termos',
+      name: 'termos',
+      component: () => import('../views/TheTermosDeUso.vue')
+    },
   ]
 })
 
