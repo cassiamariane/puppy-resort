@@ -2,7 +2,8 @@
     <header>
         <img src="@/assets/img/Logo.svg" id="logo" @click="router.push('/')">
         <div class="button-container">
-            <Button text="Agendar hospedagem" theme="primary" id="agendar" @click="handleClickButton" />
+            <Button v-if="!user.user.admin" text="Agendar hospedagem" theme="primary" id="agendar" @click="handleClickButton" />
+            <Button v-else text="Visualizar agendamentos" theme="primary" id="agendar" @click="handleAdminClickButton" />
             <div class="dropdown">
                 <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburguer.svg" id="menu-strokes"></button>
                 <div class="dropdown-content">
@@ -31,6 +32,14 @@ import useLocalStorage from '@/composables/useLocalStorage';
 const { removeFromLocalStorage } = useLocalStorage();
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
+
+const handleAdminClickButton = () => {
+    if (!props.isAuthenticated) {
+        router.push('/login');
+        return;
+    }
+    router.push('/admin');
+}
 
 const handleClickButton = () => {
     if (!props.isAuthenticated) {
