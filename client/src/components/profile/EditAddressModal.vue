@@ -5,7 +5,7 @@
             <form>
                 <label for="cep">
                     <span>CEP</span>
-                    <input autofocus required type="text" name="cep" id="cep" v-model="cep" placeholder="Apenas números">
+                    <input autofocus required type="text" name="cep" id="cep" v-model="cep" placeholder="Apenas números" v-maska data-maska="#####-###">
                     <small id="login">Não sabe seu cep? <span class="green"><a
                                 href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank">Veja
                                 aqui</a></span></small>
@@ -47,6 +47,7 @@
 
 <script setup lang="ts">
 import ModalComponent from '@/components/layout/ModalComponent.vue'
+import { vMaska } from "maska"
 import Button from '../layout/TheButton.vue';
 import { onMounted, ref, watch } from 'vue';
 
@@ -71,7 +72,7 @@ const complemento = ref('');
 const numeroRef = ref(null)
 
 watch(cep, async () => {
-    if (cep.value.length === 8 && cep.value != address.address.code) {
+    if (cep.value.length === 9 && cep.value != address.address.code) {
         const res = await fetch(`https://viacep.com.br/ws/${cep.value}/json/`);
         const r = await res.json();
         if (r.logradouro) {

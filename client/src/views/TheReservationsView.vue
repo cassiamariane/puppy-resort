@@ -81,7 +81,7 @@ onMounted(async () => {
     .card {
       display: flex;
       flex-direction: column;
-      border-radius: 10px;
+      border-radius: 5px;
       gap: 1.5rem;
       margin-bottom: 1rem;
       align-items: center;
@@ -111,7 +111,7 @@ onMounted(async () => {
         width: 100%;
         text-align: center;
         padding: 0.5rem;
-        border-radius: 10px 10px 0 0;
+        border-radius: 5px 5px 0 0;
         color: #fff;
         font-weight: bold;
         overflow: hidden;

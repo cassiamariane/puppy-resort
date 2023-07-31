@@ -7,7 +7,7 @@
     "build": "rm -rf ./dist && tsc",
     "start": "npm run build && node dist/src/App.js",
     "dev": "ts-node-dev src/App.ts",
-    "test": "jest"
+    "test": "set NODE_ENV = test && jest --forceExit"
   },
   "keywords": [],
   "author": "",

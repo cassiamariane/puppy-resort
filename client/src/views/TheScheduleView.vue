@@ -40,10 +40,7 @@
             <p v-if="checkIn && checkOut" class="valor-total">Total: <span>{{ precoFormatter(total) }}</span></p>
          </div>
          <span v-if="error" class="error">{{ error }}</span>
-         <span v-if="success" class="success"> {{ success }}</span>
-         <Button v-if="!success" text="Agendar" theme="primary" id="agendar" @click.prevent="handleAgendar"></Button>
-         <Button v-if="success" text="Voltar para a home" theme="primary" id="voltar"
-            @click.prevent="handleVoltarParaHome"></Button>
+         <Button text="Agendar" theme="primary" id="agendar" @click.prevent="handleAgendar"></Button>
       </form>
       <CadastroPetModal :modalActive="modalActive" @fechaModal="fechaModal"></CadastroPetModal>
    </div>
@@ -73,7 +70,6 @@ const { getAvailableRooms } = useRoom()
 import { useUserStore } from '@/stores/UserStore';
 const user = useUserStore();
 
-const success = ref('');
 const valorDiario = ref(70);
 const checkIn = ref('');
 const checkOut = ref('');
@@ -129,13 +125,8 @@ const handleAgendar = async () => {
    loading.value = false;
 
    if (!error.value) {
-      success.value = 'Hospedagem agendada com sucesso! Entraremos em contato pelo Whatsapp para prosseguir com o pagamento.'
+      router.push('pagamento')
    }
-}
-
-const handleVoltarParaHome = () => {
-   router.push('/');
-   return
 }
 
 const modalActive = ref(false)
@@ -226,9 +217,10 @@ onMounted(async () => {
 
    if (!pet?.pets?.length) {
       abreModal()
+      return;
    }
    roomNumber.value = room?.rooms[0].room ?? 0;
-   petId.value = pet?.pets[0].id ?? 0;
+   petId.value = pet.pets[0].id ?? 0;
 });
 </script>
 

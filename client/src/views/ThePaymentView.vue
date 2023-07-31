@@ -15,7 +15,7 @@
         </div>
         <div class="box" id="confirm-box" v-if="estaPago && !loading">
             <span>Obrigado!</span>
-            <p>O seu pagamento foi confirmado com sucesso. Te desejamos uma ótima experiência conosco.</p>
+            <p>O seu pagamento foi confirmado com sucesso. Lhe desejamos uma ótima experiência conosco.</p>
             <img src="@/assets/img/pgtrealizado.png" id="confirma">
             <Button text="Consultar minhas reservas" theme="primary" id="reservas" @click="router.push('reservas')"></Button>
         </div>

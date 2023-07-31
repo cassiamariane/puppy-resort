@@ -84,18 +84,18 @@ class UserController {
         });
     }
     update(req, res) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.updateUser(Number(req.params.id), req.body, (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
+            const response = yield user_1.default.updateUser(Number(req.params.id), req.body, (_a = req.user) === null || _a === void 0 ? void 0 : _a.id, (_b = req.user) === null || _b === void 0 ? void 0 : _b.admin);
             return res
                 .status(response.status)
                 .json({ data: response.data, error: response.error });
         });
     }
     delete(req, res) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield user_1.default.deleteUser(Number(req.params.id), (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
+            const response = yield user_1.default.deleteUser(Number(req.params.id), (_a = req.user) === null || _a === void 0 ? void 0 : _a.id, (_b = req.user) === null || _b === void 0 ? void 0 : _b.admin);
             return res
                 .status(response.status)
                 .json({ data: response.data, error: response.error });

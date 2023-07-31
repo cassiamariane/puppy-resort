@@ -12,4 +12,6 @@ const app = (0, express_1.default)();
 const server = new Server_1.default(app, port);
 exports.default = app;
 server.config();
-server.run();
+if (process.env.NODE_ENV !== 'test') {
+    server.run();
+}

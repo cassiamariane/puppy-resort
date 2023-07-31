@@ -43,7 +43,7 @@ const changeToLogin = () => {
     align-items: center;
     flex-direction: column;
     padding:5rem;
-    border-radius: 10px;
+    border-radius: 5px;
     justify-content: center;
     gap:3rem;
 

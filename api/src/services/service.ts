@@ -208,7 +208,7 @@ export default class ServiceService {
     }
 
     try {
-      const serviceFinished = await BaseDatabase.service.update({
+      await BaseDatabase.service.update({
         where: {
           id,
         },

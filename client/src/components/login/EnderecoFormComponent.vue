@@ -3,7 +3,7 @@
         <form>
             <label for="cep">
                 <span>CEP</span>
-                <input autofocus required type="text" name="cep" id="cep" v-model="cep" placeholder="Apenas números">
+                <input autofocus required type="text" name="cep" id="cep" v-model="cep" placeholder="Apenas números" v-maska data-maska="#####-###">
                 <small id="login">Não sabe seu cep? <span class="green"><a
                             href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank">Veja
                             aqui</a></span></small>
@@ -39,7 +39,7 @@
             <div id="check">
                 <label for="termos">
                     <input required type="checkbox" name="termos" id="termos" v-model="termos">
-                    <span>Eu li e concordo com os termos de uso da plataforma</span>
+                    <span>Eu li e concordo com os <router-link to="termos" target="_blank">termos de uso</router-link> da plataforma</span>
                 </label>
             </div>
             <span class="error">{{ error }}</span>
@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { vMaska } from "maska"
 import Button from '../layout/TheButton.vue';
 import TheLoading from '../layout/TheLoading.vue';
 import router from '@/router';
@@ -73,7 +74,7 @@ const termos = ref(false);
 const numeroRef = ref(null)
 
 watch(cep, async () => {
-    if (cep.value.length === 8) {
+    if (cep.value.length === 9) {
         loading.value = true;
         const res = await fetch(`https://viacep.com.br/ws/${cep.value}/json/`);
         const r = await res.json();
@@ -183,6 +184,10 @@ const changeToLogin = () => {
             flex-direction: row;
             font-size: 14px;
             gap: 1rem;
+
+            a {
+                color: var(--primary-color);
+            }
         }
 
         span.error {
