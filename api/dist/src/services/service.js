@@ -190,7 +190,7 @@ class ServiceService {
                 };
             }
             try {
-                const serviceFinished = yield BaseDatabase_1.BaseDatabase.service.update({
+                yield BaseDatabase_1.BaseDatabase.service.update({
                     where: {
                         id,
                     },

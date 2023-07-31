@@ -228,9 +228,16 @@ class UserService {
                         admin: true,
                     },
                 });
+                if (user) {
+                    return {
+                        data: user,
+                        status: 200,
+                        error: "",
+                    };
+                }
                 return {
-                    data: user,
-                    status: 200,
+                    data: null,
+                    status: 404,
                     error: "",
                 };
             }
@@ -298,7 +305,7 @@ class UserService {
             }
         });
     }
-    static updateUser(id, user, userId) {
+    static updateUser(id, user, userId, admin) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (!user.password && !user.phone && !user.name) {
@@ -312,7 +319,7 @@ class UserService {
                 if (!userExists) {
                     return { data: null, status: 400, error: "Usuário não cadastrado." };
                 }
-                if (userExists.id !== userId) {
+                if (!admin && userExists.id !== userId) {
                     return {
                         data: false,
                         status: 401,
@@ -326,7 +333,9 @@ class UserService {
                     data: {
                         name: user.name ? user.name : userExists.name,
                         phone: user.phone ? user.phone : userExists.phone,
-                        password: user.password ? yield this.hashPassword(user.password) : userExists.password,
+                        password: user.password
+                            ? yield this.hashPassword(user.password)
+                            : userExists.password,
                     },
                 });
                 if (userUpdated.id) {
@@ -348,7 +357,7 @@ class UserService {
             }
         });
     }
-    static deleteUser(id, userId) {
+    static deleteUser(id, userId, admin) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (!id) {
@@ -362,7 +371,7 @@ class UserService {
                 if (!userExists) {
                     return { data: null, status: 400, error: "Usuário não cadastrado." };
                 }
-                if (userExists.id !== userId) {
+                if (!admin && userExists.id !== userId) {
                     return {
                         data: false,
                         status: 401,

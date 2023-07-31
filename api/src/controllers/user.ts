@@ -51,13 +51,13 @@ export class UserController {
       .json({ data: response.data, error: response.error });
   }
   async update(req: Request, res: Response) {
-    const response = await UserService.updateUser(Number(req.params.id), req.body, req.user?.id);
+    const response = await UserService.updateUser(Number(req.params.id), req.body, req.user?.id, req.user?.admin);
     return res
       .status(response.status)
       .json({ data: response.data, error: response.error });
   }
   async delete(req: Request, res: Response) {
-    const response = await UserService.deleteUser(Number(req.params.id), req.user?.id);
+    const response = await UserService.deleteUser(Number(req.params.id), req.user?.id, req.user?.admin);
     return res
       .status(response.status)
       .json({ data: response.data, error: response.error });

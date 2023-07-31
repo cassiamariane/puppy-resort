@@ -11,4 +11,7 @@ export default app;
 
 //=-=-=-=-=-=-=-=-=-=//
 server.config();
-server.run();
+
+if (process.env.NODE_ENV !== 'test') {
+    server.run();
+}

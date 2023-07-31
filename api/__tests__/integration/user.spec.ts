@@ -2,18 +2,19 @@ import supertest from 'supertest';
 import App from '../../src/App';
 
 const req = supertest(App);
-const baseRoute = '/user';
+const baseRoute = '/api/user';
+const token = process.env.ADMIN_TOKEN;
 
 describe('GET /user', () => {
 
     it('SUCCESS: Should return all users', async () => {
-        return req.get(baseRoute).then(res => expect(res.statusCode).toEqual(200));
+        return req.get(baseRoute).set('Authorization', `Bearer ${token}`).then(res => expect(res.statusCode).toEqual(200));
     });
 
     it('FAIL: Should return 400 for a registration that doesnt exist', async () => {
-        return req.get(`${baseRoute}/000000`).then(res => {
+        return req.get(`${baseRoute}/000000`).set('Authorization', `Bearer ${token}`).then(res => {
             expect(res.statusCode).toEqual(400);
-            expect(res.body.err).toBe('Bad request');
+            expect(res.body.error).toBe("ID inválido ou inexistente.");
         });
     });
 
@@ -21,48 +22,36 @@ describe('GET /user', () => {
 
 describe('POST /user and DELETE /user', () => {
 
-    it('FAIL: Should return 400 for a user with less than 16 y.o', async () => {
-        const invalidBirthdayData = {
-            nome: 'Daniel Vinicius',
-            dataDeNasc: new Date('2012-04-02'),
-            dataDeMatricula: new Date('2023-03-02'),
-            matricula: '20230013823',
-            email: 'viniccius774@gmail.com',
-
-        };
-        return req.post(baseRoute).send(invalidBirthdayData).then(res => expect(res.body.err).toBe('Bad request'));
-    });
-
-    it('FAIL: Should return 400 for a user with registration different from registration date', async () => {
-        const invalidMatriculaData = {
-            nome: 'Daniel Vinicius',
-            dataDeNasc: new Date('2001-04-02'),
-            dataDeMatricula: new Date('2023-03-02'),
-            matricula: '20210015800',
+    it('FAIL: Should return 400 for a user with no CPF.', async () => {
+        const invalidRegister = {
+            name: 'Daniel Vinicius',
+            phone: '(21)90000-0000',
+            password: '123456',
             email: 'danielvinicius@ufrrj.br',
 
         };
-        return req.post(baseRoute).send(invalidMatriculaData).then(res => expect(res.body.err).toBe('Bad request'));
+        return req.post(baseRoute).send(invalidRegister).then(res => expect(res.body.error).toBe('Informações insuficientes.'));
     });
 
     it('SUCCESS: Should insert user in database successfully', async () => {
         const validUserData = {
-            nome: 'Cassia Mariane',
-            dataDeNasc: new Date('2001-04-02'),
-            dataDeMatricula: new Date('2021-03-02'),
-            matricula: '20210015800',
-            email: 'cassiamariane01@gmail.com',
+            id: 999,
+            name: 'João Miranda',
+            phone: '(21)90000-0000',
+            cpf: '123.456.789-00',
+            password: '123456',
+            email: 'joao.miranda@yahoo.com',
         };
-        return req.get(`${baseRoute}/${validUserData.matricula}`).then(async res => {
+        return req.get(`${baseRoute}/${validUserData.id}`).set('Authorization', `Bearer ${token}`).then(async res => {
+            // user already exists
             if (res.statusCode === 200) {
-                return req.delete(`${baseRoute}/${validUserData.matricula}`).then(async res => {
-                    expect(res.body.email).toEqual(validUserData.email);
-
-                    return req.post(baseRoute).send(validUserData).then(res => expect(res.body.email).toEqual(validUserData.email));
+                return req.delete(`${baseRoute}/${validUserData.id}`).set('Authorization', `Bearer ${token}`).then(async res => {
+                    expect(res.statusCode).toBe(200);
+                    return req.post(baseRoute).send(validUserData).then(res => expect(res.body.data.email).toEqual(validUserData.email));
                 });
-
-            } else {
-                return req.post(baseRoute).send(validUserData).then(res => expect(res.body.email).toEqual(validUserData.email));
+            } 
+            else {
+                return req.post(baseRoute).send(validUserData).then(res =>  expect(res.body.data.email).toEqual(validUserData.email));
             }
         });
     });
@@ -70,15 +59,13 @@ describe('POST /user and DELETE /user', () => {
 });
 
 describe('PUT /user', () => {
-    it('FAIL: Should not update user with invalid registration and registration date', async () => {
-        const oldMatricula = '20210015800';
-        const invalidUserData = {
-            dataDeMatricula: new Date('2022-03-02'),
-            matricula: '20190015800',
+    it('FAIL: Should not update user with setting admin as true', async () => {
+        const hackingData = {
+            admin: true
         };
-        return req.get(`${baseRoute}/${oldMatricula}`).then(async res => {
+        return req.get(`${baseRoute}/999`).then(async res => {
             if (res.statusCode === 200) {
-                return req.put(`${baseRoute}/${oldMatricula}`).send(invalidUserData).then(res => expect(res.statusCode).toBe(400));
+                return req.put(`${baseRoute}/999`).send(hackingData).then(res => expect(res.statusCode).toBe(400));
             }
         });
     });
