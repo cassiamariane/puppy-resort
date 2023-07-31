@@ -70,13 +70,13 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 #services-table {
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 label {
   display: flex;
   gap: .5rem;
-  border-radius: 20px;
+  border-radius: 5px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
 
   input {

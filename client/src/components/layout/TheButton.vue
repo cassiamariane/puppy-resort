@@ -20,6 +20,8 @@ button {
     align-items: center;
     justify-content: center;
     transition: all .2s linear;
+    border: none;
+    outline: none;
 
     &:hover {
         transform: scale(1.02);
@@ -27,12 +29,12 @@ button {
 
     &.primary {
         background-color: var(--primary-color);
-        color: white;
+        color: #ffffff;
     }
 
     &.secondary {
         background: #ffffff;
-        border: 1px solid #222222;
+        box-shadow: 2px 2px 10px rgba($color: #000000, $alpha: .8);
         color: #222222;
     }
 }

@@ -58,7 +58,12 @@ const handleLogin = async () => {
         
         await isComplete(user.token);
         if (data.value) {
-            return router.push('/agendamento').then(r => router.go(0));
+            if (user.user.admin) {
+                router.push('/admin');
+                return;
+            }
+            router.push('/agendamento');
+            return;
         }
         return changeToAddress();
     }

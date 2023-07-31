@@ -5,7 +5,7 @@
         <div id="number" :class="{ available: r.available }">
           {{ r.number }}
         </div>
-        <div id="flex-info" v-if="!r.available && r.services.length">
+        <div id="flex-info" v-if="!r.available && r.services">
           <div class="info">
             <img src="@/assets/img/icons/cat.svg">
             {{ r.services[0].pet.name }}
@@ -56,7 +56,7 @@ onMounted(async () => {
 
   #rooms {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     flex-wrap: wrap;
 
     @media screen and (min-width: 779px) {
@@ -69,7 +69,8 @@ onMounted(async () => {
       border-radius: 10px;
       gap: 1.5rem;
       align-items: center;
-      flex: 1;
+      flex: 0 1 250px;
+      margin-bottom: .5em;
       box-shadow: 1px 1px 5px #000000;
       transition: .2s;
 
@@ -78,6 +79,7 @@ onMounted(async () => {
       }
 
       @media screen and (max-width: 464px) and (min-width: 328px) {
+        flex: 1 1 100px;
         &:nth-child(3) {
           order: 4;
         }

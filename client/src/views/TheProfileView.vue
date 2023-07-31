@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div id="address-data" v-if="me.address">
+        <div id="address-data" v-if="me?.address">
             <h3>Endereço</h3>
             <img src="../assets/img/icons/pencil.svg" alt="Editar endereço" title="Editar endereço"
                 @click="openAddressEditModal">
@@ -27,7 +27,7 @@
                 <span>{{ me.address.code }}</span>
             </article>
         </div>
-        <div id="pets-data" v-if="me.pets">
+        <div id="pets-data" v-if="me?.pets?.length">
             <h3>Meus pets</h3>
             <div class="pet" v-for="pet in me.pets" :key="pet.id">
                 <article>

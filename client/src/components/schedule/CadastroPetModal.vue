@@ -30,7 +30,7 @@
                 </label>
                 <label for="idade">
                     <span>Idade</span>
-                    <input required type="number" min="0" name="idade" id="idade" v-model="age">
+                    <input required type="number" min="0" name="idade" id="idade" v-model="age" v-maska data-maska="##">
                 </label>
                 <label for="descricao">
                     <span>Breve descrição do seu pet</span>
@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 import ModalComponent from '@/components/layout/ModalComponent.vue'
+import { vMaska } from "maska"
 import Button from '../layout/TheButton.vue';
 import { ref } from 'vue';
 import { usePet } from '@/composables/usePet'
@@ -57,10 +58,10 @@ import { usePetStore } from '@/stores/PetStore'
 const pet = usePetStore();
 
 const name = ref('');
-const species = ref('');
-const gender = ref('');
+const species = ref('dog');
+const gender = ref('M');
 const breed = ref('');
-const age = ref(0);
+const age = ref('');
 const description = ref('');
 
 async function cadastraPet() {
@@ -69,7 +70,7 @@ async function cadastraPet() {
         species: species.value,
         gender: gender.value,
         breed: breed.value,
-        age: age.value,
+        age: Number(age.value),
         description: description.value
     }, user.token)
 

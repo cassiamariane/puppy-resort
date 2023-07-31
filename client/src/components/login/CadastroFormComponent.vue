@@ -1,12 +1,12 @@
 <template>
     <div class="container">
         <form>
-            <label for="name" :class="{error: nameError}">
+            <label for="name" :class="{ error: nameError }">
                 <span>Nome completo:</span>
                 <input autofocus required type="text" name="name" id="name" v-model="name" @blur="validateFullName(name)">
                 <span class="error">{{ nameError }}</span>
             </label>
-            <label for="email" :class="{error: emailError}">
+            <label for="email" :class="{ error: emailError }">
                 <span>E-mail:</span>
                 <input required type="email" name="email" id="email" v-model="email" @blur="validateEmail(email)">
                 <span class="error">{{ emailError }}</span>
@@ -16,20 +16,23 @@
                     <span>Telefone de emergência:</span>
                     <input required type="tel" name="phone" id="phone" v-model="phone" v-maska data-maska="(##) #####-####">
                 </label>
-                <label for="cpf" :class="{error: cpfError}">
+                <label for="cpf" :class="{ error: cpfError }">
                     <span>CPF:</span>
-                    <input required type="text" name="cpf" id="cpf" v-model="cpf" @blur="validateCPF(cpf)" v-maska data-maska="###.###.###-##">
+                    <input required type="text" name="cpf" id="cpf" v-model="cpf" @blur="validateCPF(cpf)" v-maska
+                        data-maska="###.###.###-##">
                     <span class="error">{{ cpfError }}</span>
                 </label>
             </div>
-            <label for="password" :class="{error: passwordError}">
+            <label for="password" :class="{ error: passwordError }">
                 <span>Senha:</span>
-                <input required type="password" name="password" id="password" v-model="password" @blur="validatePassword(password)">
+                <input required type="password" name="password" id="password" v-model="password"
+                    @blur="validatePassword(password)">
                 <span class="error">{{ passwordError }}</span>
             </label>
-            <label for="password_2" :class="{error: confPasswordError}">
+            <label for="password_2" :class="{ error: confPasswordError }">
                 <span>Confirme sua senha:</span>
-                <input required type="password" name="password_2" id="password_2" v-model="passwordConfirmation" @blur="validateConfPassword(password, passwordConfirmation)">
+                <input required type="password" name="password_2" id="password_2" v-model="passwordConfirmation"
+                    @blur="validateConfPassword(password, passwordConfirmation)">
                 <span class="error">{{ confPasswordError }}</span>
             </label>
             <TheLoading v-if="loading" />
@@ -42,9 +45,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
 import { vMaska } from "maska"
-
 import Button from '../layout/TheButton.vue';
 import { useSignup } from '@/composables/useSignup';
 import TheLoading from '../layout/TheLoading.vue';
@@ -58,7 +59,7 @@ import useLocalStorage from '@/composables/useLocalStorage';
 const { saveToLocalStorage } = useLocalStorage();
 
 import { useValidation } from '@/composables/useValidation';
-const {validateEmail, validatePassword, validateConfPassword, validateCPF, validateFullName, nameError, emailError, passwordError, cpfError, confPasswordError} = useValidation()
+const { validateEmail, validatePassword, validateConfPassword, validateCPF, validateFullName, nameError, emailError, passwordError, cpfError, confPasswordError } = useValidation()
 
 const name = ref('');
 const email = ref('');
@@ -173,15 +174,17 @@ const changeToAddress = () => {
         }
 
         label.error {
-
             input {
                 border: 2px solid var(--error-color);
             }
-
-            
             span.error {
-                color: var(--error-color);;
+                color: var(--error-color);
             }
+        }
+
+        span.error {
+            color: var(--error-color);
+            ;
         }
 
         span.green,
@@ -201,5 +204,4 @@ const changeToAddress = () => {
             cursor: pointer;
         }
     }
-}
-</style>
+}</style>

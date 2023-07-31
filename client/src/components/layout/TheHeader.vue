@@ -6,11 +6,11 @@
             <div class="dropdown">
                 <button type="button" id="menu-btn"><img src="@/assets/img/icons/hamburguer.svg" id="menu-strokes"></button>
                 <div class="dropdown-content">
-                    <router-link to="agendamento" v-if="props.isAuthenticated"><img
+                    <router-link to="agendamento" v-if="props.isAuthenticated && !user.user.admin"><img
                             src="@/assets/img/icons/schedule.svg" />Agendar</router-link>
-                    <router-link to="reservas" v-if="props.isAuthenticated"><img
+                    <router-link to="reservas" v-if="props.isAuthenticated && !user.user.admin"><img
                             src="@/assets/img/icons/reservas.svg" />Minhas reservas</router-link>
-                    <router-link to="perfil" v-if="props.isAuthenticated"><img src="@/assets/img/icons/user.svg" />Meu
+                    <router-link to="perfil" v-if="props.isAuthenticated && !user.user.admin"><img src="@/assets/img/icons/user.svg" />Meu
                         perfil</router-link>
                     <router-link to="login" v-if="!props.isAuthenticated"><img src="@/assets/img/icons/login.svg">Faça
                         login</router-link>
@@ -63,6 +63,7 @@ header {
     align-items: center;
     background: #ffffff;
     position: relative;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
 
     @media screen and (min-width: 779px) {
         padding: .5rem 5rem 1rem;
